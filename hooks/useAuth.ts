@@ -33,8 +33,12 @@ export function useAuth() {
     router.replace('/(tabs)/');
   }
 
-  async function signUp(email: string, password: string) {
-    const { error } = await supabase.auth.signUp({ email, password });
+  async function signUp(email: string, password: string, username?: string) {
+    const { error } = await supabase.auth.signUp({
+      email,
+      password,
+      options: { data: { username: username?.trim() || null } },
+    });
     if (error) throw error;
   }
 

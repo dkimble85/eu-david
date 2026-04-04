@@ -4,6 +4,7 @@ import type { User } from '@supabase/supabase-js';
 
 export type UserProfile = {
   glutenFree: boolean;
+  username: string | null;
 };
 
 export function useProfile(user: User | null) {
@@ -16,7 +17,10 @@ export function useProfile(user: User | null) {
       return;
     }
     const meta = user.user_metadata ?? {};
-    setProfile({ glutenFree: meta.gluten_free === true });
+    setProfile({
+      glutenFree: meta.gluten_free === true,
+      username: meta.username ?? null,
+    });
   }, [user]);
 
   const saveProfile = useCallback(
@@ -31,7 +35,10 @@ export function useProfile(user: User | null) {
         });
       } catch {
         // Roll back on failure
-        setProfile({ glutenFree: user.user_metadata?.gluten_free === true });
+        setProfile({
+          glutenFree: user.user_metadata?.gluten_free === true,
+          username: user.user_metadata?.username ?? null,
+        });
       } finally {
         setSaving(false);
       }

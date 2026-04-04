@@ -17,6 +17,7 @@ import { useAuth } from '@/hooks/useAuth';
 
 export default function RegisterScreen() {
   const { signUp } = useAuth();
+  const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirm, setConfirm] = useState('');
@@ -40,7 +41,7 @@ export default function RegisterScreen() {
     setLoading(true);
     setError(null);
     try {
-      await signUp(email, password);
+      await signUp(email, password, username);
       setSuccess(true);
     } catch (e: unknown) {
       setError(e instanceof Error ? e.message : 'Registration failed. Please try again.');
@@ -89,6 +90,19 @@ export default function RegisterScreen() {
               <Text style={styles.errorText}>{error}</Text>
             </View>
           )}
+
+          <View style={styles.field}>
+            <Text style={styles.label}>Username <Text style={styles.optional}>(optional)</Text></Text>
+            <TextInput
+              style={styles.input}
+              value={username}
+              onChangeText={setUsername}
+              autoCapitalize="none"
+              autoCorrect={false}
+              placeholder="e.g. david"
+              placeholderTextColor={colors.textMuted}
+            />
+          </View>
 
           <View style={styles.field}>
             <Text style={styles.label}>Email</Text>
@@ -180,6 +194,7 @@ const styles = StyleSheet.create({
   errorText: { ...typography.callout, color: colors.banned },
   field: { gap: spacing.sm },
   label: { ...typography.subhead, color: colors.textSecondary, fontWeight: '600' },
+  optional: { ...typography.caption1, color: colors.textMuted, fontWeight: '400' },
   input: {
     backgroundColor: colors.surface,
     borderRadius: radius.md,

@@ -11,10 +11,12 @@ const FIELDS = [
   'ingredients_analysis_tags',
   'categories_tags',
   'countries_tags',
+  'stores_tags',
   'code',
 ].join(',');
 
 export type OpenFoodFactsProduct = {
+  barcode: string | null;
   name: string;
   brand: string | null;
   imageUrl: string | null;
@@ -23,6 +25,7 @@ export type OpenFoodFactsProduct = {
   allergens: string[];
   analysisFlags: string[];
   categoriesTags: string[];
+  stores: string[];
 };
 
 function parseENumber(tag: string): string {
@@ -37,36 +40,20 @@ function parseAllergen(tag: string): string {
 export async function getProductByBarcode(
   barcode: string
 ): Promise<OpenFoodFactsProduct | null> {
-  try {
-    const res = await fetch(`${BASE_URL}/product/${barcode}.json?fields=${FIELDS}`, {
-      headers: { 'User-Agent': USER_AGENT },
-    });
+  const res = await fetch(`${BASE_URL}/product/${barcode}.json?fields=${FIELDS}`, {
+    headers: { 'User-Agent': USER_AGENT },
+  });
 
-    if (res.status === 404) return null;
-    if (!res.ok) throw new Error(`OpenFoodFacts error: ${res.status}`);
+  // Genuine not-found — not an error
+  if (res.status === 404) return null;
+  if (!res.ok) throw new Error(`OpenFoodFacts responded with ${res.status}`);
 
-    const data = await res.json();
-    if (data.status === 0 || !data.product) return null;
+  const data = await res.json();
+  if (data.status === 0 || !data.product) return null;
 
-    const p = data.product;
-    return {
-      name: p.product_name || 'Unknown Product',
-      brand: p.brands || null,
-      imageUrl: p.image_url || null,
-      ingredientsText: p.ingredients_text || null,
-      eNumbers: (p.additives_tags || []).map(parseENumber),
-      allergens: (p.allergens_tags || []).map(parseAllergen),
-      analysisFlags: p.ingredients_analysis_tags || [],
-      categoriesTags: p.categories_tags || [],
-    };
-  } catch (err) {
-    console.error('OpenFoodFacts fetch failed:', err);
-    return null;
-  }
-}
-
-function parseProduct(p: Record<string, any>): OpenFoodFactsProduct {
+  const p = data.product;
   return {
+    barcode,
     name: p.product_name || 'Unknown Product',
     brand: p.brands || null,
     imageUrl: p.image_url || null,
@@ -75,6 +62,22 @@ function parseProduct(p: Record<string, any>): OpenFoodFactsProduct {
     allergens: (p.allergens_tags || []).map(parseAllergen),
     analysisFlags: p.ingredients_analysis_tags || [],
     categoriesTags: p.categories_tags || [],
+    stores: p.stores_tags || [],
+  };
+}
+
+export function parseProduct(p: Record<string, any>): OpenFoodFactsProduct {
+  return {
+    barcode: p.code || null,
+    name: p.product_name || 'Unknown Product',
+    brand: p.brands || null,
+    imageUrl: p.image_url || null,
+    ingredientsText: p.ingredients_text || null,
+    eNumbers: (p.additives_tags || []).map(parseENumber),
+    allergens: (p.allergens_tags || []).map(parseAllergen),
+    analysisFlags: p.ingredients_analysis_tags || [],
+    categoriesTags: p.categories_tags || [],
+    stores: p.stores_tags || [],
   };
 }
 

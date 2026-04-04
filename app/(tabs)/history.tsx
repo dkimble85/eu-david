@@ -18,20 +18,30 @@ export default function HistoryScreen() {
   const { user } = useAuth();
   const [scans, setScans] = useState<ScanHistoryRow[]>([]);
   const [loading, setLoading] = useState(true);
+  const [fetchError, setFetchError] = useState(false);
 
-  useEffect(() => {
+  function loadHistory() {
     if (!user) return;
-
     setLoading(true);
+    setFetchError(false);
     supabase
       .from('scan_history')
       .select('*')
       .order('scan_date', { ascending: false })
       .limit(50)
       .then(({ data, error }) => {
-        if (!error && data) setScans(data as ScanHistoryRow[]);
+        if (error) {
+          setFetchError(true);
+        } else if (data) {
+          setScans(data as ScanHistoryRow[]);
+        }
         setLoading(false);
       });
+  }
+
+  useEffect(() => {
+    loadHistory();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
 
   if (!user) {
@@ -43,6 +53,24 @@ export default function HistoryScreen() {
           <Text style={styles.subtitle}>Your scan history is saved to your account.</Text>
           <TouchableOpacity style={styles.button} onPress={() => router.push('/(auth)/login')}>
             <Text style={styles.buttonText}>Sign In</Text>
+          </TouchableOpacity>
+        </View>
+      </SafeAreaView>
+    );
+  }
+
+  if (fetchError) {
+    return (
+      <SafeAreaView style={styles.safe}>
+        <View style={styles.header}>
+          <Text style={styles.pageTitle}>Scan History</Text>
+        </View>
+        <View style={styles.centered}>
+          <Text style={styles.emoji}>⚠️</Text>
+          <Text style={styles.title}>Couldn't load history</Text>
+          <Text style={styles.subtitle}>Check your connection and try again.</Text>
+          <TouchableOpacity style={styles.button} onPress={loadHistory}>
+            <Text style={styles.buttonText}>Retry</Text>
           </TouchableOpacity>
         </View>
       </SafeAreaView>

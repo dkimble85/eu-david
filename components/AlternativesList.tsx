@@ -66,7 +66,7 @@ function AlternativeCard({ alt }: { alt: ScoredAlternative }) {
     <TouchableOpacity
       style={styles.card}
       activeOpacity={0.8}
-      onPress={() => router.push(`/product/${encodeURIComponent(alt.product.name)}`)}
+      onPress={() => alt.product.barcode && router.push(`/product/${alt.product.barcode}`)}
     >
       <View style={styles.cardTop}>
         {alt.product.imageUrl ? (

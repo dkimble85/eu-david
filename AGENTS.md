@@ -20,14 +20,14 @@ AI agents working on this project should read this file for context and current 
 
 ## High Priority Tasks
 
-### 1. Fix Logo Image Centering
+### [x] 1. Fix Logo Image Centering
 
 - **Location**: `app/(tabs)/index.tsx`
 - **Issue**: Logo image not perfectly centered on iPhone 17 Simulator
 - **Current**: Uses absolute positioning with manual margins
 - **Goal**: Center logo properly across all device sizes
 
-### 2. Complete Product Detail Page
+### [ ] 2. Complete Product Detail Page
 
 - **Location**: `app/product/[barcode].tsx`
 - **Needs**:
@@ -36,7 +36,7 @@ AI agents working on this project should read this file for context and current 
   - Check ingredients against EU additives database
   - Show status badges (banned/restricted/warning/approved)
 
-### 3. Product Caching with TanStack Query
+### [ ] 3. Product Caching with TanStack Query
 
 - **Scope**: Cache Open Food Facts API responses by barcode so repeated scans of the same product skip the network
 - **Install**: `npx expo install @tanstack/react-query`
@@ -59,7 +59,7 @@ AI agents working on this project should read this file for context and current 
 - **Integration**: Update `app/product/[barcode].tsx` to call `useProduct(barcode)` instead of calling `getProductByBarcode` directly in a `useEffect`
 - **Scope boundary**: Keep `useAuth` and `useScanner` as-is — TanStack Query is only for server/API state
 
-### 4. Implement History Page
+### [ ] 4. Implement History Page
 
 - **Location**: `app/(tabs)/history.tsx`
 - **Needs**:
@@ -68,13 +68,13 @@ AI agents working on this project should read this file for context and current 
   - Tap to view product details
   - Handle empty state
 
-### 4. Build and Test on Physical Device
+### [ ] 4. Build and Test on Physical Device
 
 - **Command**: `npx expo run:ios --device`
 - **Needs**: Camera permission for barcode scanning
 - **Verify**: Barcode scanning works on real iPhone
 
-### 5. Complete Authentication Flow
+### [ ] 5. Complete Authentication Flow
 
 - **Locations**: `app/(auth)/login.tsx`, `app/(auth)/register.tsx`
 - **Needs**:
@@ -85,25 +85,25 @@ AI agents working on this project should read this file for context and current 
 
 ## Medium Priority Tasks
 
-### 6. Replace Deprecated SafeAreaView
+### [ ] 6. Replace Deprecated SafeAreaView
 
 - **Issue**: "SafeAreaView has been deprecated" warning
 - **Solution**: Use `react-native-safe-area-context` directly
 - **Files**: All screen components
 
-### 7. Add Error Handling
+### [ ] 7. Add Error Handling
 
 - **APIs**: Open Food Facts, Supabase
 - **Needs**: User-friendly error messages, retry options
 
-### 8. Add Loading States
+### [ ] 8. Add Loading States
 
 - **Needs**: Skeleton loaders or spinners for:
   - Product lookup
   - Auth operations
   - History load
 
-### 9. Expand EU Additives Database
+### [ ] 9. Expand EU Additives Database
 
 - **Location**: `data/eu-additives.json`
 - **Source**: EC Regulation No 1333/2008
@@ -111,7 +111,7 @@ AI agents working on this project should read this file for context and current 
 
 ## Testing
 
-### E2E Testing with Maestro
+### [ ] E2E Testing with Maestro
 
 - **Install**: Download the Maestro CLI — `curl -Ls "https://get.maestro.mobile.dev" | bash`
 - **Runs against**: A running iOS Simulator build (`npx expo run:ios`)

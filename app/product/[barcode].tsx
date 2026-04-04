@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useState } from 'react';
 import {
   StyleSheet,
   Text,
@@ -11,34 +11,30 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useLocalSearchParams, router } from 'expo-router';
 import { colors, radius, spacing, typography, statusColors, statusLabels } from '@/constants/theme';
-import { getProductByBarcode } from '@/lib/openfoodfacts';
-import { getFatSecretProduct } from '@/lib/fatsecret';
-import { runEuCheck } from '@/lib/eu-check';
 import { supabase } from '@/lib/supabase';
 import { useAuth } from '@/hooks/useAuth';
+import { useProduct } from '@/hooks/useProduct';
+import { useProfile } from '@/hooks/useProfile';
+import { useAlternatives } from '@/hooks/useAlternatives';
+import { scoreProduct } from '@/lib/eu-check';
 import ProductCard from '@/components/ProductCard';
 import IngredientList from '@/components/IngredientList';
 import AlternativesList from '@/components/AlternativesList';
-import { useAlternatives } from '@/hooks/useAlternatives';
-import { useProfile } from '@/hooks/useProfile';
-import { scoreProduct } from '@/lib/eu-check';
-import type { CheckedIngredient, EuCheckResult } from '@/lib/eu-check';
-import type { FatSecretProduct } from '@/lib/fatsecret';
-import type { OpenFoodFactsProduct } from '@/lib/openfoodfacts';
-
-type PageState = 'loading' | 'error' | 'notfound' | 'ready';
+import type { CheckedIngredient } from '@/lib/eu-check';
 
 export default function ProductScreen() {
   const { barcode } = useLocalSearchParams<{ barcode: string }>();
   const { user } = useAuth();
   const { profile } = useProfile(user);
 
-  const [pageState, setPageState] = useState<PageState>('loading');
-  const [offProduct, setOffProduct] = useState<OpenFoodFactsProduct | null>(null);
-  const [fsProduct, setFsProduct] = useState<FatSecretProduct | null>(null);
-  const [euResult, setEuResult] = useState<EuCheckResult | null>(null);
+  const { data, isLoading, isError, refetch } = useProduct(barcode ?? '');
   const [selectedIngredient, setSelectedIngredient] = useState<CheckedIngredient | null>(null);
   const [saved, setSaved] = useState(false);
+  const [saveError, setSaveError] = useState(false);
+
+  const offProduct = data?.off ?? null;
+  const fsProduct = data?.fs ?? null;
+  const euResult = data?.euResult ?? null;
 
   const currentScore = euResult ? scoreProduct(euResult) : 100;
   const { alternatives, loading: altLoading } = useAlternatives(
@@ -48,29 +44,9 @@ export default function ProductScreen() {
     profile.glutenFree
   );
 
-  const fetchedRef = useRef(false);
-
-  useEffect(() => {
-    if (!barcode || fetchedRef.current) return;
-    fetchedRef.current = true;
-
-    Promise.all([getProductByBarcode(barcode), getFatSecretProduct(barcode)])
-      .then(([off, fs]) => {
-        if (!off && !fs) {
-          setPageState('notfound');
-          return;
-        }
-        setOffProduct(off);
-        setFsProduct(fs);
-        const result = runEuCheck(off?.eNumbers ?? [], off?.ingredientsText ?? null);
-        setEuResult(result);
-        setPageState('ready');
-      })
-      .catch(() => setPageState('error'));
-  }, [barcode]);
-
   async function saveToHistory() {
     if (!user || !barcode || saved) return;
+    setSaveError(false);
     const name = offProduct?.name ?? fsProduct?.name ?? null;
     const result = euResult
       ? {
@@ -81,16 +57,20 @@ export default function ProductScreen() {
         }
       : null;
 
-    await supabase.from('scan_history').insert({
+    const { error } = await supabase.from('scan_history').insert({
       user_id: user.id,
       barcode,
       product_name: name,
       result,
     });
-    setSaved(true);
+    if (error) {
+      setSaveError(true);
+    } else {
+      setSaved(true);
+    }
   }
 
-  if (pageState === 'loading') {
+  if (isLoading) {
     return (
       <SafeAreaView style={styles.safe}>
         <View style={styles.centered}>
@@ -101,21 +81,25 @@ export default function ProductScreen() {
     );
   }
 
-  if (pageState === 'error') {
+  if (isError) {
     return (
       <SafeAreaView style={styles.safe}>
         <View style={styles.centered}>
           <Text style={styles.stateEmoji}>❌</Text>
           <Text style={styles.stateTitle}>Something went wrong</Text>
-          <TouchableOpacity style={styles.button} onPress={() => router.back()}>
-            <Text style={styles.buttonText}>Go Back</Text>
+          <Text style={styles.stateBody}>Check your connection and try again.</Text>
+          <TouchableOpacity style={styles.button} onPress={() => refetch()}>
+            <Text style={styles.buttonText}>Retry</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.buttonSecondary} onPress={() => router.back()}>
+            <Text style={styles.buttonSecondaryText}>Go Back</Text>
           </TouchableOpacity>
         </View>
       </SafeAreaView>
     );
   }
 
-  if (pageState === 'notfound') {
+  if (!data) {
     return (
       <SafeAreaView style={styles.safe}>
         <View style={styles.centered}>
@@ -145,7 +129,9 @@ export default function ProductScreen() {
         </TouchableOpacity>
         {user && (
           <TouchableOpacity onPress={saveToHistory} style={styles.saveButton} disabled={saved}>
-            <Text style={styles.saveText}>{saved ? '✓ Saved' : 'Save'}</Text>
+            <Text style={[styles.saveText, saveError && styles.saveErrorText]}>
+              {saved ? '✓ Saved' : saveError ? '⚠ Retry' : 'Save'}
+            </Text>
           </TouchableOpacity>
         )}
       </View>
@@ -285,6 +271,12 @@ const styles = StyleSheet.create({
     paddingHorizontal: spacing.xl,
   },
   buttonText: { ...typography.headline, color: '#fff' },
+  buttonSecondary: {
+    borderRadius: radius.md,
+    paddingVertical: spacing.md,
+    paddingHorizontal: spacing.xl,
+  },
+  buttonSecondaryText: { ...typography.callout, color: colors.textSecondary },
 
   topBar: {
     flexDirection: 'row',
@@ -297,6 +289,7 @@ const styles = StyleSheet.create({
   backText: { ...typography.callout, color: colors.euGold },
   saveButton: { padding: spacing.sm },
   saveText: { ...typography.callout, color: colors.euGold },
+  saveErrorText: { color: colors.warning },
 
   scroll: { flex: 1 },
   content: { padding: spacing.lg, gap: spacing.md, paddingBottom: spacing.xxl },
