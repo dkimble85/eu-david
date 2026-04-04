@@ -1,21 +1,44 @@
 {
   "name": "eu-david",
   "version": "1.0.0",
-  "main": "index.ts",
+  "main": "expo-router/entry",
   "scripts": {
     "start": "expo start",
     "android": "expo start --android",
     "ios": "expo start --ios",
-    "web": "expo start --web"
+    "web": "expo start --web",
+    "export": "expo export -p web",
+    "lint": "eslint . --ext .ts,.tsx --max-warnings 0",
+    "type-check": "tsc --noEmit",
+    "format": "prettier --write \"**/*.{ts,tsx,json}\"",
+    "format:check": "prettier --check \"**/*.{ts,tsx,json}\""
   },
   "dependencies": {
+    "@gorhom/bottom-sheet": "^5.2.8",
+    "@supabase/supabase-js": "^2.101.1",
     "expo": "~54.0.33",
+    "expo-constants": "^55.0.11",
+    "expo-font": "^55.0.6",
+    "expo-linking": "^55.0.11",
+    "expo-router": "^55.0.10",
     "expo-status-bar": "~3.0.9",
     "react": "19.1.0",
-    "react-native": "0.81.5"
+    "react-native": "0.81.5",
+    "react-native-gesture-handler": "~2.24.0",
+    "react-native-reanimated": "^4.3.0",
+    "react-native-safe-area-context": "^5.7.0",
+    "react-native-screens": "^4.24.0",
+    "react-zxing": "^2.1.0"
   },
   "devDependencies": {
     "@types/react": "~19.1.0",
+    "@typescript-eslint/eslint-plugin": "^8.58.0",
+    "@typescript-eslint/parser": "^8.58.0",
+    "@vercel/node": "^5.7.0",
+    "eslint": "^10.2.0",
+    "eslint-plugin-react": "^7.37.5",
+    "eslint-plugin-react-hooks": "^7.0.1",
+    "prettier": "^3.8.1",
     "typescript": "~5.9.2"
   },
   "private": true
