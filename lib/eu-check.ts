@@ -1,0 +1,135 @@
+import additivesDb from '../data/eu-additives.json';
+import type { AdditiveStatus } from '../constants/theme';
+
+type AdditiveRecord = {
+  name: string;
+  status: AdditiveStatus;
+  category: string;
+  notes?: string;
+  bannedSince?: string;
+  commonNames?: string[];
+  searchTerms?: string[];
+};
+
+type AdditivesData = {
+  additives: Record<string, AdditiveRecord>;
+  nonEnumber: Record<string, AdditiveRecord & { searchTerms: string[] }>;
+};
+
+const db = additivesDb as unknown as AdditivesData;
+
+export type CheckedIngredient = {
+  key: string;
+  name: string;
+  status: AdditiveStatus;
+  category: string;
+  notes?: string;
+  bannedSince?: string;
+  isENumber: boolean;
+};
+
+export type EuCheckResult = {
+  banned: CheckedIngredient[];
+  restricted: CheckedIngredient[];
+  warning: CheckedIngredient[];
+  approved: CheckedIngredient[];
+  unknown: CheckedIngredient[];
+  totalFlagged: number;
+};
+
+function checkENumbers(eNumbers: string[]): CheckedIngredient[] {
+  return eNumbers.map((code) => {
+    const record = db.additives[code];
+    if (record) {
+      return {
+        key: code,
+        name: record.name,
+        status: record.status,
+        category: record.category,
+        notes: record.notes,
+        bannedSince: record.bannedSince,
+        isENumber: true,
+      };
+    }
+    return {
+      key: code,
+      name: code.toUpperCase(),
+      status: 'unknown' as AdditiveStatus,
+      category: 'unknown',
+      isENumber: true,
+    };
+  });
+}
+
+function checkIngredientText(text: string): CheckedIngredient[] {
+  const lower = text.toLowerCase();
+  const found: CheckedIngredient[] = [];
+  const seen = new Set<string>();
+
+  for (const [key, record] of Object.entries(db.nonEnumber)) {
+    if (seen.has(key)) continue;
+    const terms = record.searchTerms ?? [];
+    if (terms.some((t) => lower.includes(t.toLowerCase()))) {
+      seen.add(key);
+      found.push({
+        key,
+        name: record.name,
+        status: record.status,
+        category: record.category,
+        notes: record.notes,
+        isENumber: false,
+      });
+    }
+  }
+
+  // Also check common name aliases in the main additives db
+  for (const [key, record] of Object.entries(db.additives)) {
+    if (seen.has(key)) continue;
+    const aliases = record.commonNames ?? [];
+    if (aliases.some((a) => lower.includes(a.toLowerCase()))) {
+      seen.add(key);
+      found.push({
+        key,
+        name: record.name,
+        status: record.status,
+        category: record.category,
+        notes: record.notes,
+        bannedSince: record.bannedSince,
+        isENumber: true,
+      });
+    }
+  }
+
+  return found;
+}
+
+export function runEuCheck(
+  eNumbers: string[],
+  ingredientsText: string | null
+): EuCheckResult {
+  const fromENumbers = checkENumbers(eNumbers);
+  const fromText = ingredientsText ? checkIngredientText(ingredientsText) : [];
+
+  // Merge, dedupe by key
+  const seen = new Set<string>();
+  const all: CheckedIngredient[] = [];
+  for (const item of [...fromENumbers, ...fromText]) {
+    if (!seen.has(item.key)) {
+      seen.add(item.key);
+      all.push(item);
+    }
+  }
+
+  const result: EuCheckResult = {
+    banned: all.filter((i) => i.status === 'banned'),
+    restricted: all.filter((i) => i.status === 'restricted'),
+    warning: all.filter((i) => i.status === 'warning'),
+    approved: all.filter((i) => i.status === 'approved'),
+    unknown: all.filter((i) => i.status === 'unknown'),
+    totalFlagged: 0,
+  };
+
+  result.totalFlagged = result.banned.length + result.restricted.length + result.warning.length;
+
+  return result;
+}

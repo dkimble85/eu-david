@@ -1,0 +1,121 @@
+import React from 'react';
+import {
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+  SafeAreaView,
+} from 'react-native';
+import { router } from 'expo-router';
+import { colors, radius, spacing, typography } from '@/constants/theme';
+import { useAuth } from '@/hooks/useAuth';
+
+export default function ProfileScreen() {
+  const { user, signOut } = useAuth();
+
+  if (!user) {
+    return (
+      <SafeAreaView style={styles.safe}>
+        <View style={styles.centered}>
+          <Text style={styles.emoji}>👤</Text>
+          <Text style={styles.title}>Not signed in</Text>
+          <TouchableOpacity style={styles.button} onPress={() => router.push('/(auth)/login')}>
+            <Text style={styles.buttonText}>Sign In</Text>
+          </TouchableOpacity>
+        </View>
+      </SafeAreaView>
+    );
+  }
+
+  return (
+    <SafeAreaView style={styles.safe}>
+      <View style={styles.container}>
+        <View style={styles.header}>
+          <Text style={styles.pageTitle}>Profile</Text>
+        </View>
+
+        <View style={styles.section}>
+          <View style={styles.avatarBox}>
+            <Text style={styles.avatarEmoji}>🇪🇺</Text>
+          </View>
+          <Text style={styles.email}>{user.email}</Text>
+          <Text style={styles.since}>
+            Member since {new Date(user.created_at).toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}
+          </Text>
+        </View>
+
+        <View style={styles.infoCard}>
+          <Text style={styles.cardTitle}>About EU David</Text>
+          <Text style={styles.cardBody}>
+            EU David checks food barcodes against the EU positive list of permitted food additives
+            (EC Regulation No 1333/2008). Ingredients not on this list are banned by default in
+            the European Union.
+          </Text>
+        </View>
+
+        <View style={styles.infoCard}>
+          <Text style={styles.cardTitle}>Data Sources</Text>
+          <Text style={styles.cardBody}>
+            • OpenFoodFacts — ingredients and E-numbers{'\n'}
+            • FatSecret — nutrition data{'\n'}
+            • EU Regulation 1333/2008 — additive status
+          </Text>
+        </View>
+
+        <TouchableOpacity style={styles.signOutButton} onPress={signOut} activeOpacity={0.85}>
+          <Text style={styles.signOutText}>Sign Out</Text>
+        </TouchableOpacity>
+      </View>
+    </SafeAreaView>
+  );
+}
+
+const styles = StyleSheet.create({
+  safe: { flex: 1, backgroundColor: colors.background },
+  container: { flex: 1, padding: spacing.lg, gap: spacing.lg },
+  header: { marginBottom: spacing.sm },
+  pageTitle: { ...typography.title2, color: colors.textPrimary },
+  centered: { flex: 1, alignItems: 'center', justifyContent: 'center', gap: spacing.md, padding: spacing.xl },
+  emoji: { fontSize: 56 },
+  title: { ...typography.title3, color: colors.textPrimary },
+  button: {
+    backgroundColor: colors.euBlue,
+    borderRadius: radius.md,
+    paddingVertical: spacing.md,
+    paddingHorizontal: spacing.xl,
+  },
+  buttonText: { ...typography.headline, color: '#fff' },
+
+  section: { alignItems: 'center', gap: spacing.sm },
+  avatarBox: {
+    width: 80,
+    height: 80,
+    borderRadius: radius.full,
+    backgroundColor: colors.surface,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  avatarEmoji: { fontSize: 40 },
+  email: { ...typography.headline, color: colors.textPrimary },
+  since: { ...typography.subhead, color: colors.textMuted },
+
+  infoCard: {
+    backgroundColor: colors.surface,
+    borderRadius: radius.lg,
+    padding: spacing.md,
+    gap: spacing.sm,
+  },
+  cardTitle: { ...typography.callout, color: colors.textPrimary, fontWeight: '600' },
+  cardBody: { ...typography.subhead, color: colors.textSecondary, lineHeight: 22 },
+
+  signOutButton: {
+    backgroundColor: colors.bannedLight,
+    borderRadius: radius.md,
+    padding: spacing.md,
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: colors.banned,
+    marginTop: 'auto',
+  },
+  signOutText: { ...typography.callout, color: colors.banned, fontWeight: '600' },
+});
