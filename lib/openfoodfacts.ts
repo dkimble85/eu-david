@@ -11,6 +11,7 @@ const FIELDS = [
   'ingredients_analysis_tags',
   'categories_tags',
   'countries_tags',
+  'code',
 ].join(',');
 
 export type OpenFoodFactsProduct = {
@@ -21,6 +22,7 @@ export type OpenFoodFactsProduct = {
   eNumbers: string[];
   allergens: string[];
   analysisFlags: string[];
+  categoriesTags: string[];
 };
 
 function parseENumber(tag: string): string {
@@ -55,9 +57,52 @@ export async function getProductByBarcode(
       eNumbers: (p.additives_tags || []).map(parseENumber),
       allergens: (p.allergens_tags || []).map(parseAllergen),
       analysisFlags: p.ingredients_analysis_tags || [],
+      categoriesTags: p.categories_tags || [],
     };
   } catch (err) {
     console.error('OpenFoodFacts fetch failed:', err);
     return null;
+  }
+}
+
+function parseProduct(p: Record<string, any>): OpenFoodFactsProduct {
+  return {
+    name: p.product_name || 'Unknown Product',
+    brand: p.brands || null,
+    imageUrl: p.image_url || null,
+    ingredientsText: p.ingredients_text || null,
+    eNumbers: (p.additives_tags || []).map(parseENumber),
+    allergens: (p.allergens_tags || []).map(parseAllergen),
+    analysisFlags: p.ingredients_analysis_tags || [],
+    categoriesTags: p.categories_tags || [],
+  };
+}
+
+export async function getAlternatives(
+  currentBarcode: string,
+  categoriesTags: string[]
+): Promise<OpenFoodFactsProduct[]> {
+  // Pick the most specific English category tag
+  const category = [...categoriesTags].reverse().find((t) => t.startsWith('en:'));
+  if (!category) return [];
+
+  try {
+    const params = new URLSearchParams({
+      categories_tags: category,
+      fields: FIELDS,
+      page_size: '20',
+      sort_by: 'unique_scans_n',
+    });
+    const res = await fetch(`${BASE_URL}/search?${params}`, {
+      headers: { 'User-Agent': USER_AGENT },
+    });
+    if (!res.ok) return [];
+    const data = await res.json();
+    return (data.products ?? [])
+      .filter((p: Record<string, any>) => p.code !== currentBarcode && p.product_name)
+      .map(parseProduct);
+  } catch (err) {
+    console.error('getAlternatives failed:', err);
+    return [];
   }
 }

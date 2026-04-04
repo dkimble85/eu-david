@@ -1,12 +1,6 @@
 import React, { useCallback, useState } from 'react';
-import {
-  StyleSheet,
-  Text,
-  View,
-  TouchableOpacity,
-  ActivityIndicator,
-  SafeAreaView,
-} from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, ActivityIndicator, Image, ScrollView } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
 import BarcodeScanner from '@/components/BarcodeScanner';
 import { colors, radius, spacing, typography } from '@/constants/theme';
@@ -43,12 +37,20 @@ export default function ScanScreen() {
 
   return (
     <SafeAreaView style={styles.safe}>
-      <View style={styles.container}>
-        <View style={styles.header}>
-          <Text style={styles.logo}>🇪🇺</Text>
-          <Text style={styles.title}>EU David</Text>
-          <Text style={styles.subtitle}>Scan a barcode to check EU compliance</Text>
-        </View>
+      <ScrollView
+        contentContainerStyle={styles.container}
+        showsVerticalScrollIndicator={false}
+        scrollEnabled={!cameraActive}
+        keyboardShouldPersistTaps="handled"
+      >
+        {!cameraActive && (
+          <>
+            <Image source={require('@/assets/logo.png')} style={styles.logoImage} />
+            <View style={styles.header}>
+              <Text style={styles.subtitle}>Scan a barcode to check EU compliance</Text>
+            </View>
+          </>
+        )}
 
         {cameraActive ? (
           <View style={styles.scannerWrapper}>
@@ -80,30 +82,48 @@ export default function ScanScreen() {
         ) : (
           <View style={styles.cta}>
             <View style={styles.illustrationBox}>
-              <Text style={styles.illustration}>🔍</Text>
+              <View style={styles.barcodeRow}>
+                {[3, 1, 2, 1, 3, 1, 1, 2, 1, 3, 2, 1, 1, 2, 3, 1, 2, 1, 1, 3].map((width, i) => (
+                  <View
+                    key={i}
+                    style={[
+                      styles.barcodeBar,
+                      {
+                        width: width * 3,
+                        backgroundColor: i % 2 === 0 ? colors.textPrimary : 'transparent',
+                      },
+                    ]}
+                  />
+                ))}
+              </View>
             </View>
             <Text style={styles.ctaTitle}>Check before you eat</Text>
             <Text style={styles.ctaBody}>
               Scan any food barcode to instantly see which ingredients are banned or restricted in
               the European Union.
             </Text>
-            <TouchableOpacity style={styles.scanButton} onPress={startScanning} activeOpacity={0.85}>
-              <Text style={styles.scanButtonText}>📷  Start Scanning</Text>
+            <TouchableOpacity style={styles.scanButton} onPress={startScanning} activeOpacity={0.8}>
+              <Text style={styles.scanButtonText}>📷 Start Scanning</Text>
             </TouchableOpacity>
           </View>
         )}
-      </View>
+      </ScrollView>
     </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
   safe: { flex: 1, backgroundColor: colors.background },
-  container: { flex: 1, padding: spacing.lg, gap: spacing.lg },
+  container: { flexGrow: 1, padding: spacing.lg, gap: spacing.lg },
+  logoImage: {
+    alignSelf: 'center',
+    width: 240,
+    height: 160,
+    resizeMode: 'contain',
+  },
   header: { alignItems: 'center', gap: spacing.xs },
   logo: { fontSize: 40 },
-  title: { ...typography.title2, color: colors.textPrimary },
-  subtitle: { ...typography.subhead, color: colors.textSecondary, textAlign: 'center' },
+  subtitle: { ...typography.title2, color: colors.textSecondary, textAlign: 'center' },
 
   scannerWrapper: { flex: 1, gap: spacing.md },
 
@@ -150,12 +170,28 @@ const styles = StyleSheet.create({
   illustration: { fontSize: 56 },
   ctaTitle: { ...typography.title2, color: colors.textPrimary, textAlign: 'center' },
   ctaBody: { ...typography.body, color: colors.textSecondary, textAlign: 'center', maxWidth: 300 },
+  barcodeRow: {
+    flexDirection: 'row',
+    alignItems: 'stretch',
+    height: 64,
+    maxWidth: 90,
+    overflow: 'hidden',
+  },
+  barcodeBar: {
+    height: '100%',
+  },
   scanButton: {
     backgroundColor: colors.euBlue,
     borderRadius: radius.lg,
-    paddingVertical: spacing.md,
-    paddingHorizontal: spacing.xl,
+    paddingVertical: spacing.lg,
+    alignSelf: 'stretch',
     marginTop: spacing.md,
+    alignItems: 'center',
+    shadowColor: colors.euBlue,
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.45,
+    shadowRadius: 12,
+    elevation: 8,
   },
-  scanButtonText: { ...typography.headline, color: '#fff' },
+  scanButtonText: { ...typography.title2, color: '#fff', fontWeight: '800' },
 });

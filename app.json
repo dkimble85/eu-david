@@ -5,17 +5,18 @@
     "version": "1.0.0",
     "scheme": "eu-david",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/logo.png",
     "userInterfaceStyle": "dark",
     "newArchEnabled": true,
     "splash": {
-      "image": "./assets/splash-icon.png",
+      "image": "./assets/logo.png",
       "resizeMode": "contain",
       "backgroundColor": "#0F1117"
     },
     "ios": {
       "supportsTablet": false,
       "bundleIdentifier": "com.eudavid.app",
+      "icon": "./assets/logo.png",
       "infoPlist": {
         "NSCameraUsageDescription": "EU David needs camera access to scan food barcodes.",
         "NSFaceIDUsageDescription": "Use Face ID to quickly sign in to EU David."
@@ -23,23 +24,26 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./assets/logo.png",
         "backgroundColor": "#0F1117"
       },
       "package": "com.eudavid.app"
     },
     "web": {
-      "favicon": "./assets/favicon.png",
+      "favicon": "./assets/logo.png",
       "bundler": "metro",
       "output": "static",
       "name": "EU David",
+      "shortName": "EU David",
       "themeColor": "#003399",
-      "backgroundColor": "#0F1117"
+      "backgroundColor": "#0F1117",
+      "meta": {
+        "appleMobileWebAppCapable": "yes",
+        "appleMobileWebAppStatusBarStyle": "black-translucent",
+        "appleMobileWebAppTitle": "EU David"
+      }
     },
-    "plugins": [
-      "expo-router",
-      "expo-font"
-    ],
+    "plugins": ["expo-router", "expo-font", "expo-camera"],
     "experiments": {
       "typedRoutes": true
     }

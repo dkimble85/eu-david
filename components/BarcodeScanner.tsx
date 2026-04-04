@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
-import { StyleSheet, View, Text, Platform } from 'react-native';
+import { StyleSheet, View, Text } from 'react-native';
+import { CameraView, useCameraPermissions } from 'expo-camera';
 import { colors, spacing, typography } from '@/constants/theme';
 
 type Props = {
@@ -7,109 +8,65 @@ type Props = {
   active: boolean;
 };
 
-// Web-only: dynamically load react-zxing to avoid SSR issues
-function WebBarcodeScanner({ onScan, active }: Props) {
-  return <ZxingCamera onScan={onScan} active={active} />;
-}
-
-function ZxingCamera({ onScan, active }: Props) {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const [ZxingComponent, setZxingComponent] = React.useState<React.ComponentType<any> | null>(null);
+export default function BarcodeScanner({ onScan, active }: Props) {
+  const [permission, requestPermission] = useCameraPermissions();
 
   useEffect(() => {
-    // Build a wrapper component that uses the hook at the component level
-    import('react-zxing').then(({ useZxing }) => {
-      function Scanner({ onDecodeResult, paused }: { onDecodeResult: (r: string) => void; paused: boolean }) {
-        const { ref } = useZxing({
-          paused,
-          onDecodeResult(result) {
-            onDecodeResult(result.getText());
-          },
-        });
+    if (permission && !permission.granted && permission.canAskAgain) {
+      requestPermission();
+    }
+  }, [permission]);
 
-        return (
-          <div style={{ width: '100%', height: '100%', position: 'relative', borderRadius: 16, overflow: 'hidden', background: '#000' }}>
-            <video
-              ref={ref as React.RefObject<HTMLVideoElement>}
-              style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-            />
-            <ScannerOverlayWeb />
-          </div>
-        );
-      }
-      setZxingComponent(() => Scanner);
-    });
-  }, []);
-
-  if (!ZxingComponent) {
+  if (!permission || permission.status === 'undetermined') {
     return (
       <View style={styles.placeholder}>
-        <Text style={styles.placeholderText}>Loading camera...</Text>
+        <Text style={styles.placeholderText}>Requesting camera permission...</Text>
+      </View>
+    );
+  }
+
+  if (!permission.granted) {
+    return (
+      <View style={styles.placeholder}>
+        <Text style={styles.placeholderText}>
+          Camera access was denied. Please enable it in Settings → EU David → Camera.
+        </Text>
       </View>
     );
   }
 
   return (
     <View style={styles.container}>
-      <ZxingComponent onDecodeResult={onScan} paused={!active} />
+      <CameraView
+        style={StyleSheet.absoluteFill}
+        facing="back"
+        barcodeScannerSettings={{ barcodeTypes: ['ean13', 'ean8', 'upc_a', 'upc_e', 'code128', 'code39', 'qr'] }}
+        onBarcodeScanned={active ? (result) => onScan(result.data) : undefined}
+      />
+      <ScannerOverlay />
     </View>
   );
 }
 
-function ScannerOverlayWeb() {
-  const bracketStyle: React.CSSProperties = {
-    position: 'absolute',
-    width: 32,
-    height: 32,
-  };
+function ScannerOverlay() {
   const color = colors.scannerBracket;
   const thickness = 3;
 
-  return (
-    <div
-      style={{
-        position: 'absolute',
-        inset: 0,
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        flexDirection: 'column',
-        gap: 16,
-      }}
-    >
-      <div style={{ position: 'relative', width: '60%', aspectRatio: '1' }}>
-        {/* Top-left */}
-        <div style={{ ...bracketStyle, top: 0, left: 0, borderTop: `${thickness}px solid ${color}`, borderLeft: `${thickness}px solid ${color}`, borderRadius: '2px 0 0 0' }} />
-        {/* Top-right */}
-        <div style={{ ...bracketStyle, top: 0, right: 0, borderTop: `${thickness}px solid ${color}`, borderRight: `${thickness}px solid ${color}`, borderRadius: '0 2px 0 0' }} />
-        {/* Bottom-left */}
-        <div style={{ ...bracketStyle, bottom: 0, left: 0, borderBottom: `${thickness}px solid ${color}`, borderLeft: `${thickness}px solid ${color}`, borderRadius: '0 0 0 2px' }} />
-        {/* Bottom-right */}
-        <div style={{ ...bracketStyle, bottom: 0, right: 0, borderBottom: `${thickness}px solid ${color}`, borderRight: `${thickness}px solid ${color}`, borderRadius: '0 0 2px 0' }} />
-      </div>
-      <p style={{ color: colors.textSecondary, fontSize: 13, margin: 0 }}>
-        Align barcode within the frame
-      </p>
-    </div>
+  const bracket = (position: object) => (
+    <View style={[styles.bracket, position as object, { borderColor: color, borderWidth: thickness }]} />
   );
-}
 
-// Native fallback — expo-camera would be used here for a future native build
-function NativeBarcodeScanner() {
   return (
-    <View style={styles.placeholder}>
-      <Text style={styles.placeholderText}>
-        Camera scanning is available when opening this app in Safari on iPhone.
-      </Text>
+    <View style={styles.overlay}>
+      <View style={styles.overlayFrame}>
+        {bracket({ top: 0, left: 0, borderRightWidth: 0, borderBottomWidth: 0, borderTopLeftRadius: 2 })}
+        {bracket({ top: 0, right: 0, borderLeftWidth: 0, borderBottomWidth: 0, borderTopRightRadius: 2 })}
+        {bracket({ bottom: 0, left: 0, borderRightWidth: 0, borderTopWidth: 0, borderBottomLeftRadius: 2 })}
+        {bracket({ bottom: 0, right: 0, borderLeftWidth: 0, borderTopWidth: 0, borderBottomRightRadius: 2 })}
+      </View>
+      <Text style={styles.overlayHint}>Align barcode within the frame</Text>
     </View>
   );
-}
-
-export default function BarcodeScanner(props: Props) {
-  if (Platform.OS === 'web') {
-    return <WebBarcodeScanner {...props} />;
-  }
-  return <NativeBarcodeScanner />;
 }
 
 const styles = StyleSheet.create({
@@ -133,5 +90,25 @@ const styles = StyleSheet.create({
     ...typography.body,
     color: colors.textSecondary,
     textAlign: 'center',
+  },
+  overlay: {
+    ...StyleSheet.absoluteFillObject,
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 16,
+  },
+  overlayFrame: {
+    width: '60%',
+    aspectRatio: 1,
+    position: 'relative',
+  },
+  bracket: {
+    position: 'absolute',
+    width: 32,
+    height: 32,
+  },
+  overlayHint: {
+    ...typography.footnote,
+    color: colors.textSecondary,
   },
 });

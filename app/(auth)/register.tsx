@@ -9,6 +9,7 @@ import {
   KeyboardAvoidingView,
   Platform,
   ScrollView,
+  Image,
 } from 'react-native';
 import { Link, router } from 'expo-router';
 import { colors, radius, spacing, typography } from '@/constants/theme';
@@ -72,8 +73,12 @@ export default function RegisterScreen() {
         contentContainerStyle={styles.container}
         keyboardShouldPersistTaps="handled"
       >
+        <TouchableOpacity style={styles.backButton} onPress={() => router.back()}>
+          <Text style={styles.backText}>← Back to Sign In</Text>
+        </TouchableOpacity>
+
         <View style={styles.header}>
-          <Text style={styles.logo}>🇪🇺</Text>
+          <Image source={require('@/assets/logo.png')} style={styles.logo} />
           <Text style={styles.title}>Create Account</Text>
           <Text style={styles.subtitle}>Start scanning for EU compliance</Text>
         </View>
@@ -152,6 +157,8 @@ export default function RegisterScreen() {
 
 const styles = StyleSheet.create({
   flex: { flex: 1, backgroundColor: colors.background },
+  backButton: { paddingHorizontal: spacing.xl, paddingTop: spacing.xl, paddingBottom: spacing.sm },
+  backText: { ...typography.callout, color: colors.euGold },
   container: {
     flexGrow: 1,
     justifyContent: 'center',
@@ -159,7 +166,7 @@ const styles = StyleSheet.create({
     gap: spacing.xl,
   },
   header: { alignItems: 'center', gap: spacing.sm },
-  logo: { fontSize: 64 },
+  logo: { width: 120, height: 80, resizeMode: 'contain' },
   title: { ...typography.title1, color: colors.textPrimary },
   subtitle: { ...typography.body, color: colors.textSecondary },
   form: { gap: spacing.md },

@@ -2,9 +2,13 @@
  * FatSecret API client.
  * Token exchange happens via /api/fatsecret (Vercel serverless function)
  * to keep credentials off the client.
+ *
+ * Requires EXPO_PUBLIC_API_URL set to your deployed Vercel URL, e.g.:
+ *   EXPO_PUBLIC_API_URL=https://eu-david.vercel.app
  */
 
-const API_BASE = '/api/fatsecret';
+const BASE = process.env.EXPO_PUBLIC_API_URL ?? '';
+const API_BASE = `${BASE}/api/fatsecret`;
 
 export type FatSecretNutrition = {
   calories: string | null;

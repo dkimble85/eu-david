@@ -6,9 +6,9 @@ import {
   TouchableOpacity,
   ActivityIndicator,
   ScrollView,
-  SafeAreaView,
   Modal,
 } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { useLocalSearchParams, router } from 'expo-router';
 import { colors, radius, spacing, typography, statusColors, statusLabels } from '@/constants/theme';
 import { getProductByBarcode } from '@/lib/openfoodfacts';
@@ -18,6 +18,10 @@ import { supabase } from '@/lib/supabase';
 import { useAuth } from '@/hooks/useAuth';
 import ProductCard from '@/components/ProductCard';
 import IngredientList from '@/components/IngredientList';
+import AlternativesList from '@/components/AlternativesList';
+import { useAlternatives } from '@/hooks/useAlternatives';
+import { useProfile } from '@/hooks/useProfile';
+import { scoreProduct } from '@/lib/eu-check';
 import type { CheckedIngredient, EuCheckResult } from '@/lib/eu-check';
 import type { FatSecretProduct } from '@/lib/fatsecret';
 import type { OpenFoodFactsProduct } from '@/lib/openfoodfacts';
@@ -27,6 +31,7 @@ type PageState = 'loading' | 'error' | 'notfound' | 'ready';
 export default function ProductScreen() {
   const { barcode } = useLocalSearchParams<{ barcode: string }>();
   const { user } = useAuth();
+  const { profile } = useProfile(user);
 
   const [pageState, setPageState] = useState<PageState>('loading');
   const [offProduct, setOffProduct] = useState<OpenFoodFactsProduct | null>(null);
@@ -34,6 +39,14 @@ export default function ProductScreen() {
   const [euResult, setEuResult] = useState<EuCheckResult | null>(null);
   const [selectedIngredient, setSelectedIngredient] = useState<CheckedIngredient | null>(null);
   const [saved, setSaved] = useState(false);
+
+  const currentScore = euResult ? scoreProduct(euResult) : 100;
+  const { alternatives, loading: altLoading } = useAlternatives(
+    barcode ?? '',
+    offProduct?.categoriesTags ?? [],
+    currentScore,
+    profile.glutenFree
+  );
 
   const fetchedRef = useRef(false);
 
@@ -196,6 +209,8 @@ export default function ProductScreen() {
             <Text style={styles.rawText}>{offProduct.ingredientsText}</Text>
           </View>
         )}
+
+        <AlternativesList alternatives={alternatives} loading={altLoading} />
       </ScrollView>
 
       <IngredientDetailModal

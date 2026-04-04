@@ -4,14 +4,20 @@ import {
   Text,
   View,
   TouchableOpacity,
-  SafeAreaView,
+  Switch,
+  ActivityIndicator,
+  Image,
+  ScrollView,
 } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
 import { colors, radius, spacing, typography } from '@/constants/theme';
 import { useAuth } from '@/hooks/useAuth';
+import { useProfile } from '@/hooks/useProfile';
 
 export default function ProfileScreen() {
   const { user, signOut } = useAuth();
+  const { profile, saveProfile, saving } = useProfile(user);
 
   if (!user) {
     return (
@@ -29,14 +35,14 @@ export default function ProfileScreen() {
 
   return (
     <SafeAreaView style={styles.safe}>
-      <View style={styles.container}>
+      <ScrollView contentContainerStyle={styles.container} showsVerticalScrollIndicator={false}>
         <View style={styles.header}>
           <Text style={styles.pageTitle}>Profile</Text>
         </View>
 
         <View style={styles.section}>
           <View style={styles.avatarBox}>
-            <Text style={styles.avatarEmoji}>🇪🇺</Text>
+            <Image source={require('@/assets/logo.png')} style={styles.avatarLogo} />
           </View>
           <Text style={styles.email}>{user.email}</Text>
           <Text style={styles.since}>
@@ -62,17 +68,40 @@ export default function ProfileScreen() {
           </Text>
         </View>
 
+        <View style={styles.infoCard}>
+          <Text style={styles.cardTitle}>Dietary Restrictions</Text>
+          <Text style={styles.cardBody}>
+            Alternatives will be filtered to exclude products containing these allergens.
+          </Text>
+          <View style={styles.preferenceRow}>
+            <View style={styles.preferenceLabel}>
+              <Text style={styles.preferenceTitle}>Gluten-Free</Text>
+              <Text style={styles.preferenceSubtitle}>Hide alternatives containing gluten</Text>
+            </View>
+            {saving ? (
+              <ActivityIndicator size="small" color={colors.euGold} />
+            ) : (
+              <Switch
+                value={profile.glutenFree}
+                onValueChange={(val) => saveProfile({ glutenFree: val })}
+                trackColor={{ false: colors.border, true: colors.euBlue }}
+                thumbColor={profile.glutenFree ? colors.euGold : colors.textMuted}
+              />
+            )}
+          </View>
+        </View>
+
         <TouchableOpacity style={styles.signOutButton} onPress={signOut} activeOpacity={0.85}>
           <Text style={styles.signOutText}>Sign Out</Text>
         </TouchableOpacity>
-      </View>
+      </ScrollView>
     </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
   safe: { flex: 1, backgroundColor: colors.background },
-  container: { flex: 1, padding: spacing.lg, gap: spacing.lg },
+  container: { padding: spacing.lg, gap: spacing.lg, paddingBottom: spacing.xxl },
   header: { marginBottom: spacing.sm },
   pageTitle: { ...typography.title2, color: colors.textPrimary },
   centered: { flex: 1, alignItems: 'center', justifyContent: 'center', gap: spacing.md, padding: spacing.xl },
@@ -95,7 +124,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  avatarEmoji: { fontSize: 40 },
+  avatarLogo: { width: 64, height: 44, resizeMode: 'contain' },
   email: { ...typography.headline, color: colors.textPrimary },
   since: { ...typography.subhead, color: colors.textMuted },
 
@@ -108,6 +137,17 @@ const styles = StyleSheet.create({
   cardTitle: { ...typography.callout, color: colors.textPrimary, fontWeight: '600' },
   cardBody: { ...typography.subhead, color: colors.textSecondary, lineHeight: 22 },
 
+  preferenceRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginTop: spacing.sm,
+    gap: spacing.md,
+  },
+  preferenceLabel: { flex: 1, gap: 2 },
+  preferenceTitle: { ...typography.callout, color: colors.textPrimary, fontWeight: '600' },
+  preferenceSubtitle: { ...typography.caption1, color: colors.textSecondary },
+
   signOutButton: {
     backgroundColor: colors.bannedLight,
     borderRadius: radius.md,
@@ -115,7 +155,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderWidth: 1,
     borderColor: colors.banned,
-    marginTop: 'auto',
+    marginTop: spacing.md,
   },
   signOutText: { ...typography.callout, color: colors.banned, fontWeight: '600' },
 });

@@ -4,6 +4,7 @@ import { colors } from '@/constants/theme';
 export default function AuthLayout() {
   return (
     <Stack
+      initialRouteName="login"
       screenOptions={{
         headerShown: false,
         contentStyle: { backgroundColor: colors.background },

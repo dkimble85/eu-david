@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm install:*)",
+      "Bash(node -e \"require\\('expo-camera'\\); console.log\\('ok'\\)\")",
+      "Bash(ls -la /Users/danny/dev/projects/eu-david/babel.config* /Users/danny/dev/projects/eu-david/.babelrc*)"
+    ]
+  }
+}

@@ -9,6 +9,7 @@ import {
   KeyboardAvoidingView,
   Platform,
   ScrollView,
+  Image,
 } from 'react-native';
 import { Link } from 'expo-router';
 import { colors, radius, spacing, typography } from '@/constants/theme';
@@ -47,7 +48,7 @@ export default function LoginScreen() {
         keyboardShouldPersistTaps="handled"
       >
         <View style={styles.header}>
-          <Text style={styles.logo}>🇪🇺</Text>
+          <Image source={require('@/assets/logo.png')} style={styles.logo} />
           <Text style={styles.title}>EU David</Text>
           <Text style={styles.subtitle}>Know what's in your food</Text>
         </View>
@@ -121,7 +122,7 @@ const styles = StyleSheet.create({
     gap: spacing.xl,
   },
   header: { alignItems: 'center', gap: spacing.sm },
-  logo: { fontSize: 64 },
+  logo: { width: 120, height: 80, resizeMode: 'contain' },
   title: { ...typography.largeTitle, color: colors.textPrimary },
   subtitle: { ...typography.body, color: colors.textSecondary },
   form: { gap: spacing.md },

@@ -103,6 +103,17 @@ function checkIngredientText(text: string): CheckedIngredient[] {
   return found;
 }
 
+/**
+ * Score a product 0–100 based on known additive statuses only.
+ * Unknown additives are ignored (not penalised, not rewarded).
+ */
+export function scoreProduct(result: EuCheckResult): number {
+  return Math.max(
+    0,
+    100 - result.banned.length * 40 - result.restricted.length * 20 - result.warning.length * 10
+  );
+}
+
 export function runEuCheck(
   eNumbers: string[],
   ingredientsText: string | null
