@@ -7,6 +7,7 @@ import {
   ActivityIndicator,
   Image,
   ScrollView,
+  useWindowDimensions,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
@@ -18,6 +19,8 @@ export default function ScanScreen() {
   const [cameraActive, setCameraActive] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const { width } = useWindowDimensions();
+  const isDesktop = width >= 1024;
 
   const handleScan = useCallback(
     async (barcode: string) => {
@@ -52,12 +55,15 @@ export default function ScanScreen() {
         keyboardShouldPersistTaps="handled"
       >
         {!cameraActive && (
-          <>
-            <Image source={require('@/assets/logo.png')} style={styles.logoImage} />
+          <View style={styles.heroHeader}>
+            <Image
+              source={require('@/assets/logo.png')}
+              style={[styles.logoImageBase, isDesktop ? styles.logoImageDesktop : styles.logoImageDefault]}
+            />
             <View style={styles.header}>
               <Text style={styles.subtitle}>Scan a barcode to check EU compliance</Text>
             </View>
-          </>
+          </View>
         )}
 
         {cameraActive ? (
@@ -107,8 +113,8 @@ export default function ScanScreen() {
             </View>
             <Text style={styles.ctaTitle}>Check before you eat</Text>
             <Text style={styles.ctaBody}>
-              Scan any food barcode to instantly see which ingredients are banned or restricted in
-              the European Union.
+              Use your phone&apos;s camera to scan any food barcode and instantly see which
+              ingredients are banned or restricted in the European Union.
             </Text>
             <TouchableOpacity style={styles.scanButton} onPress={startScanning} activeOpacity={0.8}>
               <Text style={styles.scanButtonText}>📷 Start Scanning</Text>
@@ -123,11 +129,18 @@ export default function ScanScreen() {
 const styles = StyleSheet.create({
   safe: { flex: 1, backgroundColor: colors.background },
   container: { flexGrow: 1, padding: spacing.lg, gap: spacing.lg },
-  logoImage: {
+  heroHeader: { gap: spacing.lg * 0.119952, marginTop: -spacing.lg * 0.43125 },
+  logoImageBase: {
     alignSelf: 'center',
-    width: 240,
-    height: 160,
     resizeMode: 'contain',
+  },
+  logoImageDefault: {
+    width: 480,
+    height: 320,
+  },
+  logoImageDesktop: {
+    width: 720,
+    height: 480,
   },
   header: { alignItems: 'center', gap: spacing.xs },
   logo: { fontSize: 40 },
