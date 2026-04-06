@@ -43,10 +43,7 @@ export default function LoginScreen() {
       style={styles.flex}
       behavior={Platform.OS === 'ios' ? 'padding' : undefined}
     >
-      <ScrollView
-        contentContainerStyle={styles.container}
-        keyboardShouldPersistTaps="handled"
-      >
+      <ScrollView contentContainerStyle={styles.container} keyboardShouldPersistTaps="handled">
         <View style={styles.header}>
           <Image source={require('@/assets/logo.png')} style={styles.logo} />
           <Text style={styles.title}>EU David</Text>

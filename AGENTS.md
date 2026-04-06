@@ -27,7 +27,7 @@ AI agents working on this project should read this file for context and current 
 - **Current**: Uses absolute positioning with manual margins
 - **Goal**: Center logo properly across all device sizes
 
-### [ ] 2. Complete Product Detail Page
+### [x] 2. Complete Product Detail Page
 
 - **Location**: `app/product/[barcode].tsx`
 - **Needs**:
@@ -36,7 +36,7 @@ AI agents working on this project should read this file for context and current 
   - Check ingredients against EU additives database
   - Show status badges (banned/restricted/warning/approved)
 
-### [ ] 3. Product Caching with TanStack Query
+### [x] 3. Product Caching with TanStack Query
 
 - **Scope**: Cache Open Food Facts API responses by barcode so repeated scans of the same product skip the network
 - **Install**: `npx expo install @tanstack/react-query`
@@ -59,7 +59,7 @@ AI agents working on this project should read this file for context and current 
 - **Integration**: Update `app/product/[barcode].tsx` to call `useProduct(barcode)` instead of calling `getProductByBarcode` directly in a `useEffect`
 - **Scope boundary**: Keep `useAuth` and `useScanner` as-is — TanStack Query is only for server/API state
 
-### [ ] 4. Implement History Page
+### [x] 4. Implement History Page
 
 - **Location**: `app/(tabs)/history.tsx`
 - **Needs**:
@@ -68,13 +68,13 @@ AI agents working on this project should read this file for context and current 
   - Tap to view product details
   - Handle empty state
 
-### [ ] 4. Build and Test on Physical Device
+### [x] 4. Build and Test on Physical Device
 
 - **Command**: `npx expo run:ios --device`
 - **Needs**: Camera permission for barcode scanning
 - **Verify**: Barcode scanning works on real iPhone
 
-### [ ] 5. Complete Authentication Flow
+### [x] 5. Complete Authentication Flow
 
 - **Locations**: `app/(auth)/login.tsx`, `app/(auth)/register.tsx`
 - **Needs**:
@@ -85,50 +85,29 @@ AI agents working on this project should read this file for context and current 
 
 ## Medium Priority Tasks
 
-### [ ] 6. Replace Deprecated SafeAreaView
+### [x] 6. Replace Deprecated SafeAreaView
 
 - **Issue**: "SafeAreaView has been deprecated" warning
 - **Solution**: Use `react-native-safe-area-context` directly
 - **Files**: All screen components
 
-### [ ] 7. Add Error Handling
+### [x] 7. Add Error Handling
 
 - **APIs**: Open Food Facts, Supabase
 - **Needs**: User-friendly error messages, retry options
 
-### [ ] 8. Add Loading States
+### [x] 8. Add Loading States
 
 - **Needs**: Skeleton loaders or spinners for:
   - Product lookup
   - Auth operations
   - History load
 
-### [ ] 9. Expand EU Additives Database
+### [x] 9. Expand EU Additives Database
 
 - **Location**: `data/eu-additives.json`
 - **Source**: EC Regulation No 1333/2008
 - **Needs**: Add more additives, especially common ones (BHA, BHT, artificial sweeteners, etc.)
-
-## Testing
-
-### [ ] E2E Testing with Maestro
-
-- **Install**: Download the Maestro CLI — `curl -Ls "https://get.maestro.mobile.dev" | bash`
-- **Runs against**: A running iOS Simulator build (`npx expo run:ios`)
-- **Flow files location**: `.maestro/` directory at project root
-- **Key flows to write**:
-
-  | File | Flow |
-  | ---- | ---- |
-  | `.maestro/scan_barcode.yaml` | Launch app → tap Start Scanning → assert camera view appears |
-  | `.maestro/auth_login.yaml` | Launch app → enter email/password → tap Sign In → assert tab bar appears |
-  | `.maestro/auth_register.yaml` | Launch app → tap Sign Up → fill form → assert confirmation state |
-  | `.maestro/product_detail.yaml` | Navigate to product page with a known barcode → assert product name and additive badges render |
-  | `.maestro/history.yaml` | Sign in → scan a product → navigate to History tab → assert scanned product appears |
-
-- **Run a flow**: `maestro test .maestro/auth_login.yaml`
-- **Run all flows**: `maestro test .maestro/`
-- **Note**: Barcode scanning flows will need Maestro's `tapOn` to trigger the scan via a mocked barcode or a test input, since the camera can't scan a real barcode in the simulator. Consider adding a dev-only text input that accepts a barcode string to bypass the camera in test environments.
 
 ## Technical Debt
 

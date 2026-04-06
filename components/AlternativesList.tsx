@@ -23,9 +23,7 @@ export default function AlternativesList({ alternatives, loading }: Props) {
   return (
     <View style={styles.container}>
       <Text style={styles.sectionTitle}>Better Alternatives</Text>
-      <Text style={styles.sectionSubtitle}>
-        Similar products with fewer flagged additives
-      </Text>
+      <Text style={styles.sectionSubtitle}>Similar products with fewer flagged additives</Text>
 
       {loading ? (
         <View style={styles.loadingRow}>
@@ -48,8 +46,7 @@ export default function AlternativesList({ alternatives, loading }: Props) {
 }
 
 function ScoreRing({ score }: { score: number }) {
-  const color =
-    score >= 80 ? colors.approved : score >= 50 ? colors.warning : colors.restricted;
+  const color = score >= 80 ? colors.approved : score >= 50 ? colors.warning : colors.restricted;
 
   return (
     <View style={[styles.scoreRing, { borderColor: color }]}>

@@ -11,20 +11,22 @@ type Props = {
 };
 
 export default function ProductCard({ name, brand, imageUrl, result }: Props) {
-  const overallStatus =
-    result.banned.length > 0
+  const overallStatus = !result.hasAnyIngredientData
+    ? 'unknown'
+    : result.banned.length > 0
       ? 'banned'
       : result.restricted.length > 0
-      ? 'restricted'
-      : result.warning.length > 0
-      ? 'warning'
-      : 'approved';
+        ? 'restricted'
+        : result.warning.length > 0
+          ? 'warning'
+          : 'approved';
 
   const statusConfig = {
     banned: { color: colors.banned, label: 'Contains EU Banned Ingredients', emoji: '🚫' },
     restricted: { color: colors.restricted, label: 'Contains Restricted Ingredients', emoji: '⚠️' },
     warning: { color: colors.warning, label: 'Warning Label Required in EU', emoji: '⚠️' },
     approved: { color: colors.approved, label: 'EU Compliant', emoji: '✓' },
+    unknown: { color: colors.unknown, label: 'Ingredients Could Not Be Found', emoji: 'ℹ️' },
   }[overallStatus];
 
   return (
@@ -38,7 +40,9 @@ export default function ProductCard({ name, brand, imageUrl, result }: Props) {
           </View>
         )}
         <View style={styles.info}>
-          <Text style={styles.name} numberOfLines={2}>{name}</Text>
+          <Text style={styles.name} numberOfLines={2}>
+            {name}
+          </Text>
           {brand && <Text style={styles.brand}>{brand}</Text>}
           <View style={[styles.statusBadge, { backgroundColor: `${statusConfig.color}22` }]}>
             <Text style={styles.statusEmoji}>{statusConfig.emoji}</Text>
@@ -59,15 +63,7 @@ export default function ProductCard({ name, brand, imageUrl, result }: Props) {
   );
 }
 
-function StatChip({
-  count,
-  label,
-  color,
-}: {
-  count: number;
-  label: string;
-  color: string;
-}) {
+function StatChip({ count, label, color }: { count: number; label: string; color: string }) {
   return (
     <View style={[styles.chip, { opacity: count > 0 ? 1 : 0.35 }]}>
       <Text style={[styles.chipCount, { color }]}>{count}</Text>

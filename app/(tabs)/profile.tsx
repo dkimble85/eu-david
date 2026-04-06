@@ -1,23 +1,12 @@
 import React from 'react';
-import {
-  StyleSheet,
-  Text,
-  View,
-  TouchableOpacity,
-  Switch,
-  ActivityIndicator,
-  Image,
-  ScrollView,
-} from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, Image, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
 import { colors, radius, spacing, typography } from '@/constants/theme';
 import { useAuth } from '@/hooks/useAuth';
-import { useProfile } from '@/hooks/useProfile';
 
 export default function ProfileScreen() {
   const { user, signOut } = useAuth();
-  const { profile, saveProfile, saving } = useProfile(user);
 
   if (!user) {
     return (
@@ -46,7 +35,11 @@ export default function ProfileScreen() {
           </View>
           <Text style={styles.email}>{user.email}</Text>
           <Text style={styles.since}>
-            Member since {new Date(user.created_at).toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}
+            Member since{' '}
+            {new Date(user.created_at).toLocaleDateString('en-US', {
+              month: 'long',
+              year: 'numeric',
+            })}
           </Text>
         </View>
 
@@ -54,41 +47,17 @@ export default function ProfileScreen() {
           <Text style={styles.cardTitle}>About EU David</Text>
           <Text style={styles.cardBody}>
             EU David checks food barcodes against the EU positive list of permitted food additives
-            (EC Regulation No 1333/2008). Ingredients not on this list are banned by default in
-            the European Union.
+            (EC Regulation No 1333/2008). Ingredients not on this list are banned by default in the
+            European Union.
           </Text>
         </View>
 
         <View style={styles.infoCard}>
           <Text style={styles.cardTitle}>Data Sources</Text>
           <Text style={styles.cardBody}>
-            • OpenFoodFacts — ingredients and E-numbers{'\n'}
-            • FatSecret — nutrition data{'\n'}
-            • EU Regulation 1333/2008 — additive status
+            • OpenFoodFacts — ingredients and E-numbers{'\n'}• FatSecret — nutrition data{'\n'}• EU
+            Regulation 1333/2008 — additive status
           </Text>
-        </View>
-
-        <View style={styles.infoCard}>
-          <Text style={styles.cardTitle}>Dietary Restrictions</Text>
-          <Text style={styles.cardBody}>
-            Alternatives will be filtered to exclude products containing these allergens.
-          </Text>
-          <View style={styles.preferenceRow}>
-            <View style={styles.preferenceLabel}>
-              <Text style={styles.preferenceTitle}>Gluten-Free</Text>
-              <Text style={styles.preferenceSubtitle}>Hide alternatives containing gluten</Text>
-            </View>
-            {saving ? (
-              <ActivityIndicator size="small" color={colors.euGold} />
-            ) : (
-              <Switch
-                value={profile.glutenFree}
-                onValueChange={(val) => saveProfile({ glutenFree: val })}
-                trackColor={{ false: colors.border, true: colors.euBlue }}
-                thumbColor={profile.glutenFree ? colors.euGold : colors.textMuted}
-              />
-            )}
-          </View>
         </View>
 
         <TouchableOpacity style={styles.signOutButton} onPress={signOut} activeOpacity={0.85}>
@@ -104,7 +73,13 @@ const styles = StyleSheet.create({
   container: { padding: spacing.lg, gap: spacing.lg, paddingBottom: spacing.xxl },
   header: { marginBottom: spacing.sm },
   pageTitle: { ...typography.title2, color: colors.textPrimary },
-  centered: { flex: 1, alignItems: 'center', justifyContent: 'center', gap: spacing.md, padding: spacing.xl },
+  centered: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: spacing.md,
+    padding: spacing.xl,
+  },
   emoji: { fontSize: 56 },
   title: { ...typography.title3, color: colors.textPrimary },
   button: {
@@ -136,17 +111,6 @@ const styles = StyleSheet.create({
   },
   cardTitle: { ...typography.callout, color: colors.textPrimary, fontWeight: '600' },
   cardBody: { ...typography.subhead, color: colors.textSecondary, lineHeight: 22 },
-
-  preferenceRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    marginTop: spacing.sm,
-    gap: spacing.md,
-  },
-  preferenceLabel: { flex: 1, gap: 2 },
-  preferenceTitle: { ...typography.callout, color: colors.textPrimary, fontWeight: '600' },
-  preferenceSubtitle: { ...typography.caption1, color: colors.textSecondary },
 
   signOutButton: {
     backgroundColor: colors.bannedLight,

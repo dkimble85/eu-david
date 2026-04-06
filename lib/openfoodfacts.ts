@@ -28,6 +28,19 @@ export type OpenFoodFactsProduct = {
   stores: string[];
 };
 
+type RawOpenFoodFactsProduct = {
+  code?: string;
+  product_name?: string;
+  brands?: string;
+  image_url?: string;
+  ingredients_text?: string;
+  additives_tags?: string[];
+  allergens_tags?: string[];
+  ingredients_analysis_tags?: string[];
+  categories_tags?: string[];
+  stores_tags?: string[];
+};
+
 function parseENumber(tag: string): string {
   // Tags come as "en:e322" or "en:e322i" — strip the "en:" prefix
   return tag.replace(/^en:/, '').toLowerCase();
@@ -37,9 +50,7 @@ function parseAllergen(tag: string): string {
   return tag.replace(/^en:/, '').replace(/-/g, ' ');
 }
 
-export async function getProductByBarcode(
-  barcode: string
-): Promise<OpenFoodFactsProduct | null> {
+export async function getProductByBarcode(barcode: string): Promise<OpenFoodFactsProduct | null> {
   const res = await fetch(`${BASE_URL}/product/${barcode}.json?fields=${FIELDS}`, {
     headers: { 'User-Agent': USER_AGENT },
   });
@@ -66,7 +77,7 @@ export async function getProductByBarcode(
   };
 }
 
-export function parseProduct(p: Record<string, any>): OpenFoodFactsProduct {
+export function parseProduct(p: RawOpenFoodFactsProduct): OpenFoodFactsProduct {
   return {
     barcode: p.code || null,
     name: p.product_name || 'Unknown Product',
@@ -101,11 +112,42 @@ export async function getAlternatives(
     });
     if (!res.ok) return [];
     const data = await res.json();
-    return (data.products ?? [])
-      .filter((p: Record<string, any>) => p.code !== currentBarcode && p.product_name)
+    return ((data.products ?? []) as RawOpenFoodFactsProduct[])
+      .filter((p) => p.code !== currentBarcode && p.product_name)
       .map(parseProduct);
   } catch (err) {
     console.error('getAlternatives failed:', err);
+    return [];
+  }
+}
+
+export async function searchOpenFoodFactsProducts(
+  searchTerms: string,
+  countriesTag: string | null = 'en:united-states',
+  pageSize = 25
+): Promise<OpenFoodFactsProduct[]> {
+  const terms = searchTerms.trim();
+  if (!terms) return [];
+
+  try {
+    const params = new URLSearchParams({
+      search_terms: terms,
+      fields: FIELDS,
+      page_size: String(pageSize),
+      sort_by: 'unique_scans_n',
+    });
+    if (countriesTag) params.set('countries_tags', countriesTag);
+
+    const res = await fetch(`${BASE_URL}/search?${params}`, {
+      headers: { 'User-Agent': USER_AGENT },
+    });
+    if (!res.ok) return [];
+
+    const data = await res.json();
+    return ((data.products ?? []) as RawOpenFoodFactsProduct[])
+      .filter((p) => p.product_name)
+      .map(parseProduct);
+  } catch {
     return [];
   }
 }

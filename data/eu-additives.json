@@ -1,7 +1,7 @@
 {
   "_meta": {
     "source": "EC Regulation No 1333/2008 on Food Additives",
-    "lastUpdated": "2024-06-02",
+    "lastUpdated": "2026-04-04",
     "notes": "Positive list system: additives NOT in this list are banned by default in EU food"
   },
   "additives": {
@@ -27,14 +27,24 @@
       "notes": "Must carry label: 'may have an adverse effect on activity and attention in children'",
       "commonNames": ["yellow 6", "sunset yellow", "fd&c yellow no. 6"]
     },
-    "e120": { "name": "Cochineal / Carminic Acid", "status": "approved", "category": "colour", "notes": "Must be labeled as 'carmine' or 'cochineal extract'" },
+    "e120": {
+      "name": "Cochineal / Carminic Acid",
+      "status": "approved",
+      "category": "colour",
+      "notes": "Must be labeled as 'carmine' or 'cochineal extract'"
+    },
     "e122": {
       "name": "Azorubine / Carmoisine",
       "status": "warning",
       "category": "colour",
       "notes": "Must carry label: 'may have an adverse effect on activity and attention in children'"
     },
-    "e123": { "name": "Amaranth", "status": "restricted", "category": "colour", "notes": "Only permitted in fish roe" },
+    "e123": {
+      "name": "Amaranth",
+      "status": "restricted",
+      "category": "colour",
+      "notes": "Only permitted in fish roe"
+    },
     "e124": {
       "name": "Ponceau 4R (Cochineal Red A)",
       "status": "warning",
@@ -42,7 +52,12 @@
       "notes": "Must carry label: 'may have an adverse effect on activity and attention in children'",
       "commonNames": ["red 4", "ponceau 4r"]
     },
-    "e127": { "name": "Erythrosine (Red 3)", "status": "restricted", "category": "colour", "notes": "Only permitted in cocktail cherries" },
+    "e127": {
+      "name": "Erythrosine (Red 3)",
+      "status": "restricted",
+      "category": "colour",
+      "notes": "Only permitted in cocktail cherries"
+    },
     "e129": {
       "name": "Allura Red AC (Red 40)",
       "status": "warning",
@@ -51,10 +66,28 @@
       "commonNames": ["red 40", "allura red", "fd&c red no. 40"]
     },
     "e131": { "name": "Patent Blue V", "status": "approved", "category": "colour" },
-    "e132": { "name": "Indigotine / Indigo Carmine (Blue 2)", "status": "approved", "category": "colour", "commonNames": ["blue 2", "fd&c blue no. 2"] },
-    "e133": { "name": "Brilliant Blue FCF (Blue 1)", "status": "approved", "category": "colour", "commonNames": ["blue 1", "fd&c blue no. 1"] },
-    "e140": { "name": "Chlorophylls and Chlorophyllins", "status": "approved", "category": "colour" },
-    "e141": { "name": "Copper complexes of chlorophylls", "status": "approved", "category": "colour" },
+    "e132": {
+      "name": "Indigotine / Indigo Carmine (Blue 2)",
+      "status": "approved",
+      "category": "colour",
+      "commonNames": ["blue 2", "fd&c blue no. 2"]
+    },
+    "e133": {
+      "name": "Brilliant Blue FCF (Blue 1)",
+      "status": "approved",
+      "category": "colour",
+      "commonNames": ["blue 1", "fd&c blue no. 1"]
+    },
+    "e140": {
+      "name": "Chlorophylls and Chlorophyllins",
+      "status": "approved",
+      "category": "colour"
+    },
+    "e141": {
+      "name": "Copper complexes of chlorophylls",
+      "status": "approved",
+      "category": "colour"
+    },
     "e150a": { "name": "Plain Caramel", "status": "approved", "category": "colour" },
     "e150b": { "name": "Caustic Sulphite Caramel", "status": "approved", "category": "colour" },
     "e150c": { "name": "Ammonia Caramel", "status": "approved", "category": "colour" },
@@ -78,17 +111,35 @@
       "commonNames": ["titanium dioxide", "ci 77891"]
     },
     "e172": { "name": "Iron oxides and hydroxides", "status": "approved", "category": "colour" },
-    "e173": { "name": "Aluminium", "status": "restricted", "category": "colour", "notes": "Only for surface decoration of sugar-coated products" },
+    "e173": {
+      "name": "Aluminium",
+      "status": "restricted",
+      "category": "colour",
+      "notes": "Only for surface decoration of sugar-coated products"
+    },
     "e174": { "name": "Silver", "status": "restricted", "category": "colour" },
     "e175": { "name": "Gold", "status": "restricted", "category": "colour" },
     "e200": { "name": "Sorbic acid", "status": "approved", "category": "preservative" },
     "e202": { "name": "Potassium sorbate", "status": "approved", "category": "preservative" },
     "e210": { "name": "Benzoic acid", "status": "approved", "category": "preservative" },
-    "e211": { "name": "Sodium benzoate", "status": "approved", "category": "preservative" },
+    "e211": {
+      "name": "Sodium benzoate",
+      "status": "approved",
+      "category": "preservative",
+      "commonNames": ["sodium benzoate", "benzoate", "benzoic acid salt"]
+    },
     "e212": { "name": "Potassium benzoate", "status": "approved", "category": "preservative" },
     "e213": { "name": "Calcium benzoate", "status": "approved", "category": "preservative" },
-    "e214": { "name": "Ethyl para-hydroxybenzoate", "status": "approved", "category": "preservative" },
-    "e215": { "name": "Sodium ethyl para-hydroxybenzoate", "status": "approved", "category": "preservative" },
+    "e214": {
+      "name": "Ethyl para-hydroxybenzoate",
+      "status": "approved",
+      "category": "preservative"
+    },
+    "e215": {
+      "name": "Sodium ethyl para-hydroxybenzoate",
+      "status": "approved",
+      "category": "preservative"
+    },
     "e216": {
       "name": "Propyl para-hydroxybenzoate (Propylparaben)",
       "status": "banned",
@@ -104,16 +155,40 @@
       "bannedSince": "2015-06-30",
       "notes": "Banned in EU food since 2015"
     },
-    "e218": { "name": "Methyl para-hydroxybenzoate", "status": "approved", "category": "preservative" },
-    "e219": { "name": "Sodium methyl para-hydroxybenzoate", "status": "approved", "category": "preservative" },
+    "e218": {
+      "name": "Methyl para-hydroxybenzoate",
+      "status": "approved",
+      "category": "preservative"
+    },
+    "e219": {
+      "name": "Sodium methyl para-hydroxybenzoate",
+      "status": "approved",
+      "category": "preservative"
+    },
     "e220": { "name": "Sulphur dioxide", "status": "approved", "category": "preservative" },
     "e221": { "name": "Sodium sulphite", "status": "approved", "category": "preservative" },
-    "e222": { "name": "Sodium hydrogen sulphite", "status": "approved", "category": "preservative" },
+    "e222": {
+      "name": "Sodium hydrogen sulphite",
+      "status": "approved",
+      "category": "preservative"
+    },
     "e223": { "name": "Sodium metabisulphite", "status": "approved", "category": "preservative" },
-    "e224": { "name": "Potassium metabisulphite", "status": "approved", "category": "preservative" },
+    "e224": {
+      "name": "Potassium metabisulphite",
+      "status": "approved",
+      "category": "preservative"
+    },
     "e226": { "name": "Calcium sulphite", "status": "approved", "category": "preservative" },
-    "e227": { "name": "Calcium hydrogen sulphite", "status": "approved", "category": "preservative" },
-    "e228": { "name": "Potassium hydrogen sulphite", "status": "approved", "category": "preservative" },
+    "e227": {
+      "name": "Calcium hydrogen sulphite",
+      "status": "approved",
+      "category": "preservative"
+    },
+    "e228": {
+      "name": "Potassium hydrogen sulphite",
+      "status": "approved",
+      "category": "preservative"
+    },
     "e234": { "name": "Nisin", "status": "approved", "category": "preservative" },
     "e235": { "name": "Natamycin (Pimaricin)", "status": "restricted", "category": "preservative" },
     "e239": {
@@ -151,12 +226,24 @@
     "e290": { "name": "Carbon dioxide", "status": "approved", "category": "preservative" },
     "e296": { "name": "Malic acid", "status": "approved", "category": "acidity-regulator" },
     "e297": { "name": "Fumaric acid", "status": "approved", "category": "acidity-regulator" },
-    "e300": { "name": "Ascorbic acid (Vitamin C)", "status": "approved", "category": "antioxidant" },
+    "e300": {
+      "name": "Ascorbic acid (Vitamin C)",
+      "status": "approved",
+      "category": "antioxidant"
+    },
     "e301": { "name": "Sodium ascorbate", "status": "approved", "category": "antioxidant" },
     "e302": { "name": "Calcium ascorbate", "status": "approved", "category": "antioxidant" },
-    "e304": { "name": "Fatty acid esters of ascorbic acid", "status": "approved", "category": "antioxidant" },
+    "e304": {
+      "name": "Fatty acid esters of ascorbic acid",
+      "status": "approved",
+      "category": "antioxidant"
+    },
     "e306": { "name": "Tocopherol-rich extract", "status": "approved", "category": "antioxidant" },
-    "e307": { "name": "Alpha-tocopherol (Vitamin E)", "status": "approved", "category": "antioxidant" },
+    "e307": {
+      "name": "Alpha-tocopherol (Vitamin E)",
+      "status": "approved",
+      "category": "antioxidant"
+    },
     "e308": { "name": "Gamma-tocopherol", "status": "approved", "category": "antioxidant" },
     "e309": { "name": "Delta-tocopherol", "status": "approved", "category": "antioxidant" },
     "e310": {
@@ -169,7 +256,13 @@
     "e312": { "name": "Dodecyl gallate", "status": "restricted", "category": "antioxidant" },
     "e315": { "name": "Erythorbic acid", "status": "approved", "category": "antioxidant" },
     "e316": { "name": "Sodium erythorbate", "status": "approved", "category": "antioxidant" },
-    "e319": { "name": "tert-Butylhydroquinone (TBHQ)", "status": "banned", "category": "antioxidant", "notes": "Not authorized in EU food. Commonly used in US processed foods and fast food oils.", "commonNames": ["tbhq", "tert-butylhydroquinone", "tertiary butylhydroquinone"] },
+    "e319": {
+      "name": "tert-Butylhydroquinone (TBHQ)",
+      "status": "banned",
+      "category": "antioxidant",
+      "notes": "Not authorized in EU food. Commonly used in US processed foods and fast food oils.",
+      "commonNames": ["tbhq", "tert-butylhydroquinone", "tertiary butylhydroquinone"]
+    },
     "e320": {
       "name": "Butylated Hydroxyanisole (BHA)",
       "status": "restricted",
@@ -191,11 +284,23 @@
     "e333": { "name": "Calcium citrates", "status": "approved", "category": "acidity-regulator" },
     "e334": { "name": "Tartaric acid", "status": "approved", "category": "acidity-regulator" },
     "e335": { "name": "Sodium tartrates", "status": "approved", "category": "acidity-regulator" },
-    "e336": { "name": "Potassium tartrates", "status": "approved", "category": "acidity-regulator" },
-    "e337": { "name": "Sodium potassium tartrate", "status": "approved", "category": "acidity-regulator" },
+    "e336": {
+      "name": "Potassium tartrates",
+      "status": "approved",
+      "category": "acidity-regulator"
+    },
+    "e337": {
+      "name": "Sodium potassium tartrate",
+      "status": "approved",
+      "category": "acidity-regulator"
+    },
     "e338": { "name": "Phosphoric acid", "status": "approved", "category": "acidity-regulator" },
     "e339": { "name": "Sodium phosphates", "status": "approved", "category": "acidity-regulator" },
-    "e340": { "name": "Potassium phosphates", "status": "approved", "category": "acidity-regulator" },
+    "e340": {
+      "name": "Potassium phosphates",
+      "status": "approved",
+      "category": "acidity-regulator"
+    },
     "e341": { "name": "Calcium phosphates", "status": "approved", "category": "raising-agent" },
     "e350": { "name": "Sodium malates", "status": "approved", "category": "acidity-regulator" },
     "e351": { "name": "Potassium malate", "status": "approved", "category": "acidity-regulator" },
@@ -205,7 +310,12 @@
     "e402": { "name": "Potassium alginate", "status": "approved", "category": "thickener" },
     "e404": { "name": "Calcium alginate", "status": "approved", "category": "thickener" },
     "e406": { "name": "Agar", "status": "approved", "category": "thickener" },
-    "e407": { "name": "Carrageenan", "status": "approved", "category": "thickener", "notes": "Approved in EU; banned in organic EU products. Under ongoing EFSA review." },
+    "e407": {
+      "name": "Carrageenan",
+      "status": "approved",
+      "category": "thickener",
+      "notes": "Approved in EU; banned in organic EU products. Under ongoing EFSA review."
+    },
     "e410": { "name": "Locust bean gum", "status": "approved", "category": "thickener" },
     "e412": { "name": "Guar gum", "status": "approved", "category": "thickener" },
     "e414": { "name": "Acacia gum (Gum Arabic)", "status": "approved", "category": "thickener" },
@@ -218,7 +328,11 @@
     "e422": { "name": "Glycerol", "status": "approved", "category": "humectant" },
     "e425": { "name": "Konjac", "status": "approved", "category": "thickener" },
     "e431": { "name": "Polyoxyethylene stearate", "status": "approved", "category": "emulsifier" },
-    "e432": { "name": "Polyoxyethylene sorbitan monolaurate (Polysorbate 20)", "status": "approved", "category": "emulsifier" },
+    "e432": {
+      "name": "Polyoxyethylene sorbitan monolaurate (Polysorbate 20)",
+      "status": "approved",
+      "category": "emulsifier"
+    },
     "e433": { "name": "Polysorbate 80", "status": "approved", "category": "emulsifier" },
     "e440": { "name": "Pectins", "status": "approved", "category": "thickener" },
     "e450": { "name": "Diphosphates", "status": "approved", "category": "raising-agent" },
@@ -228,60 +342,233 @@
     "e461": { "name": "Methyl cellulose", "status": "approved", "category": "thickener" },
     "e462": { "name": "Ethyl cellulose", "status": "approved", "category": "binder" },
     "e463": { "name": "Hydroxypropyl cellulose", "status": "approved", "category": "thickener" },
-    "e464": { "name": "Hydroxypropyl methyl cellulose", "status": "approved", "category": "thickener" },
+    "e464": {
+      "name": "Hydroxypropyl methyl cellulose",
+      "status": "approved",
+      "category": "thickener"
+    },
     "e465": { "name": "Ethyl methyl cellulose", "status": "approved", "category": "thickener" },
-    "e466": { "name": "Carboxy methyl cellulose / Cellulose gum", "status": "approved", "category": "thickener" },
-    "e471": { "name": "Mono- and diglycerides of fatty acids", "status": "approved", "category": "emulsifier" },
-    "e472a": { "name": "Acetic acid esters of mono- and diglycerides", "status": "approved", "category": "emulsifier" },
-    "e472b": { "name": "Lactic acid esters of mono- and diglycerides", "status": "approved", "category": "emulsifier" },
-    "e472c": { "name": "Citric acid esters of mono- and diglycerides", "status": "approved", "category": "emulsifier" },
-    "e472e": { "name": "Mono- and diacetyl tartaric acid esters (DATEM)", "status": "approved", "category": "emulsifier" },
-    "e476": { "name": "Polyglycerol polyricinoleate (PGPR)", "status": "approved", "category": "emulsifier" },
-    "e481": { "name": "Sodium stearoyl-2-lactylate (SSL)", "status": "approved", "category": "emulsifier" },
+    "e466": {
+      "name": "Carboxy methyl cellulose / Cellulose gum",
+      "status": "approved",
+      "category": "thickener"
+    },
+    "e471": {
+      "name": "Mono- and diglycerides of fatty acids",
+      "status": "approved",
+      "category": "emulsifier"
+    },
+    "e472a": {
+      "name": "Acetic acid esters of mono- and diglycerides",
+      "status": "approved",
+      "category": "emulsifier"
+    },
+    "e472b": {
+      "name": "Lactic acid esters of mono- and diglycerides",
+      "status": "approved",
+      "category": "emulsifier"
+    },
+    "e472c": {
+      "name": "Citric acid esters of mono- and diglycerides",
+      "status": "approved",
+      "category": "emulsifier"
+    },
+    "e472e": {
+      "name": "Mono- and diacetyl tartaric acid esters (DATEM)",
+      "status": "approved",
+      "category": "emulsifier"
+    },
+    "e476": {
+      "name": "Polyglycerol polyricinoleate (PGPR)",
+      "status": "approved",
+      "category": "emulsifier"
+    },
+    "e481": {
+      "name": "Sodium stearoyl-2-lactylate (SSL)",
+      "status": "approved",
+      "category": "emulsifier"
+    },
     "e500": { "name": "Sodium carbonates", "status": "approved", "category": "raising-agent" },
     "e501": { "name": "Potassium carbonates", "status": "approved", "category": "raising-agent" },
     "e503": { "name": "Ammonium carbonates", "status": "approved", "category": "raising-agent" },
-    "e504": { "name": "Magnesium carbonates", "status": "approved", "category": "acidity-regulator" },
+    "e504": {
+      "name": "Magnesium carbonates",
+      "status": "approved",
+      "category": "acidity-regulator"
+    },
     "e507": { "name": "Hydrochloric acid", "status": "approved", "category": "acidity-regulator" },
     "e508": { "name": "Potassium chloride", "status": "approved", "category": "salt-substitute" },
     "e509": { "name": "Calcium chloride", "status": "approved", "category": "firming-agent" },
     "e516": { "name": "Calcium sulphate", "status": "approved", "category": "firming-agent" },
     "e524": { "name": "Sodium hydroxide", "status": "approved", "category": "acidity-regulator" },
-    "e525": { "name": "Potassium hydroxide", "status": "approved", "category": "acidity-regulator" },
+    "e525": {
+      "name": "Potassium hydroxide",
+      "status": "approved",
+      "category": "acidity-regulator"
+    },
     "e526": { "name": "Calcium hydroxide", "status": "approved", "category": "firming-agent" },
-    "e551": { "name": "Silicon dioxide (Silica)", "status": "approved", "category": "anti-caking-agent" },
+    "e551": {
+      "name": "Silicon dioxide (Silica)",
+      "status": "approved",
+      "category": "anti-caking-agent"
+    },
     "e552": { "name": "Calcium silicate", "status": "approved", "category": "anti-caking-agent" },
-    "e553a": { "name": "Magnesium silicate", "status": "approved", "category": "anti-caking-agent" },
+    "e553a": {
+      "name": "Magnesium silicate",
+      "status": "approved",
+      "category": "anti-caking-agent"
+    },
     "e553b": { "name": "Talc", "status": "restricted", "category": "anti-caking-agent" },
     "e570": { "name": "Fatty acids", "status": "approved", "category": "anti-caking-agent" },
-    "e575": { "name": "Glucono delta-lactone", "status": "approved", "category": "acidity-regulator" },
+    "e575": {
+      "name": "Glucono delta-lactone",
+      "status": "approved",
+      "category": "acidity-regulator"
+    },
     "e620": { "name": "Glutamic acid", "status": "approved", "category": "flavour-enhancer" },
-    "e621": { "name": "Monosodium glutamate (MSG)", "status": "approved", "category": "flavour-enhancer", "commonNames": ["msg", "monosodium glutamate"] },
+    "e621": {
+      "name": "Monosodium glutamate (MSG)",
+      "status": "approved",
+      "category": "flavour-enhancer",
+      "commonNames": ["msg", "monosodium glutamate"]
+    },
     "e627": { "name": "Disodium guanylate", "status": "approved", "category": "flavour-enhancer" },
     "e631": { "name": "Disodium inosinate", "status": "approved", "category": "flavour-enhancer" },
-    "e635": { "name": "Disodium ribonucleotides", "status": "approved", "category": "flavour-enhancer" },
+    "e635": {
+      "name": "Disodium ribonucleotides",
+      "status": "approved",
+      "category": "flavour-enhancer"
+    },
     "e901": { "name": "Beeswax", "status": "approved", "category": "glazing-agent" },
+    "e900": {
+      "name": "Dimethylpolysiloxane",
+      "status": "approved",
+      "category": "anti-foaming-agent",
+      "commonNames": ["dimethylpolysiloxane", "polydimethylsiloxane", "silicone oil"]
+    },
     "e903": { "name": "Carnauba wax", "status": "approved", "category": "glazing-agent" },
     "e904": { "name": "Shellac", "status": "approved", "category": "glazing-agent" },
+    "e924": {
+      "name": "Potassium bromate",
+      "status": "banned",
+      "category": "flour-treatment",
+      "notes": "Not authorized in EU food.",
+      "commonNames": ["potassium bromate", "bromate", "e924"]
+    },
     "e927a": {
       "name": "Azodicarbonamide",
       "status": "banned",
       "category": "flour-treatment",
       "notes": "Not authorized as food additive in EU. Used as dough conditioner in US bread products (including fast food buns). Banned in EU and Australia.",
-      "commonNames": ["azodicarbonamide", "azodiisobutyric acid dinitride", "ado"]
+      "commonNames": ["azodicarbonamide", "azodiisobutyric acid dinitride", "ado", "ada"]
     },
-    "e950": { "name": "Acesulfame K", "status": "approved", "category": "sweetener" },
-    "e951": { "name": "Aspartame", "status": "approved", "category": "sweetener", "notes": "Must carry warning for phenylketonurics: 'contains a source of phenylalanine'" },
-    "e952": { "name": "Cyclamates", "status": "approved", "category": "sweetener", "notes": "Banned in US but approved in EU" },
-    "e954": { "name": "Saccharin", "status": "approved", "category": "sweetener" },
-    "e955": { "name": "Sucralose", "status": "approved", "category": "sweetener" },
-    "e960": { "name": "Steviol glycosides (Stevia)", "status": "approved", "category": "sweetener" },
-    "e961": { "name": "Neotame", "status": "approved", "category": "sweetener" },
-    "e962": { "name": "Aspartame-acesulfame salt", "status": "approved", "category": "sweetener" },
-    "e965": { "name": "Maltitol", "status": "approved", "category": "sweetener" },
+    "e928": {
+      "name": "Benzoyl peroxide",
+      "status": "banned",
+      "category": "flour-treatment",
+      "notes": "Not authorized in EU flour treatment for food use.",
+      "commonNames": ["benzoyl peroxide", "e928"]
+    },
+    "e930": {
+      "name": "Calcium peroxide",
+      "status": "banned",
+      "category": "flour-treatment",
+      "notes": "Not authorized for flour treatment in EU food.",
+      "commonNames": ["calcium peroxide", "e930"]
+    },
+    "e950": {
+      "name": "Acesulfame K",
+      "status": "approved",
+      "category": "sweetener",
+      "commonNames": ["acesulfame k", "acesulfame potassium", "ace-k", "ace k"]
+    },
+    "e951": {
+      "name": "Aspartame",
+      "status": "approved",
+      "category": "sweetener",
+      "notes": "Must carry warning for phenylketonurics: 'contains a source of phenylalanine'",
+      "commonNames": ["aspartame", "equal"]
+    },
+    "e952": {
+      "name": "Cyclamates",
+      "status": "approved",
+      "category": "sweetener",
+      "notes": "Banned in US but approved in EU",
+      "commonNames": ["cyclamate", "cyclamates", "sodium cyclamate", "calcium cyclamate"]
+    },
+    "e953": {
+      "name": "Isomalt",
+      "status": "approved",
+      "category": "sweetener",
+      "commonNames": ["isomalt", "palatinit"]
+    },
+    "e954": {
+      "name": "Saccharin",
+      "status": "approved",
+      "category": "sweetener",
+      "commonNames": ["saccharin", "sodium saccharin", "sweet n low"]
+    },
+    "e955": {
+      "name": "Sucralose",
+      "status": "approved",
+      "category": "sweetener",
+      "commonNames": ["sucralose", "splenda"]
+    },
+    "e957": {
+      "name": "Thaumatin",
+      "status": "approved",
+      "category": "sweetener",
+      "commonNames": ["thaumatin", "talin"]
+    },
+    "e959": {
+      "name": "Neohesperidine DC",
+      "status": "approved",
+      "category": "sweetener",
+      "commonNames": ["neohesperidine dc", "neohesperidin dihydrochalcone"]
+    },
+    "e960": {
+      "name": "Steviol glycosides (Stevia)",
+      "status": "approved",
+      "category": "sweetener",
+      "commonNames": ["stevia", "steviol glycosides", "reb a", "rebaudioside a"]
+    },
+    "e961": {
+      "name": "Neotame",
+      "status": "approved",
+      "category": "sweetener",
+      "commonNames": ["neotame"]
+    },
+    "e962": {
+      "name": "Aspartame-acesulfame salt",
+      "status": "approved",
+      "category": "sweetener",
+      "commonNames": ["aspartame acesulfame salt"]
+    },
+    "e965": {
+      "name": "Maltitol",
+      "status": "approved",
+      "category": "sweetener",
+      "commonNames": ["maltitol", "maltitol syrup"]
+    },
     "e966": { "name": "Lactitol", "status": "approved", "category": "sweetener" },
-    "e967": { "name": "Xylitol", "status": "approved", "category": "sweetener" },
-    "e968": { "name": "Erythritol", "status": "approved", "category": "sweetener" }
+    "e967": {
+      "name": "Xylitol",
+      "status": "approved",
+      "category": "sweetener",
+      "commonNames": ["xylitol", "birch sugar"]
+    },
+    "e968": {
+      "name": "Erythritol",
+      "status": "approved",
+      "category": "sweetener",
+      "commonNames": ["erythritol"]
+    },
+    "e969": {
+      "name": "Advantame",
+      "status": "approved",
+      "category": "sweetener",
+      "commonNames": ["advantame"]
+    }
   },
   "nonEnumber": {
     "tbhq": {
@@ -289,7 +576,12 @@
       "status": "banned",
       "category": "antioxidant",
       "notes": "No E-number assigned. Not authorized in EU food. Common in US snacks, fast food, frozen foods.",
-      "searchTerms": ["tbhq", "tert-butylhydroquinone", "tertiary butylhydroquinone", "t-butylhydroquinone"]
+      "searchTerms": [
+        "tbhq",
+        "tert-butylhydroquinone",
+        "tertiary butylhydroquinone",
+        "t-butylhydroquinone"
+      ]
     },
     "bvo": {
       "name": "Brominated Vegetable Oil (BVO)",
@@ -304,6 +596,34 @@
       "category": "flour-treatment",
       "notes": "Not authorized in EU. Used in some US commercial bread to strengthen dough. Classified as possibly carcinogenic.",
       "searchTerms": ["potassium bromate", "bromate", "e924"]
+    },
+    "potassium-iodate": {
+      "name": "Potassium Iodate",
+      "status": "banned",
+      "category": "flour-treatment",
+      "notes": "Not authorized in EU food use.",
+      "searchTerms": ["potassium iodate"]
+    },
+    "benzoyl-peroxide": {
+      "name": "Benzoyl Peroxide",
+      "status": "banned",
+      "category": "flour-treatment",
+      "notes": "Not authorized for flour treatment in EU food.",
+      "searchTerms": ["benzoyl peroxide", "e928"]
+    },
+    "calcium-peroxide": {
+      "name": "Calcium Peroxide",
+      "status": "banned",
+      "category": "flour-treatment",
+      "notes": "Not authorized for flour treatment in EU food.",
+      "searchTerms": ["calcium peroxide", "e930"]
+    },
+    "chlorine-dioxide": {
+      "name": "Chlorine Dioxide",
+      "status": "banned",
+      "category": "flour-treatment",
+      "notes": "Not authorized for flour treatment in EU food.",
+      "searchTerms": ["chlorine dioxide"]
     },
     "olestra": {
       "name": "Olestra (Olean)",

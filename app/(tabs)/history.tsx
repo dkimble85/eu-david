@@ -41,7 +41,7 @@ export default function HistoryScreen() {
 
   useEffect(() => {
     loadHistory();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
 
   if (!user) {
@@ -129,8 +129,8 @@ function HistoryRow({ item }: { item: ScanHistoryRow }) {
     result && result.bannedCount > 0
       ? colors.banned
       : result && result.restrictedCount > 0
-      ? colors.restricted
-      : colors.approved;
+        ? colors.restricted
+        : colors.approved;
 
   return (
     <TouchableOpacity
@@ -147,9 +147,7 @@ function HistoryRow({ item }: { item: ScanHistoryRow }) {
       {result && (
         <View style={styles.rowStats}>
           {result.bannedCount > 0 && (
-            <Text style={[styles.statChip, { color: colors.banned }]}>
-              🚫 {result.bannedCount}
-            </Text>
+            <Text style={[styles.statChip, { color: colors.banned }]}>🚫 {result.bannedCount}</Text>
           )}
           {result.restrictedCount > 0 && (
             <Text style={[styles.statChip, { color: colors.restricted }]}>
@@ -166,7 +164,13 @@ const styles = StyleSheet.create({
   safe: { flex: 1, backgroundColor: colors.background },
   header: { padding: spacing.lg, paddingBottom: 0 },
   pageTitle: { ...typography.title2, color: colors.textPrimary },
-  centered: { flex: 1, alignItems: 'center', justifyContent: 'center', gap: spacing.md, padding: spacing.xl },
+  centered: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: spacing.md,
+    padding: spacing.xl,
+  },
   emoji: { fontSize: 56 },
   title: { ...typography.title3, color: colors.textPrimary, textAlign: 'center' },
   subtitle: { ...typography.body, color: colors.textSecondary, textAlign: 'center' },

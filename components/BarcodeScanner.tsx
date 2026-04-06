@@ -15,7 +15,7 @@ export default function BarcodeScanner({ onScan, active }: Props) {
     if (permission && !permission.granted && permission.canAskAgain) {
       requestPermission();
     }
-  }, [permission]);
+  }, [permission, requestPermission]);
 
   if (!permission || permission.status === 'undetermined') {
     return (
@@ -40,7 +40,9 @@ export default function BarcodeScanner({ onScan, active }: Props) {
       <CameraView
         style={StyleSheet.absoluteFill}
         facing="back"
-        barcodeScannerSettings={{ barcodeTypes: ['ean13', 'ean8', 'upc_a', 'upc_e', 'code128', 'code39', 'qr'] }}
+        barcodeScannerSettings={{
+          barcodeTypes: ['ean13', 'ean8', 'upc_a', 'upc_e', 'code128', 'code39', 'qr'],
+        }}
         onBarcodeScanned={active ? (result) => onScan(result.data) : undefined}
       />
       <ScannerOverlay />
@@ -53,16 +55,42 @@ function ScannerOverlay() {
   const thickness = 3;
 
   const bracket = (position: object) => (
-    <View style={[styles.bracket, position as object, { borderColor: color, borderWidth: thickness }]} />
+    <View
+      style={[styles.bracket, position as object, { borderColor: color, borderWidth: thickness }]}
+    />
   );
 
   return (
     <View style={styles.overlay}>
       <View style={styles.overlayFrame}>
-        {bracket({ top: 0, left: 0, borderRightWidth: 0, borderBottomWidth: 0, borderTopLeftRadius: 2 })}
-        {bracket({ top: 0, right: 0, borderLeftWidth: 0, borderBottomWidth: 0, borderTopRightRadius: 2 })}
-        {bracket({ bottom: 0, left: 0, borderRightWidth: 0, borderTopWidth: 0, borderBottomLeftRadius: 2 })}
-        {bracket({ bottom: 0, right: 0, borderLeftWidth: 0, borderTopWidth: 0, borderBottomRightRadius: 2 })}
+        {bracket({
+          top: 0,
+          left: 0,
+          borderRightWidth: 0,
+          borderBottomWidth: 0,
+          borderTopLeftRadius: 2,
+        })}
+        {bracket({
+          top: 0,
+          right: 0,
+          borderLeftWidth: 0,
+          borderBottomWidth: 0,
+          borderTopRightRadius: 2,
+        })}
+        {bracket({
+          bottom: 0,
+          left: 0,
+          borderRightWidth: 0,
+          borderTopWidth: 0,
+          borderBottomLeftRadius: 2,
+        })}
+        {bracket({
+          bottom: 0,
+          right: 0,
+          borderLeftWidth: 0,
+          borderTopWidth: 0,
+          borderBottomRightRadius: 2,
+        })}
       </View>
       <Text style={styles.overlayHint}>Align barcode within the frame</Text>
     </View>

@@ -1,16 +1,12 @@
 import { Tabs } from 'expo-router';
 import { Text, View, StyleSheet } from 'react-native';
+import { ScanBarcode, History, Search, CircleUser } from 'lucide-react-native';
 import { colors, radius, spacing, typography } from '@/constants/theme';
 import { useAuth } from '@/hooks/useAuth';
 import { useProfile } from '@/hooks/useProfile';
 
-function TabIcon({ emoji, focused }: { emoji: string; focused: boolean }) {
-  return (
-    <View style={[styles.tabIcon, focused && styles.tabIconFocused]}>
-      <Text style={styles.tabEmoji}>{emoji}</Text>
-    </View>
-  );
-}
+const iconSize = 24;
+const iconColor = (focused: boolean) => (focused ? colors.euGold : colors.textMuted);
 
 function ProfileTabIcon({ focused }: { focused: boolean }) {
   const { user } = useAuth();
@@ -19,7 +15,7 @@ function ProfileTabIcon({ focused }: { focused: boolean }) {
   if (!user) {
     return (
       <View style={[styles.tabIcon, focused && styles.tabIconFocused]}>
-        <Text style={styles.tabEmoji}>👤</Text>
+        <CircleUser color={iconColor(focused)} size={iconSize} />
       </View>
     );
   }
@@ -50,21 +46,21 @@ export default function TabsLayout() {
         name="index"
         options={{
           title: 'Scan',
-          tabBarIcon: ({ focused }) => <TabIcon emoji="📷" focused={focused} />,
+          tabBarIcon: ({ focused }) => <ScanBarcode color={iconColor(focused)} size={iconSize} />,
         }}
       />
       <Tabs.Screen
         name="history"
         options={{
           title: 'History',
-          tabBarIcon: ({ focused }) => <TabIcon emoji="📋" focused={focused} />,
+          tabBarIcon: ({ focused }) => <History color={iconColor(focused)} size={iconSize} />,
         }}
       />
       <Tabs.Screen
-        name="recommendations"
+        name="search"
         options={{
-          title: 'Recos',
-          tabBarIcon: ({ focused }) => <TabIcon emoji="⭐" focused={focused} />,
+          title: 'Search',
+          tabBarIcon: ({ focused }) => <Search color={iconColor(focused)} size={iconSize} />,
         }}
       />
       <Tabs.Screen

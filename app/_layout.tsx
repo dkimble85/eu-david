@@ -7,7 +7,16 @@ import { StyleSheet, View } from 'react-native';
 import { useAuth } from '@/hooks/useAuth';
 import { colors } from '@/constants/theme';
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 5 * 60 * 1000,
+      gcTime: 30 * 60 * 1000,
+      refetchOnWindowFocus: false,
+      retry: 1,
+    },
+  },
+});
 
 export default function RootLayout() {
   const { session, loading } = useAuth();
@@ -16,17 +25,13 @@ export default function RootLayout() {
 
   return (
     <QueryClientProvider client={queryClient}>
-    <GestureHandlerRootView style={styles.root}>
-      <StatusBar style="light" />
-      <Stack screenOptions={{ headerShown: false }}>
-        {session ? (
-          <Stack.Screen name="(tabs)" />
-        ) : (
-          <Stack.Screen name="(auth)" />
-        )}
-        <Stack.Screen name="product/[barcode]" options={{ presentation: 'modal' }} />
-      </Stack>
-    </GestureHandlerRootView>
+      <GestureHandlerRootView style={styles.root}>
+        <StatusBar style="light" />
+        <Stack screenOptions={{ headerShown: false }}>
+          {session ? <Stack.Screen name="(tabs)" /> : <Stack.Screen name="(auth)" />}
+          <Stack.Screen name="product/[barcode]" options={{ presentation: 'modal' }} />
+        </Stack>
+      </GestureHandlerRootView>
     </QueryClientProvider>
   );
 }

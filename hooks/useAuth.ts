@@ -9,7 +9,8 @@ export function useAuth() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    supabase.auth.getSession()
+    supabase.auth
+      .getSession()
       .then(({ data: { session } }) => {
         setSession(session);
         setUser(session?.user ?? null);
@@ -19,7 +20,9 @@ export function useAuth() {
       })
       .finally(() => setLoading(false));
 
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, session) => {
       setSession(session);
       setUser(session?.user ?? null);
     });
@@ -30,7 +33,7 @@ export function useAuth() {
   async function signIn(email: string, password: string) {
     const { error } = await supabase.auth.signInWithPassword({ email, password });
     if (error) throw error;
-    router.replace('/(tabs)/');
+    router.replace('/(tabs)');
   }
 
   async function signUp(email: string, password: string, username?: string) {

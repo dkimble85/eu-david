@@ -5,7 +5,9 @@
       "Bash(node -e \"require\\('expo-camera'\\); console.log\\('ok'\\)\")",
       "Bash(ls -la /Users/danny/dev/projects/eu-david/babel.config* /Users/danny/dev/projects/eu-david/.babelrc*)",
       "Bash(npx expo:*)",
-      "Bash(npx tsc:*)"
+      "Bash(npx tsc:*)",
+      "Bash(node -e \"const l = require\\('/Users/danny/dev/projects/eu-david/node_modules/lucide-react-native'\\); console.log\\(Object.keys\\(l\\).filter\\(k => ['ScanBarcode','History','Sparkles','CircleUser'].includes\\(k\\)\\)\\)\")",
+      "Bash(grep -l \"ScanBarcode\" /Users/danny/dev/projects/eu-david/node_modules/lucide-react-native/dist/*)"
     ]
   }
 }

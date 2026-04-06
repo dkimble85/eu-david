@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View, Text } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { useZxing } from 'react-zxing';
 import { colors, spacing, typography } from '@/constants/theme';
 
@@ -35,12 +35,58 @@ function ScannerOverlay() {
   const t = 3;
 
   return (
-    <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column', gap: 16 }}>
+    <div
+      style={{
+        position: 'absolute',
+        inset: 0,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        flexDirection: 'column',
+        gap: 16,
+      }}
+    >
       <div style={{ position: 'relative', width: '60%', aspectRatio: '1' }}>
-        <div style={{ ...bracketStyle, top: 0, left: 0, borderTop: `${t}px solid ${color}`, borderLeft: `${t}px solid ${color}`, borderRadius: '2px 0 0 0' }} />
-        <div style={{ ...bracketStyle, top: 0, right: 0, borderTop: `${t}px solid ${color}`, borderRight: `${t}px solid ${color}`, borderRadius: '0 2px 0 0' }} />
-        <div style={{ ...bracketStyle, bottom: 0, left: 0, borderBottom: `${t}px solid ${color}`, borderLeft: `${t}px solid ${color}`, borderRadius: '0 0 0 2px' }} />
-        <div style={{ ...bracketStyle, bottom: 0, right: 0, borderBottom: `${t}px solid ${color}`, borderRight: `${t}px solid ${color}`, borderRadius: '0 0 2px 0' }} />
+        <div
+          style={{
+            ...bracketStyle,
+            top: 0,
+            left: 0,
+            borderTop: `${t}px solid ${color}`,
+            borderLeft: `${t}px solid ${color}`,
+            borderRadius: '2px 0 0 0',
+          }}
+        />
+        <div
+          style={{
+            ...bracketStyle,
+            top: 0,
+            right: 0,
+            borderTop: `${t}px solid ${color}`,
+            borderRight: `${t}px solid ${color}`,
+            borderRadius: '0 2px 0 0',
+          }}
+        />
+        <div
+          style={{
+            ...bracketStyle,
+            bottom: 0,
+            left: 0,
+            borderBottom: `${t}px solid ${color}`,
+            borderLeft: `${t}px solid ${color}`,
+            borderRadius: '0 0 0 2px',
+          }}
+        />
+        <div
+          style={{
+            ...bracketStyle,
+            bottom: 0,
+            right: 0,
+            borderBottom: `${t}px solid ${color}`,
+            borderRight: `${t}px solid ${color}`,
+            borderRadius: '0 0 2px 0',
+          }}
+        />
       </div>
       <p style={{ color: colors.textSecondary, fontSize: 13, margin: 0 }}>
         Align barcode within the frame

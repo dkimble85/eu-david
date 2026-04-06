@@ -85,9 +85,7 @@ function IngredientRow({
     >
       <View style={styles.rowContent}>
         <Text style={styles.rowName}>{ingredient.name}</Text>
-        {ingredient.isENumber && (
-          <Text style={styles.rowKey}>{ingredient.key.toUpperCase()}</Text>
-        )}
+        {ingredient.isENumber && <Text style={styles.rowKey}>{ingredient.key.toUpperCase()}</Text>}
         {ingredient.notes && (
           <Text style={styles.rowNotes} numberOfLines={2}>
             {ingredient.notes}

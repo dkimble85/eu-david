@@ -35,6 +35,7 @@ export type EuCheckResult = {
   approved: CheckedIngredient[];
   unknown: CheckedIngredient[];
   totalFlagged: number;
+  hasAnyIngredientData: boolean;
 };
 
 function checkENumbers(eNumbers: string[]): CheckedIngredient[] {
@@ -114,10 +115,9 @@ export function scoreProduct(result: EuCheckResult): number {
   );
 }
 
-export function runEuCheck(
-  eNumbers: string[],
-  ingredientsText: string | null
-): EuCheckResult {
+export function runEuCheck(eNumbers: string[], ingredientsText: string | null): EuCheckResult {
+  const hasAnyIngredientData =
+    eNumbers.length > 0 || Boolean(ingredientsText && ingredientsText.trim().length > 0);
   const fromENumbers = checkENumbers(eNumbers);
   const fromText = ingredientsText ? checkIngredientText(ingredientsText) : [];
 
@@ -138,7 +138,19 @@ export function runEuCheck(
     approved: all.filter((i) => i.status === 'approved'),
     unknown: all.filter((i) => i.status === 'unknown'),
     totalFlagged: 0,
+    hasAnyIngredientData,
   };
+
+  if (!hasAnyIngredientData) {
+    result.unknown.push({
+      key: 'ingredients_unavailable',
+      name: 'Ingredients could not be found',
+      status: 'unknown' as AdditiveStatus,
+      category: 'metadata',
+      notes: 'No ingredients text or additive tags were returned by the source.',
+      isENumber: false,
+    });
+  }
 
   result.totalFlagged = result.banned.length + result.restricted.length + result.warning.length;
 

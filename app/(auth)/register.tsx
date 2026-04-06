@@ -70,10 +70,7 @@ export default function RegisterScreen() {
       style={styles.flex}
       behavior={Platform.OS === 'ios' ? 'padding' : undefined}
     >
-      <ScrollView
-        contentContainerStyle={styles.container}
-        keyboardShouldPersistTaps="handled"
-      >
+      <ScrollView contentContainerStyle={styles.container} keyboardShouldPersistTaps="handled">
         <TouchableOpacity style={styles.backButton} onPress={() => router.back()}>
           <Text style={styles.backText}>← Back to Sign In</Text>
         </TouchableOpacity>
@@ -92,7 +89,9 @@ export default function RegisterScreen() {
           )}
 
           <View style={styles.field}>
-            <Text style={styles.label}>Username <Text style={styles.optional}>(optional)</Text></Text>
+            <Text style={styles.label}>
+              Username <Text style={styles.optional}>(optional)</Text>
+            </Text>
             <TextInput
               style={styles.input}
               value={username}
