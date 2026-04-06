@@ -25,6 +25,7 @@ export type CheckedIngredient = {
   category: string;
   notes?: string;
   bannedSince?: string;
+  annex?: string;
   isENumber: boolean;
 };
 

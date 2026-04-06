@@ -1,5 +1,6 @@
 import { createClient } from '@supabase/supabase-js';
 import { Platform } from 'react-native';
+import type { ProductType } from '@/lib/product-type';
 
 const supabaseUrl = process.env.EXPO_PUBLIC_SUPABASE_URL!;
 const supabaseAnonKey = process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY!;
@@ -17,6 +18,8 @@ export type ScanResult = {
   restrictedCount: number;
   warningCount: number;
   approvedCount: number;
+  productType?: ProductType;
+  status?: 'approved' | 'flagged' | 'unknown';
 };
 
 export type ScanHistoryRow = {

@@ -19,6 +19,7 @@ import { useUsdaVerificationEnabled } from '@/hooks/useUsdaVerification';
 import { scoreProduct } from '@/lib/eu-check';
 import { compareSources } from '@/lib/source-compare';
 import { submitProductReport } from '@/lib/reports';
+import { loadFavoriteBarcodes, saveScanToHistory, toggleFavorite } from '@/lib/user-product-data';
 import ProductCard from '@/components/ProductCard';
 import IngredientList from '@/components/IngredientList';
 import AlternativesList from '@/components/AlternativesList';
@@ -105,13 +106,15 @@ function detectPalmOil(ingredientsText: string | null): PalmOilDetection {
 }
 
 export default function ProductScreen() {
-  const { barcode } = useLocalSearchParams<{ barcode: string }>();
+  const { barcode, from } = useLocalSearchParams<{ barcode: string; from?: string }>();
   const { user } = useAuth();
 
   const { data, isLoading, isError, refetch } = useProduct(barcode ?? '');
   const [selectedIngredient, setSelectedIngredient] = useState<CheckedIngredient | null>(null);
-  const [saved, setSaved] = useState(false);
-  const [saveError, setSaveError] = useState(false);
+  const [historySaved, setHistorySaved] = useState(false);
+  const [historySaveError, setHistorySaveError] = useState(false);
+  const [favorite, setFavorite] = useState(false);
+  const [favoriteError, setFavoriteError] = useState(false);
   const [showNutritionFacts, setShowNutritionFacts] = useState(false);
   const [showReportModal, setShowReportModal] = useState(false);
   const [reportSubmitting, setReportSubmitting] = useState(false);
@@ -122,6 +125,8 @@ export default function ProductScreen() {
   const offProduct = data?.off ?? null;
   const fsProduct = data?.fs ?? null;
   const euResult = data?.euResult ?? null;
+  const productType = data?.productType ?? 'food';
+  const isBeauty = productType === 'beauty';
   const productName = offProduct?.name ?? fsProduct?.name ?? '';
   const brand = offProduct?.brand ?? fsProduct?.brand ?? null;
   const { data: verificationData, isLoading: verificationLoading } = useUsdaVerificationEnabled(
@@ -147,6 +152,12 @@ export default function ProductScreen() {
   const hasPalmOil = palmOilDetection.hasPalmOil;
   const hasNutritionFacts = Boolean(fsProduct?.nutrition);
   const reportBarcode = offProduct?.barcode ?? barcode ?? null;
+
+  useEffect(() => {
+    setHistorySaved(false);
+    setHistorySaveError(false);
+    setFavoriteError(false);
+  }, [barcode]);
 
   const currentScore = euResult ? scoreProduct(euResult) : 100;
   const { alternatives, loading: altLoading } = useAlternatives(
@@ -182,10 +193,22 @@ export default function ProductScreen() {
     });
   }, [reportBarcode]);
 
-  async function saveToHistory() {
-    if (!user || !barcode || saved) return;
-    setSaveError(false);
-    const name = offProduct?.name ?? fsProduct?.name ?? null;
+  useEffect(() => {
+    if (!user || !barcode) {
+      setFavorite(false);
+      return;
+    }
+
+    loadFavoriteBarcodes(user.id).then((barcodes) => {
+      setFavorite(barcodes.has(barcode));
+    });
+  }, [user, barcode]);
+
+  useEffect(() => {
+    if (!user || !barcode || !data) return;
+    if (historySaved) return;
+    if (from && from !== 'scan') return;
+
     const result = euResult
       ? {
           bannedCount: euResult.banned.length,
@@ -195,17 +218,52 @@ export default function ProductScreen() {
         }
       : null;
 
-    const { error } = await supabase.from('scan_history').insert({
-      user_id: user.id,
+    saveScanToHistory({
+      userId: user.id,
       barcode,
-      product_name: name,
+      productName: offProduct?.name ?? fsProduct?.name ?? null,
       result,
+      productType,
+    }).then((response) => {
+      if (!response.ok) {
+        setHistorySaveError(true);
+        return;
+      }
+      setHistorySaved(true);
     });
-    if (error) {
-      setSaveError(true);
-    } else {
-      setSaved(true);
+  }, [
+    user,
+    barcode,
+    data,
+    from,
+    historySaved,
+    euResult,
+    offProduct?.name,
+    fsProduct?.name,
+    productType,
+  ]);
+
+  async function handleToggleFavorite() {
+    if (!user || !barcode) {
+      router.push('/(auth)/login');
+      return;
     }
+
+    setFavoriteError(false);
+    const response = await toggleFavorite({
+      userId: user.id,
+      barcode,
+      productName: offProduct?.name ?? fsProduct?.name ?? null,
+      productType,
+      currentlyFavorite: favorite,
+    });
+
+    if (!response.ok) {
+      setFavoriteError(true);
+      return;
+    }
+
+    setFavorite(response.isFavorite);
   }
 
   async function handleSubmitReport(issueType: ProductReportIssueType, details: string) {
@@ -297,25 +355,42 @@ export default function ProductScreen() {
           <Text style={styles.backText}>← Back</Text>
         </TouchableOpacity>
         {user && (
-          <TouchableOpacity onPress={saveToHistory} style={styles.saveButton} disabled={saved}>
-            <Text style={[styles.saveText, saveError && styles.saveErrorText]}>
-              {saved ? '✓ Saved' : saveError ? '⚠ Retry' : 'Save'}
+          <TouchableOpacity onPress={handleToggleFavorite} style={styles.saveButton}>
+            <Text style={[styles.saveText, favoriteError && styles.saveErrorText]}>
+              {favorite ? '♥ Favorited' : favoriteError ? '⚠ Retry' : '♡ Favorite'}
             </Text>
           </TouchableOpacity>
         )}
       </View>
 
       <ScrollView style={styles.scroll} contentContainerStyle={styles.content}>
+        {historySaveError && (
+          <View style={styles.historyErrorCard}>
+            <Text style={styles.historyErrorText}>
+              Could not save this scan to history. Pull to refresh or reopen this product.
+            </Text>
+          </View>
+        )}
+
         {euResult && (
           <ProductCard
             name={displayProductName}
             brand={brand}
             imageUrl={offProduct?.imageUrl ?? null}
             result={euResult}
+            productType={productType}
           />
         )}
 
-        {hasNutritionFacts && (
+        {isBeauty && (
+          <View style={styles.cosmeticRegCard}>
+            <Text style={styles.cosmeticRegText}>
+              Checked against EU Cosmetics Regulation 1223/2009
+            </Text>
+          </View>
+        )}
+
+        {!isBeauty && hasNutritionFacts && (
           <View style={styles.nutritionToggleWrap}>
             <TouchableOpacity
               style={styles.nutritionToggleButton}
@@ -329,7 +404,7 @@ export default function ProductScreen() {
           </View>
         )}
 
-        {showNutritionFacts && fsProduct?.nutrition && (
+        {!isBeauty && showNutritionFacts && fsProduct?.nutrition && (
           <View style={styles.nutritionCard}>
             <Text style={styles.sectionTitle}>Nutrition (per serving)</Text>
             <View style={styles.nutritionGrid}>
@@ -356,7 +431,7 @@ export default function ProductScreen() {
           </View>
         )}
 
-        {hasGluten && (
+        {!isBeauty && hasGluten && (
           <View style={styles.glutenAlertCard}>
             <Text style={styles.glutenAlertTitle}>Gluten Detected</Text>
             <Text style={styles.glutenAlertBody}>
@@ -368,7 +443,7 @@ export default function ProductScreen() {
           </View>
         )}
 
-        {hasPalmOil && (
+        {!isBeauty && hasPalmOil && (
           <View style={styles.palmOilAlertCard}>
             <Text style={styles.palmOilAlertTitle}>Palm Oil Detected</Text>
             <Text style={styles.palmOilAlertBody}>
@@ -390,7 +465,9 @@ export default function ProductScreen() {
         )}
 
         <View style={styles.ingredientsSection}>
-          <Text style={styles.sectionTitle}>Ingredient Analysis</Text>
+          <Text style={styles.sectionTitle}>
+            {isBeauty ? 'INCI Ingredient Analysis' : 'Ingredient Analysis'}
+          </Text>
           {missingIngredientsReportCount > 0 && (
             <View style={styles.missingIngredientsReportedBadge}>
               <Text style={styles.missingIngredientsReportedText}>
@@ -428,12 +505,14 @@ export default function ProductScreen() {
 
         {offProduct?.ingredientsText && (
           <View style={styles.rawCard}>
-            <Text style={styles.sectionTitle}>Full Ingredients</Text>
+            <Text style={styles.sectionTitle}>
+              {isBeauty ? 'Full INCI Formula' : 'Full Ingredients'}
+            </Text>
             <Text style={styles.rawText}>{offProduct.ingredientsText}</Text>
           </View>
         )}
 
-        <View style={styles.verificationCard}>
+        {!isBeauty && <View style={styles.verificationCard}>
           <View style={styles.verificationHeaderRow}>
             <Text style={styles.verificationTitle}>Source Verification (OFF vs USDA)</Text>
             <TouchableOpacity
@@ -530,9 +609,9 @@ export default function ProductScreen() {
               ) : null}
             </>
           )}
-        </View>
+        </View>}
 
-        <AlternativesList alternatives={alternatives} loading={altLoading} />
+        {!isBeauty && <AlternativesList alternatives={alternatives} loading={altLoading} />}
       </ScrollView>
 
       <IngredientDetailModal
@@ -607,6 +686,9 @@ function IngredientDetailModal({
         {ingredient.bannedSince && (
           <Text style={styles.modalDetail}>Banned since: {ingredient.bannedSince}</Text>
         )}
+        {ingredient.annex && (
+          <Text style={styles.modalDetail}>Regulation: Annex {ingredient.annex}</Text>
+        )}
         {ingredient.notes && <Text style={styles.modalNotes}>{ingredient.notes}</Text>}
         <Text style={styles.modalCategory}>Category: {ingredient.category.replace(/-/g, ' ')}</Text>
         <TouchableOpacity style={styles.modalClose} onPress={onClose}>
@@ -660,6 +742,14 @@ const styles = StyleSheet.create({
 
   scroll: { flex: 1 },
   content: { padding: spacing.lg, gap: spacing.md, paddingBottom: spacing.xxl },
+  historyErrorCard: {
+    backgroundColor: colors.warningLight,
+    borderWidth: 1,
+    borderColor: colors.warning,
+    borderRadius: radius.md,
+    padding: spacing.sm,
+  },
+  historyErrorText: { ...typography.caption1, color: colors.warning },
 
   sectionTitle: { ...typography.headline, color: colors.textPrimary, marginBottom: spacing.sm },
 
@@ -772,6 +862,16 @@ const styles = StyleSheet.create({
     paddingHorizontal: spacing.md,
   },
   reportButtonText: { ...typography.footnote, color: colors.euGold, fontWeight: '600' },
+
+  cosmeticRegCard: {
+    backgroundColor: colors.surfaceElevated,
+    borderRadius: radius.md,
+    paddingVertical: spacing.sm,
+    paddingHorizontal: spacing.md,
+    borderLeftWidth: 3,
+    borderLeftColor: colors.euBlue,
+  },
+  cosmeticRegText: { ...typography.footnote, color: colors.textSecondary },
 
   rawCard: {
     backgroundColor: colors.surface,

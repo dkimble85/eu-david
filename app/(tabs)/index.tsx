@@ -34,7 +34,7 @@ export default function ScanScreen() {
       setLoading(true);
       setError(null);
       try {
-        router.push(`/product/${barcode}`);
+        router.push(`/product/${barcode}?from=scan`);
       } catch {
         setError('Failed to look up product. Please try again.');
         scanner.resume();

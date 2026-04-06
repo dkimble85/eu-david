@@ -2,11 +2,13 @@ import React from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, Image, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
+import Constants from 'expo-constants';
 import { colors, radius, spacing, typography } from '@/constants/theme';
 import { useAuth } from '@/hooks/useAuth';
 
 export default function ProfileScreen() {
   const { user, signOut } = useAuth();
+  const releaseVersion = Constants.expoConfig?.version ?? '1.0.0';
 
   if (!user) {
     return (
@@ -26,7 +28,7 @@ export default function ProfileScreen() {
     <SafeAreaView style={styles.safe}>
       <ScrollView contentContainerStyle={styles.container} showsVerticalScrollIndicator={false}>
         <View style={styles.header}>
-          <Text style={styles.pageTitle}>Profile</Text>
+          <Text style={styles.pageTitle}>Settings</Text>
         </View>
 
         <View style={styles.section}>
@@ -50,6 +52,7 @@ export default function ProfileScreen() {
             (EC Regulation No 1333/2008). Ingredients not on this list are banned by default in the
             European Union.
           </Text>
+          <Text style={styles.versionText}>Release version: v{releaseVersion}</Text>
         </View>
 
         <View style={styles.infoCard}>
@@ -58,6 +61,23 @@ export default function ProfileScreen() {
             • OpenFoodFacts — ingredients and E-numbers{'\n'}• FatSecret — nutrition data{'\n'}• EU
             Regulation 1333/2008 — additive status
           </Text>
+        </View>
+
+        <View style={styles.infoCard}>
+          <Text style={styles.cardTitle}>Navigation</Text>
+          <TouchableOpacity
+            style={styles.navItem}
+            onPress={() => router.push('./regulated-ingredients')}
+            activeOpacity={0.8}
+          >
+            <View style={styles.navItemTextWrap}>
+              <Text style={styles.navItemTitle}>Regulated Ingredients</Text>
+              <Text style={styles.navItemSubtitle}>
+                Browse food + cosmetic ingredient restrictions and EU codes
+              </Text>
+            </View>
+            <Text style={styles.navItemArrow}>›</Text>
+          </TouchableOpacity>
         </View>
 
         <TouchableOpacity style={styles.signOutButton} onPress={signOut} activeOpacity={0.85}>
@@ -111,6 +131,23 @@ const styles = StyleSheet.create({
   },
   cardTitle: { ...typography.callout, color: colors.textPrimary, fontWeight: '600' },
   cardBody: { ...typography.subhead, color: colors.textSecondary, lineHeight: 22 },
+  versionText: { ...typography.caption1, color: colors.textMuted, marginTop: spacing.xs },
+  navItem: {
+    marginTop: spacing.xs,
+    backgroundColor: colors.surfaceElevated,
+    borderRadius: radius.md,
+    borderWidth: 1,
+    borderColor: colors.border,
+    padding: spacing.md,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    gap: spacing.md,
+  },
+  navItemTextWrap: { flex: 1, gap: 2 },
+  navItemTitle: { ...typography.callout, color: colors.textPrimary, fontWeight: '600' },
+  navItemSubtitle: { ...typography.caption1, color: colors.textSecondary },
+  navItemArrow: { ...typography.title3, color: colors.euGold },
 
   signOutButton: {
     backgroundColor: colors.bannedLight,

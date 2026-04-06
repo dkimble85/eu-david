@@ -7,7 +7,10 @@
       "Bash(npx expo:*)",
       "Bash(npx tsc:*)",
       "Bash(node -e \"const l = require\\('/Users/danny/dev/projects/eu-david/node_modules/lucide-react-native'\\); console.log\\(Object.keys\\(l\\).filter\\(k => ['ScanBarcode','History','Sparkles','CircleUser'].includes\\(k\\)\\)\\)\")",
-      "Bash(grep -l \"ScanBarcode\" /Users/danny/dev/projects/eu-david/node_modules/lucide-react-native/dist/*)"
+      "Bash(grep -l \"ScanBarcode\" /Users/danny/dev/projects/eu-david/node_modules/lucide-react-native/dist/*)",
+      "Bash(grep -r \"food\\\\|product\" /Users/danny/dev/projects/eu-david/lib/*.ts)",
+      "Bash(node_modules/.bin/tsc --noEmit --skipLibCheck)",
+      "Bash(node -e ':*)"
     ]
   }
 }

@@ -15,8 +15,13 @@ import { Search as SearchIcon, ScanBarcode } from 'lucide-react-native';
 import { colors, radius, spacing, typography } from '@/constants/theme';
 import { fetchRecommendations, getMatchingUsStore } from '@/lib/recommendations';
 import { runEuCheck, scoreProduct } from '@/lib/eu-check';
+import { runEuCosmeticCheck, scoreCosmeticProduct } from '@/lib/eu-cosmetic-check';
+import { searchOpenBeautyFactsProducts } from '@/lib/openbeautyfacts';
+import { searchOpenProductsFactsProducts } from '@/lib/openproductsfacts';
+import { classifyProductByCategories } from '@/lib/product-type';
 import { normalizeUsdaIngredientsText, searchUsdaBrandedFoods, toUsdaBarcode } from '@/lib/usda';
 import { submitProductReport } from '@/lib/reports';
+import { loadFavoriteBarcodes, toggleFavorite } from '@/lib/user-product-data';
 import { useAuth } from '@/hooks/useAuth';
 import ReportIssueModal from '@/components/ReportIssueModal';
 import { supabase } from '@/lib/supabase';
@@ -44,6 +49,7 @@ export default function SearchScreen() {
   const [missingIngredientsCounts, setMissingIngredientsCounts] = useState<Record<string, number>>(
     {}
   );
+  const [favoriteBarcodes, setFavoriteBarcodes] = useState<Set<string>>(new Set());
 
   const { data, isLoading, isError, refetch } = useSearch(submittedQuery, Boolean(user) && !authLoading);
 
@@ -64,13 +70,24 @@ export default function SearchScreen() {
     }
     const cleaned = barcodeInput.trim().replace(/[^0-9]/g, '');
     if (cleaned.length >= 8) {
-      router.push(`/product/${cleaned}`);
+      router.push(`/product/${cleaned}?from=search`);
       setBarcodeInput('');
       setShowBarcodeInput(false);
     }
   }, [authLoading, barcodeInput, user]);
 
   const hasQuery = !!submittedQuery;
+
+  React.useEffect(() => {
+    if (!user) {
+      setFavoriteBarcodes(new Set());
+      return;
+    }
+
+    loadFavoriteBarcodes(user.id).then((barcodes) => {
+      setFavoriteBarcodes(barcodes);
+    });
+  }, [user]);
 
   React.useEffect(() => {
     if (!user) {
@@ -178,6 +195,34 @@ export default function SearchScreen() {
       setReportTarget(null);
       setReportStatus(null);
     }, 900);
+  }
+
+  async function handleToggleFavorite(payload: {
+    barcode: string;
+    name: string;
+    productType: 'food' | 'beauty' | 'household' | 'unknown';
+  }) {
+    if (!user) {
+      router.push('/(auth)/login');
+      return;
+    }
+
+    const currentlyFavorite = favoriteBarcodes.has(payload.barcode);
+    const response = await toggleFavorite({
+      userId: user.id,
+      barcode: payload.barcode,
+      productName: payload.name,
+      productType: payload.productType,
+      currentlyFavorite,
+    });
+    if (!response.ok) return;
+
+    setFavoriteBarcodes((prev) => {
+      const next = new Set(prev);
+      if (response.isFavorite) next.add(payload.barcode);
+      else next.delete(payload.barcode);
+      return next;
+    });
   }
 
   return (
@@ -294,10 +339,14 @@ export default function SearchScreen() {
                   missingIngredientsReportCount={
                     item.product.barcode ? (missingIngredientsCounts[item.product.barcode] ?? 0) : 0
                   }
+                  isFavorite={
+                    item.product.barcode ? favoriteBarcodes.has(item.product.barcode) : false
+                  }
                   onReport={(payload) => {
                     setReportStatus(null);
                     setReportTarget(payload);
                   }}
+                  onToggleFavorite={handleToggleFavorite}
                 />
               )}
             />
@@ -409,7 +458,27 @@ async function searchWithFallbacks(query: string): Promise<ScoredProduct[]> {
     )
     .catch(() => [] as ScoredProduct[]);
 
-  const settled = await Promise.all([...offTasks, usdaTask]);
+  const obfTask = searchOpenBeautyFactsProducts(trimmed)
+    .then((products) =>
+      products.map((p) => {
+        const result = runEuCosmeticCheck(p.ingredientsText);
+        const score = scoreCosmeticProduct(result);
+        return { product: p, result, score } as ScoredProduct;
+      })
+    )
+    .catch(() => [] as ScoredProduct[]);
+
+  const opfTask = searchOpenProductsFactsProducts(trimmed)
+    .then((products) =>
+      products.map((p) => {
+        const result = runEuCheck([], p.ingredientsText);
+        const score = scoreProduct(result);
+        return { product: p, result, score } as ScoredProduct;
+      })
+    )
+    .catch(() => [] as ScoredProduct[]);
+
+  const settled = await Promise.all([...offTasks, usdaTask, obfTask, opfTask]);
   const combinedResults = settled.flat();
 
   const deduped = dedupeSearchResults(combinedResults);
@@ -504,16 +573,27 @@ function dedupeSearchResults(items: ScoredProduct[]): ScoredProduct[] {
 function ProductRow({
   item,
   missingIngredientsReportCount,
+  isFavorite,
   onReport,
+  onToggleFavorite,
 }: {
   item: ScoredProduct;
   missingIngredientsReportCount: number;
+  isFavorite: boolean;
   onReport: (payload: { barcode: string | null; name: string }) => void;
+  onToggleFavorite: (payload: {
+    barcode: string;
+    name: string;
+    productType: 'food' | 'beauty' | 'household' | 'unknown';
+  }) => void;
 }) {
   const { product, result, score } = item;
+  const productType = classifyProductByCategories(product.categoriesTags);
+  const isBeauty = productType === 'beauty';
+  const isHousehold = productType === 'household';
   const flagCount = result.banned.length + result.restricted.length + result.warning.length;
   const storeLabel = (() => {
-    if (!product.stores.length) return null;
+    if (isBeauty || !product.stores.length) return null;
     const match = getMatchingUsStore(product.stores);
     return match ? `${match.emoji} ${match.label}` : null;
   })();
@@ -522,13 +602,15 @@ function ProductRow({
     <TouchableOpacity
       style={styles.row}
       activeOpacity={0.8}
-      onPress={() => product.barcode && router.push(`/product/${product.barcode}`)}
+      onPress={() => product.barcode && router.push(`/product/${product.barcode}?from=search`)}
     >
       {product.imageUrl ? (
         <Image source={{ uri: product.imageUrl }} style={styles.rowImage} resizeMode="contain" />
       ) : (
         <View style={styles.rowImagePlaceholder}>
-          <Text style={styles.rowPlaceholderEmoji}>🛒</Text>
+          <Text style={styles.rowPlaceholderEmoji}>
+            {isBeauty ? '💄' : isHousehold ? '🧴' : '🛒'}
+          </Text>
         </View>
       )}
       <View style={styles.rowInfo}>
@@ -543,6 +625,9 @@ function ProductRow({
         <View style={styles.rowMeta}>
           <Text style={[styles.rowFlags, flagCount === 0 && styles.rowFlagsClean]}>
             {flagCount === 0 ? '✓ No flags' : `${flagCount} flag${flagCount > 1 ? 's' : ''}`}
+          </Text>
+          <Text style={styles.rowType}>
+            {isBeauty ? 'Beauty' : isHousehold ? 'Household' : 'Food'}
           </Text>
           {storeLabel && <Text style={styles.rowStore}>{storeLabel}</Text>}
         </View>
@@ -560,6 +645,23 @@ function ProductRow({
         >
           <Text style={styles.rowReportText}>Report Issue</Text>
         </TouchableOpacity>
+        {!!product.barcode && (
+          <TouchableOpacity
+            style={[styles.rowReportButton, isFavorite && styles.favoriteButtonActive]}
+            onPress={() =>
+              onToggleFavorite({
+                barcode: product.barcode!,
+                name: product.name,
+                productType,
+              })
+            }
+            activeOpacity={0.8}
+          >
+            <Text style={[styles.rowReportText, isFavorite && styles.favoriteButtonTextActive]}>
+              {isFavorite ? '♥ Favorited' : '♡ Favorite'}
+            </Text>
+          </TouchableOpacity>
+        )}
       </View>
       <ScoreRing score={score} />
     </TouchableOpacity>
@@ -691,6 +793,7 @@ const styles = StyleSheet.create({
   rowMeta: { flexDirection: 'row', alignItems: 'center', gap: spacing.sm, marginTop: 2 },
   rowFlags: { ...typography.caption2, color: colors.warning },
   rowFlagsClean: { color: colors.approved },
+  rowType: { ...typography.caption2, color: colors.textSecondary },
   rowStore: { ...typography.caption2, color: colors.textMuted },
   rowMissingBadge: {
     alignSelf: 'flex-start',
@@ -713,6 +816,13 @@ const styles = StyleSheet.create({
     paddingVertical: 4,
   },
   rowReportText: { ...typography.caption2, color: colors.euGold, fontWeight: '600' },
+  favoriteButtonActive: {
+    borderColor: colors.euGold,
+    backgroundColor: colors.euGold,
+  },
+  favoriteButtonTextActive: {
+    color: colors.background,
+  },
   scoreRing: {
     width: 44,
     height: 44,

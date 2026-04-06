@@ -1,10 +1,15 @@
 import { useQuery } from '@tanstack/react-query';
 import { getProductByBarcode, searchOpenFoodFactsProducts } from '@/lib/openfoodfacts';
+import { getBeautyProductByBarcode } from '@/lib/openbeautyfacts';
+import { getHouseholdProductByBarcode } from '@/lib/openproductsfacts';
 import { getFatSecretProduct } from '@/lib/fatsecret';
 import { runEuCheck } from '@/lib/eu-check';
+import { runEuCosmeticCheck } from '@/lib/eu-cosmetic-check';
+import { classifyProductByCategories } from '@/lib/product-type';
 import { extractUsdaFdcId, getUsdaFoodById, normalizeUsdaIngredientsText } from '@/lib/usda';
 import type { OpenFoodFactsProduct } from '@/lib/openfoodfacts';
 import type { UsdaBrandedFood } from '@/lib/usda';
+import type { ProductType } from '@/lib/product-type';
 
 const OFF_MATCH_CACHE_TTL_MS = 30 * 60 * 1000;
 const offMatchCache = new Map<
@@ -149,10 +154,34 @@ async function fetchProduct(barcode: string) {
     return { off, fs, euResult };
   }
 
-  const [off, fs] = await Promise.all([getProductByBarcode(barcode), getFatSecretProduct(barcode)]);
+  const [off, obf, opf, fs] = await Promise.all([
+    getProductByBarcode(barcode),
+    getBeautyProductByBarcode(barcode),
+    getHouseholdProductByBarcode(barcode),
+    getFatSecretProduct(barcode),
+  ]);
+
+  if (obf) {
+    const euResult = runEuCosmeticCheck(obf.ingredientsText);
+    return { off: obf, fs: null, euResult, productType: 'beauty' as ProductType };
+  }
+
+  if (opf) {
+    const euResult = runEuCheck([], opf.ingredientsText ?? null);
+    return { off: opf, fs: null, euResult, productType: 'household' as ProductType };
+  }
+
   if (!off && !fs) return null;
-  const euResult = runEuCheck(off?.eNumbers ?? [], off?.ingredientsText ?? null);
-  return { off, fs, euResult };
+
+  const classifiedType = off ? classifyProductByCategories(off.categoriesTags) : 'unknown';
+  const productType: ProductType = classifiedType === 'unknown' ? 'food' : classifiedType;
+
+  const euResult =
+    productType === 'beauty'
+      ? runEuCosmeticCheck(off?.ingredientsText ?? null)
+      : runEuCheck(off?.eNumbers ?? [], off?.ingredientsText ?? null);
+
+  return { off, fs: productType === 'food' ? fs : null, euResult, productType };
 }
 
 export function useProduct(barcode: string) {

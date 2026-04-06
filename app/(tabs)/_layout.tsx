@@ -1,35 +1,10 @@
 import { Tabs } from 'expo-router';
-import { Text, View, StyleSheet } from 'react-native';
-import { ScanBarcode, History, Search, CircleUser } from 'lucide-react-native';
+import { StyleSheet } from 'react-native';
+import { ScanBarcode, History, Search, Settings as SettingsIcon } from 'lucide-react-native';
 import { colors, radius, spacing, typography } from '@/constants/theme';
-import { useAuth } from '@/hooks/useAuth';
-import { useProfile } from '@/hooks/useProfile';
 
 const iconSize = 24;
 const iconColor = (focused: boolean) => (focused ? colors.euGold : colors.textMuted);
-
-function ProfileTabIcon({ focused }: { focused: boolean }) {
-  const { user } = useAuth();
-  const { profile } = useProfile(user);
-
-  if (!user) {
-    return (
-      <View style={[styles.tabIcon, focused && styles.tabIconFocused]}>
-        <CircleUser color={iconColor(focused)} size={iconSize} />
-      </View>
-    );
-  }
-
-  const letter = (profile.username?.[0] ?? user.email?.[0] ?? '?').toUpperCase();
-
-  return (
-    <View style={[styles.tabIcon, focused && styles.tabIconFocused]}>
-      <View style={[styles.avatarCircle, focused && styles.avatarCircleFocused]}>
-        <Text style={styles.avatarLetter}>{letter}</Text>
-      </View>
-    </View>
-  );
-}
 
 export default function TabsLayout() {
   return (
@@ -40,6 +15,7 @@ export default function TabsLayout() {
         tabBarActiveTintColor: colors.euGold,
         tabBarInactiveTintColor: colors.textMuted,
         tabBarLabelStyle: styles.tabLabel,
+        tabBarItemStyle: styles.tabItem,
       }}
     >
       <Tabs.Screen
@@ -52,7 +28,7 @@ export default function TabsLayout() {
       <Tabs.Screen
         name="history"
         options={{
-          title: 'Save History',
+          title: 'History',
           tabBarIcon: ({ focused }) => <History color={iconColor(focused)} size={iconSize} />,
         }}
       />
@@ -66,8 +42,14 @@ export default function TabsLayout() {
       <Tabs.Screen
         name="profile"
         options={{
-          title: 'Profile',
-          tabBarIcon: ({ focused }) => <ProfileTabIcon focused={focused} />,
+          title: 'Settings',
+          tabBarIcon: ({ focused }) => <SettingsIcon color={iconColor(focused)} size={iconSize} />,
+        }}
+      />
+      <Tabs.Screen
+        name="regulated-ingredients"
+        options={{
+          href: null,
         }}
       />
     </Tabs>
@@ -76,43 +58,27 @@ export default function TabsLayout() {
 
 const styles = StyleSheet.create({
   tabBar: {
-    backgroundColor: colors.surface,
-    borderTopColor: colors.border,
-    borderTopWidth: 1,
-    paddingTop: spacing.sm,
-    height: 84,
+    position: 'absolute',
+    left: spacing.md,
+    right: spacing.md,
+    bottom: spacing.md,
+    height: 72,
+    paddingTop: spacing.xs,
+    paddingBottom: spacing.xs,
+    borderTopWidth: 0,
+    borderRadius: radius.xl,
+    backgroundColor: 'rgba(28, 31, 46, 0.94)',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 10 },
+    shadowOpacity: 0.25,
+    shadowRadius: 20,
+    elevation: 10,
   },
   tabLabel: {
     ...typography.caption2,
     fontWeight: '600',
   },
-  tabIcon: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: 40,
-    height: 32,
-    borderRadius: 16,
-  },
-  tabIconFocused: {
-    backgroundColor: `${colors.euGold}22`,
-  },
-  tabEmoji: { fontSize: 20 },
-  avatarCircle: {
-    width: 26,
-    height: 26,
-    borderRadius: radius.full,
-    backgroundColor: colors.euBlue,
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderWidth: 1.5,
-    borderColor: colors.textMuted,
-  },
-  avatarCircleFocused: {
-    borderColor: colors.euGold,
-  },
-  avatarLetter: {
-    ...typography.caption2,
-    color: '#fff',
-    fontWeight: '700',
+  tabItem: {
+    paddingTop: 2,
   },
 });

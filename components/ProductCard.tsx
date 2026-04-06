@@ -2,15 +2,20 @@ import React from 'react';
 import { StyleSheet, Text, View, Image } from 'react-native';
 import { colors, radius, spacing, typography } from '@/constants/theme';
 import type { EuCheckResult } from '@/lib/eu-check';
+import type { ProductType } from '@/lib/product-type';
 
 type Props = {
   name: string;
   brand: string | null;
   imageUrl: string | null;
   result: EuCheckResult;
+  productType?: ProductType;
 };
 
-export default function ProductCard({ name, brand, imageUrl, result }: Props) {
+export default function ProductCard({ name, brand, imageUrl, result, productType }: Props) {
+  const isBeauty = productType === 'beauty';
+  const isHousehold = productType === 'household';
+
   const overallStatus = !result.hasAnyIngredientData
     ? 'unknown'
     : result.banned.length > 0
@@ -21,13 +26,25 @@ export default function ProductCard({ name, brand, imageUrl, result }: Props) {
           ? 'warning'
           : 'approved';
 
-  const statusConfig = {
-    banned: { color: colors.banned, label: 'Contains EU Banned Ingredients', emoji: '🚫' },
-    restricted: { color: colors.restricted, label: 'Contains Restricted Ingredients', emoji: '⚠️' },
-    warning: { color: colors.warning, label: 'Warning Label Required in EU', emoji: '⚠️' },
-    approved: { color: colors.approved, label: 'EU Compliant', emoji: '✓' },
-    unknown: { color: colors.unknown, label: 'Ingredients Could Not Be Found', emoji: 'ℹ️' },
-  }[overallStatus];
+  const statusConfig = isBeauty
+    ? {
+        banned: { color: colors.banned, label: 'Prohibited (EU Cosmetics Reg)', emoji: '🚫' },
+        restricted: { color: colors.restricted, label: 'Restricted Use in EU', emoji: '⚠️' },
+        warning: { color: colors.warning, label: 'Safety Warning', emoji: '⚠️' },
+        approved: { color: colors.approved, label: 'No Restriction Found', emoji: '✓' },
+        unknown: { color: colors.unknown, label: 'Ingredients Could Not Be Found', emoji: 'ℹ️' },
+      }[overallStatus]
+    : {
+        banned: { color: colors.banned, label: 'Contains EU Banned Ingredients', emoji: '🚫' },
+        restricted: {
+          color: colors.restricted,
+          label: 'Contains Restricted Ingredients',
+          emoji: '⚠️',
+        },
+        warning: { color: colors.warning, label: 'Warning Label Required in EU', emoji: '⚠️' },
+        approved: { color: colors.approved, label: 'EU Compliant', emoji: '✓' },
+        unknown: { color: colors.unknown, label: 'Ingredients Could Not Be Found', emoji: 'ℹ️' },
+      }[overallStatus];
 
   return (
     <View style={[styles.card, { borderTopColor: statusConfig.color }]}>
@@ -36,7 +53,9 @@ export default function ProductCard({ name, brand, imageUrl, result }: Props) {
           <Image source={{ uri: imageUrl }} style={styles.image} resizeMode="contain" />
         ) : (
           <View style={styles.imagePlaceholder}>
-            <Text style={styles.imagePlaceholderText}>🛒</Text>
+            <Text style={styles.imagePlaceholderText}>
+              {isBeauty ? '💄' : isHousehold ? '🧴' : '🛒'}
+            </Text>
           </View>
         )}
         <View style={styles.info}>
