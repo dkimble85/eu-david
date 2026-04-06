@@ -43,7 +43,12 @@
         "appleMobileWebAppTitle": "EU David"
       }
     },
-    "plugins": ["expo-router", "expo-font", "expo-camera"],
+    "plugins": [
+      "expo-router",
+      "expo-font",
+      "expo-camera",
+      "expo-web-browser"
+    ],
     "experiments": {
       "typedRoutes": true
     }

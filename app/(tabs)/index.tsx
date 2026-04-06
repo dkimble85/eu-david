@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useRef, useState } from 'react';
 import {
   StyleSheet,
   Text,
@@ -11,6 +11,7 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
+import { useIsFocused } from '@react-navigation/native';
 import BarcodeScanner from '@/components/BarcodeScanner';
 import { colors, radius, spacing, typography } from '@/constants/theme';
 import { useAuth } from '@/hooks/useAuth';
@@ -23,10 +24,13 @@ export default function ScanScreen() {
   const { width } = useWindowDimensions();
   const isDesktop = width >= 1024;
   const isMobile = width < 768;
+  const isFocused = useIsFocused();
   const { user, loading: authLoading } = useAuth();
+  const wasFocusedRef = useRef(false);
 
   const handleScan = useCallback(
     async (barcode: string) => {
+      if (loading) return;
       setLoading(true);
       setError(null);
       try {
@@ -39,10 +43,19 @@ export default function ScanScreen() {
       }
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    []
+    [loading]
   );
 
   const scanner = useScanner(handleScan);
+
+  React.useEffect(() => {
+    const returnedToFocusedScreen = isFocused && !wasFocusedRef.current;
+    if (returnedToFocusedScreen && cameraActive && !loading) {
+      setError(null);
+      scanner.resume();
+    }
+    wasFocusedRef.current = isFocused;
+  }, [isFocused, cameraActive, loading, scanner]);
 
   function startScanning() {
     if (authLoading) return;

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   StyleSheet,
   Text,
@@ -16,12 +16,13 @@ import { colors, radius, spacing, typography } from '@/constants/theme';
 import { useAuth } from '@/hooks/useAuth';
 
 export default function RegisterScreen() {
-  const { signUp } = useAuth();
+  const { signUp, signInWithGoogle, user, loading: authLoading } = useAuth();
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirm, setConfirm] = useState('');
-  const [loading, setLoading] = useState(false);
+  const [emailLoading, setEmailLoading] = useState(false);
+  const [googleLoading, setGoogleLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
 
@@ -38,7 +39,7 @@ export default function RegisterScreen() {
       setError('Password must be at least 8 characters.');
       return;
     }
-    setLoading(true);
+    setEmailLoading(true);
     setError(null);
     try {
       await signUp(email, password, username);
@@ -46,9 +47,31 @@ export default function RegisterScreen() {
     } catch (e: unknown) {
       setError(e instanceof Error ? e.message : 'Registration failed. Please try again.');
     } finally {
-      setLoading(false);
+      setEmailLoading(false);
     }
   }
+
+  async function handleGoogleSignUp() {
+    setGoogleLoading(true);
+    setError(null);
+    try {
+      await signInWithGoogle();
+    } catch (e: unknown) {
+      setError(e instanceof Error ? e.message : 'Google sign-up failed. Please try again.');
+    } finally {
+      setGoogleLoading(false);
+    }
+  }
+
+  useEffect(() => {
+    if (user) {
+      router.replace('/(tabs)');
+      return;
+    }
+    if (user || !authLoading) {
+      setGoogleLoading(false);
+    }
+  }, [user, authLoading]);
 
   if (success) {
     return (
@@ -142,15 +165,34 @@ export default function RegisterScreen() {
           </View>
 
           <TouchableOpacity
-            style={[styles.button, loading && styles.buttonDisabled]}
+            style={[styles.button, emailLoading && styles.buttonDisabled]}
             onPress={handleRegister}
-            disabled={loading}
+            disabled={emailLoading || googleLoading}
             activeOpacity={0.85}
           >
-            {loading ? (
+            {emailLoading ? (
               <ActivityIndicator color="#fff" />
             ) : (
               <Text style={styles.buttonText}>Create Account</Text>
+            )}
+          </TouchableOpacity>
+
+          <View style={styles.dividerRow}>
+            <View style={styles.dividerLine} />
+            <Text style={styles.dividerText}>or</Text>
+            <View style={styles.dividerLine} />
+          </View>
+
+          <TouchableOpacity
+            style={[styles.googleButton, googleLoading && styles.buttonDisabled]}
+            onPress={handleGoogleSignUp}
+            disabled={emailLoading || googleLoading}
+            activeOpacity={0.85}
+          >
+            {googleLoading ? (
+              <ActivityIndicator color={colors.textPrimary} />
+            ) : (
+              <Text style={styles.googleButtonText}>Continue with Google</Text>
             )}
           </TouchableOpacity>
 
@@ -212,6 +254,18 @@ const styles = StyleSheet.create({
   },
   buttonDisabled: { opacity: 0.6 },
   buttonText: { ...typography.headline, color: '#fff' },
+  dividerRow: { flexDirection: 'row', alignItems: 'center', gap: spacing.sm, marginTop: spacing.xs },
+  dividerLine: { flex: 1, height: 1, backgroundColor: colors.border },
+  dividerText: { ...typography.caption1, color: colors.textMuted, textTransform: 'uppercase' },
+  googleButton: {
+    backgroundColor: colors.surface,
+    borderRadius: radius.md,
+    borderWidth: 1,
+    borderColor: colors.border,
+    padding: spacing.md,
+    alignItems: 'center',
+  },
+  googleButtonText: { ...typography.headline, color: colors.textPrimary },
   footer: { flexDirection: 'row', justifyContent: 'center', marginTop: spacing.sm },
   footerText: { ...typography.callout, color: colors.textSecondary },
   footerLink: { ...typography.callout, color: colors.euGold, fontWeight: '600' },

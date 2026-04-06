@@ -52,7 +52,7 @@ export default function TabsLayout() {
       <Tabs.Screen
         name="history"
         options={{
-          title: 'History',
+          title: 'Save History',
           tabBarIcon: ({ focused }) => <History color={iconColor(focused)} size={iconSize} />,
         }}
       />

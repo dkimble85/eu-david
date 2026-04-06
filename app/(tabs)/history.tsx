@@ -50,7 +50,7 @@ export default function HistoryScreen() {
         <View style={styles.centered}>
           <Text style={styles.emoji}>🔒</Text>
           <Text style={styles.title}>Sign in to view history</Text>
-          <Text style={styles.subtitle}>Your scan history is saved to your account.</Text>
+          <Text style={styles.subtitle}>Your saved items are stored in your account.</Text>
           <TouchableOpacity style={styles.button} onPress={() => router.push('/(auth)/login')}>
             <Text style={styles.buttonText}>Sign In</Text>
           </TouchableOpacity>
@@ -63,7 +63,7 @@ export default function HistoryScreen() {
     return (
       <SafeAreaView style={styles.safe}>
         <View style={styles.header}>
-          <Text style={styles.pageTitle}>Scan History</Text>
+          <Text style={styles.pageTitle}>Save History</Text>
         </View>
         <View style={styles.centered}>
           <Text style={styles.emoji}>⚠️</Text>
@@ -91,7 +91,7 @@ export default function HistoryScreen() {
     return (
       <SafeAreaView style={styles.safe}>
         <View style={styles.header}>
-          <Text style={styles.pageTitle}>Scan History</Text>
+          <Text style={styles.pageTitle}>Save History</Text>
         </View>
         <View style={styles.centered}>
           <Text style={styles.emoji}>📋</Text>
@@ -105,7 +105,7 @@ export default function HistoryScreen() {
   return (
     <SafeAreaView style={styles.safe}>
       <View style={styles.header}>
-        <Text style={styles.pageTitle}>Scan History</Text>
+        <Text style={styles.pageTitle}>Save History</Text>
       </View>
       <FlatList
         data={scans}
