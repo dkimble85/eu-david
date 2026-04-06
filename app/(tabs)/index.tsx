@@ -13,6 +13,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
 import BarcodeScanner from '@/components/BarcodeScanner';
 import { colors, radius, spacing, typography } from '@/constants/theme';
+import { useAuth } from '@/hooks/useAuth';
 import { useScanner } from '@/hooks/useScanner';
 
 export default function ScanScreen() {
@@ -21,6 +22,8 @@ export default function ScanScreen() {
   const [error, setError] = useState<string | null>(null);
   const { width } = useWindowDimensions();
   const isDesktop = width >= 1024;
+  const isMobile = width < 768;
+  const { user, loading: authLoading } = useAuth();
 
   const handleScan = useCallback(
     async (barcode: string) => {
@@ -42,6 +45,11 @@ export default function ScanScreen() {
   const scanner = useScanner(handleScan);
 
   function startScanning() {
+    if (authLoading) return;
+    if (!user) {
+      router.push('/(auth)/login');
+      return;
+    }
     setCameraActive(true);
     scanner.start();
   }
@@ -49,7 +57,7 @@ export default function ScanScreen() {
   return (
     <SafeAreaView style={styles.safe}>
       <ScrollView
-        contentContainerStyle={styles.container}
+        contentContainerStyle={[styles.container, isMobile && styles.containerCompact]}
         showsVerticalScrollIndicator={false}
         scrollEnabled={!cameraActive}
         keyboardShouldPersistTaps="handled"
@@ -58,7 +66,10 @@ export default function ScanScreen() {
           <View style={styles.heroHeader}>
             <Image
               source={require('@/assets/logo.png')}
-              style={[styles.logoImageBase, isDesktop ? styles.logoImageDesktop : styles.logoImageDefault]}
+              style={[
+                styles.logoImageBase,
+                isDesktop ? styles.logoImageDesktop : isMobile ? styles.logoImageMobile : styles.logoImageDefault,
+              ]}
             />
             <View style={styles.header}>
               <Text style={styles.subtitle}>Scan a barcode to check EU compliance</Text>
@@ -94,8 +105,8 @@ export default function ScanScreen() {
             </TouchableOpacity>
           </View>
         ) : (
-          <View style={styles.cta}>
-            <View style={styles.illustrationBox}>
+          <View style={[styles.cta, isMobile && styles.ctaCompact]}>
+            <View style={[styles.illustrationBox, isMobile && styles.illustrationBoxCompact]}>
               <View style={styles.barcodeRow}>
                 {[3, 1, 2, 1, 3, 1, 1, 2, 1, 3, 2, 1, 1, 2, 3, 1, 2, 1, 1, 3].map((width, i) => (
                   <View
@@ -112,12 +123,15 @@ export default function ScanScreen() {
               </View>
             </View>
             <Text style={styles.ctaTitle}>Check before you eat</Text>
-            <Text style={styles.ctaBody}>
-              Use your phone&apos;s camera to scan any food barcode and instantly see which
-              ingredients are banned or restricted in the European Union.
+            <Text style={[styles.ctaBody, isMobile && styles.ctaBodyCompact]}>
+              Scan with your phone camera to quickly check ingredients banned or restricted in the
+              EU.
             </Text>
+            {!user && <Text style={styles.signInHint}>Sign in to start scanning barcodes.</Text>}
             <TouchableOpacity style={styles.scanButton} onPress={startScanning} activeOpacity={0.8}>
-              <Text style={styles.scanButtonText}>📷 Start Scanning</Text>
+              <Text style={styles.scanButtonText}>
+                {authLoading ? 'Checking account...' : user ? '📷 Start Scanning' : 'Sign In to Scan'}
+              </Text>
             </TouchableOpacity>
           </View>
         )}
@@ -129,10 +143,15 @@ export default function ScanScreen() {
 const styles = StyleSheet.create({
   safe: { flex: 1, backgroundColor: colors.background },
   container: { flexGrow: 1, padding: spacing.lg, gap: spacing.lg },
+  containerCompact: { paddingVertical: spacing.md, gap: spacing.md },
   heroHeader: { gap: spacing.lg * 0.119952, marginTop: -spacing.lg * 0.43125 },
   logoImageBase: {
     alignSelf: 'center',
     resizeMode: 'contain',
+  },
+  logoImageMobile: {
+    width: 320,
+    height: 214,
   },
   logoImageDefault: {
     width: 480,
@@ -180,6 +199,7 @@ const styles = StyleSheet.create({
   cancelText: { ...typography.callout, color: colors.textSecondary },
 
   cta: { flex: 1, alignItems: 'center', justifyContent: 'center', gap: spacing.lg },
+  ctaCompact: { gap: spacing.md },
   illustrationBox: {
     width: 120,
     height: 120,
@@ -188,9 +208,15 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  illustrationBoxCompact: {
+    width: 92,
+    height: 92,
+  },
   illustration: { fontSize: 56 },
   ctaTitle: { ...typography.title2, color: colors.textPrimary, textAlign: 'center' },
   ctaBody: { ...typography.body, color: colors.textSecondary, textAlign: 'center', maxWidth: 300 },
+  ctaBodyCompact: { maxWidth: 280 },
+  signInHint: { ...typography.caption1, color: colors.textMuted, textAlign: 'center' },
   barcodeRow: {
     flexDirection: 'row',
     alignItems: 'stretch',

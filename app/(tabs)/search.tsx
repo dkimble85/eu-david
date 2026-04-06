@@ -31,7 +31,7 @@ const searchCache = new Map<string, { expiresAt: number; data: ScoredProduct[] }
 const reportCountCache = new Map<string, { expiresAt: number; count: number }>();
 
 export default function SearchScreen() {
-  const { user } = useAuth();
+  const { user, loading: authLoading } = useAuth();
   const [searchQuery, setSearchQuery] = useState('');
   const [submittedQuery, setSubmittedQuery] = useState('');
   const [barcodeInput, setBarcodeInput] = useState('');
@@ -45,24 +45,39 @@ export default function SearchScreen() {
     {}
   );
 
-  const { data, isLoading, isError, refetch } = useSearch(submittedQuery);
+  const { data, isLoading, isError, refetch } = useSearch(submittedQuery, Boolean(user) && !authLoading);
 
   const handleSearch = useCallback(() => {
+    if (authLoading) return;
+    if (!user) {
+      router.push('/(auth)/login');
+      return;
+    }
     setSubmittedQuery(searchQuery.trim());
-  }, [searchQuery]);
+  }, [authLoading, searchQuery, user]);
 
   const handleBarcodeSubmit = useCallback(() => {
+    if (authLoading) return;
+    if (!user) {
+      router.push('/(auth)/login');
+      return;
+    }
     const cleaned = barcodeInput.trim().replace(/[^0-9]/g, '');
     if (cleaned.length >= 8) {
       router.push(`/product/${cleaned}`);
       setBarcodeInput('');
       setShowBarcodeInput(false);
     }
-  }, [barcodeInput]);
+  }, [authLoading, barcodeInput, user]);
 
   const hasQuery = !!submittedQuery;
 
   React.useEffect(() => {
+    if (!user) {
+      setMissingIngredientsCounts({});
+      return;
+    }
+
     async function loadMissingIngredientReportCounts() {
       const barcodes = Array.from(
         new Set(
@@ -120,7 +135,7 @@ export default function SearchScreen() {
     loadMissingIngredientReportCounts().catch(() => {
       setMissingIngredientsCounts({});
     });
-  }, [data]);
+  }, [data, user]);
 
   async function handleSubmitReport(issueType: ProductReportIssueType, details: string) {
     if (!reportTarget) return;
@@ -173,127 +188,152 @@ export default function SearchScreen() {
         <Text style={styles.subtitle}>Find products by name or barcode</Text>
       </View>
 
-      {/* Search bar */}
-      <View style={styles.searchRow}>
-        <TextInput
-          style={styles.searchInput}
-          value={searchQuery}
-          onChangeText={setSearchQuery}
-          onSubmitEditing={handleSearch}
-          placeholder="Search by product name..."
-          placeholderTextColor={colors.textMuted}
-          returnKeyType="search"
-          autoCapitalize="none"
-          autoCorrect={false}
-        />
-        <TouchableOpacity style={styles.searchButton} onPress={handleSearch}>
-          <SearchIcon size={20} color="#fff" />
-        </TouchableOpacity>
-      </View>
-
-      {/* Barcode quick-entry toggle */}
-      <View style={styles.barcodeRow}>
-        <TouchableOpacity
-          style={styles.barcodeToggle}
-          onPress={() => setShowBarcodeInput(!showBarcodeInput)}
-        >
-          <ScanBarcode size={16} color={colors.euGold} />
-          <Text style={styles.barcodeToggleText}>Enter barcode manually</Text>
-        </TouchableOpacity>
-      </View>
-
-      {showBarcodeInput && (
-        <View style={styles.barcodeInputRow}>
-          <TextInput
-            style={styles.barcodeInput}
-            value={barcodeInput}
-            onChangeText={setBarcodeInput}
-            onSubmitEditing={handleBarcodeSubmit}
-            placeholder="Enter barcode number..."
-            placeholderTextColor={colors.textMuted}
-            keyboardType="number-pad"
-            returnKeyType="go"
-            autoCapitalize="none"
-          />
-          <TouchableOpacity style={styles.searchButton} onPress={handleBarcodeSubmit}>
-            <Text style={styles.searchButtonText}>Go</Text>
-          </TouchableOpacity>
-        </View>
-      )}
-
-      {/* Results */}
-      {!hasQuery ? (
-        <View style={styles.empty}>
-          <SearchIcon size={48} color={colors.textMuted} />
-          <Text style={styles.emptyTitle}>Search for products</Text>
-          <Text style={styles.emptyBody}>
-            Enter a product name to search US stores. Products are filtered to only show US
-            retailers.
-          </Text>
-        </View>
-      ) : isLoading ? (
+      {authLoading ? (
         <View style={styles.empty}>
           <ActivityIndicator size="large" color={colors.euGold} />
-          <Text style={styles.emptyBody}>Searching...</Text>
+          <Text style={styles.emptyBody}>Checking account...</Text>
         </View>
-      ) : isError ? (
+      ) : !user ? (
         <View style={styles.empty}>
-          <Text style={styles.emptyEmoji}>⚠️</Text>
-          <Text style={styles.emptyTitle}>Something went wrong</Text>
-          <Text style={styles.emptyBody}>Check your connection and try again.</Text>
-          <TouchableOpacity style={styles.retryButton} onPress={() => refetch()}>
-            <Text style={styles.retryText}>Retry</Text>
+          <SearchIcon size={48} color={colors.textMuted} />
+          <Text style={styles.emptyTitle}>Sign in required</Text>
+          <Text style={styles.emptyBody}>Please sign in to search products and check ingredients.</Text>
+          <TouchableOpacity style={styles.retryButton} onPress={() => router.push('/(auth)/login')}>
+            <Text style={styles.retryText}>Go to Sign In</Text>
           </TouchableOpacity>
         </View>
-      ) : !data || data.length === 0 ? (
-        <View style={styles.empty}>
-          <Text style={styles.emptyEmoji}>🔍</Text>
-          <Text style={styles.emptyTitle}>No products found</Text>
-          <Text style={styles.emptyBody}>Try a different search term.</Text>
-        </View>
       ) : (
-        <FlatList
-          data={data}
-          keyExtractor={(item, i) => item.product.barcode ?? `${i}`}
-          contentContainerStyle={styles.list}
-          showsVerticalScrollIndicator={false}
-          renderItem={({ item }) => (
-            <ProductRow
-              item={item}
-              missingIngredientsReportCount={
-                item.product.barcode ? (missingIngredientsCounts[item.product.barcode] ?? 0) : 0
-              }
-              onReport={(payload) => {
-                setReportStatus(null);
-                setReportTarget(payload);
-              }}
+        <>
+          {/* Search bar */}
+          <View style={styles.searchRow}>
+            <TextInput
+              style={styles.searchInput}
+              value={searchQuery}
+              onChangeText={setSearchQuery}
+              onSubmitEditing={handleSearch}
+              placeholder="Search by product name..."
+              placeholderTextColor={colors.textMuted}
+              returnKeyType="search"
+              autoCapitalize="none"
+              autoCorrect={false}
+            />
+            <TouchableOpacity style={styles.searchButton} onPress={handleSearch}>
+              <SearchIcon size={20} color="#fff" />
+            </TouchableOpacity>
+          </View>
+
+          {/* Barcode quick-entry toggle */}
+          <View style={styles.barcodeRow}>
+            <TouchableOpacity
+              style={styles.barcodeToggle}
+              onPress={() => setShowBarcodeInput(!showBarcodeInput)}
+            >
+              <ScanBarcode size={16} color={colors.euGold} />
+              <Text style={styles.barcodeToggleText}>Enter barcode manually</Text>
+            </TouchableOpacity>
+          </View>
+
+          {showBarcodeInput && (
+            <View style={styles.barcodeInputRow}>
+              <TextInput
+                style={styles.barcodeInput}
+                value={barcodeInput}
+                onChangeText={setBarcodeInput}
+                onSubmitEditing={handleBarcodeSubmit}
+                placeholder="Enter barcode number..."
+                placeholderTextColor={colors.textMuted}
+                keyboardType="number-pad"
+                returnKeyType="go"
+                autoCapitalize="none"
+              />
+              <TouchableOpacity style={styles.searchButton} onPress={handleBarcodeSubmit}>
+                <Text style={styles.searchButtonText}>Go</Text>
+              </TouchableOpacity>
+            </View>
+          )}
+
+          {/* Results */}
+          {!hasQuery ? (
+            <View style={styles.empty}>
+              <SearchIcon size={48} color={colors.textMuted} />
+              <Text style={styles.emptyTitle}>Search for products</Text>
+              <Text style={styles.emptyBody}>
+                Enter a product name to search US stores. Products are filtered to only show US
+                retailers.
+              </Text>
+            </View>
+          ) : isLoading ? (
+            <View style={styles.empty}>
+              <ActivityIndicator size="large" color={colors.euGold} />
+              <Text style={styles.emptyBody}>Searching...</Text>
+            </View>
+          ) : isError ? (
+            <View style={styles.empty}>
+              <Text style={styles.emptyEmoji}>⚠️</Text>
+              <Text style={styles.emptyTitle}>Something went wrong</Text>
+              <Text style={styles.emptyBody}>Check your connection and try again.</Text>
+              <TouchableOpacity style={styles.retryButton} onPress={() => refetch()}>
+                <Text style={styles.retryText}>Retry</Text>
+              </TouchableOpacity>
+            </View>
+          ) : !data || data.length === 0 ? (
+            <View style={styles.empty}>
+              <Text style={styles.emptyEmoji}>🔍</Text>
+              <Text style={styles.emptyTitle}>No products found</Text>
+              <Text style={styles.emptyBody}>Try a different search term.</Text>
+            </View>
+          ) : (
+            <FlatList
+              data={data}
+              keyExtractor={(item, i) => item.product.barcode ?? `${i}`}
+              contentContainerStyle={styles.list}
+              showsVerticalScrollIndicator={false}
+              renderItem={({ item }) => (
+                <ProductRow
+                  item={item}
+                  missingIngredientsReportCount={
+                    item.product.barcode ? (missingIngredientsCounts[item.product.barcode] ?? 0) : 0
+                  }
+                  onReport={(payload) => {
+                    setReportStatus(null);
+                    setReportTarget(payload);
+                  }}
+                />
+              )}
             />
           )}
-        />
+          <ReportIssueModal
+            visible={Boolean(reportTarget)}
+            productName={reportTarget?.name ?? ''}
+            submitting={reportSubmitting}
+            statusMessage={reportStatus}
+            onClose={() => {
+              if (reportSubmitting) return;
+              setReportTarget(null);
+              setReportStatus(null);
+            }}
+            onSubmit={handleSubmitReport}
+          />
+        </>
       )}
-      <ReportIssueModal
-        visible={Boolean(reportTarget)}
-        productName={reportTarget?.name ?? ''}
-        submitting={reportSubmitting}
-        statusMessage={reportStatus}
-        onClose={() => {
-          if (reportSubmitting) return;
-          setReportTarget(null);
-          setReportStatus(null);
-        }}
-        onSubmit={handleSubmitReport}
-      />
     </SafeAreaView>
   );
 }
 
-function useSearch(searchQuery: string) {
+function useSearch(searchQuery: string, enabled: boolean) {
   const [data, setData] = useState<ScoredProduct[] | undefined>();
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
   const [reloadKey, setReloadKey] = useState(0);
 
   React.useEffect(() => {
+    if (!enabled) {
+      setData(undefined);
+      setIsLoading(false);
+      setIsError(false);
+      return;
+    }
+
     const query = searchQuery.trim();
     if (!query) {
       setData(undefined);
@@ -337,7 +377,7 @@ function useSearch(searchQuery: string) {
     return () => {
       isActive = false;
     };
-  }, [searchQuery, reloadKey]);
+  }, [enabled, searchQuery, reloadKey]);
 
   return {
     data,
