@@ -68,9 +68,9 @@ const styles = StyleSheet.create({
     left: spacing.md,
     right: spacing.md,
     bottom: spacing.lg,
-    height: 61,
+    height: 68,
     paddingTop: 4,
-    paddingBottom: 14,
+    paddingBottom: 12,
     paddingHorizontal: spacing.xs,
     borderTopWidth: 0,
     borderRadius: radius.xl,
@@ -83,10 +83,13 @@ const styles = StyleSheet.create({
   },
   tabLabel: {
     ...typography.caption2,
+    lineHeight: 13,
     fontWeight: '600',
+    paddingBottom: 1,
   },
   tabItem: {
-    paddingTop: 1,
+    paddingTop: 3,
+    paddingBottom: 3,
     paddingHorizontal: 2,
   },
 });
