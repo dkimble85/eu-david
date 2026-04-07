@@ -11,12 +11,22 @@ export type UsdaNutrition = {
   sugar: string | null;
 };
 
+export type UsdaNutriScoreInputs = {
+  energyKj100g: number | null;
+  saturatedFat100g: number | null;
+  sugars100g: number | null;
+  sodium100g: number | null;
+  fiber100g: number | null;
+  protein100g: number | null;
+};
+
 export type UsdaBrandedFood = {
   fdcId: number;
   description: string;
   brandOwner?: string;
   ingredients?: string;
   nutrition?: UsdaNutrition | null;
+  nutriScoreInputs100g?: UsdaNutriScoreInputs | null;
 };
 
 type UsdaSearchResponse = {
@@ -108,6 +118,32 @@ function extractNutrition(food: UsdaFoodResponse): UsdaNutrition | null {
   return hasAnyValue ? parsed : null;
 }
 
+/**
+ * Extract per-100g nutrient values from foodNutrients for Nutri-Score calculation.
+ * For USDA Branded Foods, foodNutrients amounts are per 100g.
+ */
+function extractNutriScoreInputs100g(food: UsdaFoodResponse): UsdaNutriScoreInputs | null {
+  const nutrients = food.foodNutrients ?? [];
+
+  const kcal = findFoodNutrientAmount(nutrients, { id: 1008, number: '208' });
+  const saturatedFat = findFoodNutrientAmount(nutrients, { id: 1258, number: '606' });
+  const sugars = findFoodNutrientAmount(nutrients, { id: 2000, number: '269', includesName: 'sugar' });
+  const sodium = findFoodNutrientAmount(nutrients, { id: 1093, number: '307', includesName: 'sodium' });
+  const fiber = findFoodNutrientAmount(nutrients, { id: 1079, number: '291', includesName: 'fiber' });
+  const protein = findFoodNutrientAmount(nutrients, { id: 1003, number: '203' });
+
+  if (kcal == null && saturatedFat == null) return null;
+
+  return {
+    energyKj100g: typeof kcal === 'number' ? Math.round(kcal * 4.184) : null,
+    saturatedFat100g: saturatedFat ?? null,
+    sugars100g: sugars ?? null,
+    sodium100g: sodium ?? null,
+    fiber100g: fiber ?? null,
+    protein100g: protein ?? null,
+  };
+}
+
 export async function searchUsdaBrandedFoods(
   query: string,
   pageSize = 25
@@ -165,5 +201,6 @@ export async function getUsdaFoodById(fdcId: number): Promise<UsdaBrandedFood | 
     brandOwner: food.brandOwner,
     ingredients: food.ingredients,
     nutrition: extractNutrition(food),
+    nutriScoreInputs100g: extractNutriScoreInputs100g(food),
   };
 }

@@ -13,19 +13,24 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
 import { Search as SearchIcon, ScanBarcode } from 'lucide-react-native';
 import { colors, radius, spacing, typography } from '@/constants/theme';
-import { fetchRecommendations, getMatchingUsStore } from '@/lib/recommendations';
+import { getMatchingUsStore } from '@/lib/recommendations';
 import { runEuCheck, scoreProduct } from '@/lib/eu-check';
 import { runEuCosmeticCheck, scoreCosmeticProduct } from '@/lib/eu-cosmetic-check';
-import { searchOpenBeautyFactsProducts } from '@/lib/openbeautyfacts';
-import { searchOpenProductsFactsProducts } from '@/lib/openproductsfacts';
+import { getBeautyProductByBarcode, searchOpenBeautyFactsProducts } from '@/lib/openbeautyfacts';
+import {
+  getHouseholdProductByBarcode,
+  searchOpenProductsFactsProducts,
+} from '@/lib/openproductsfacts';
 import { classifyProductByCategories } from '@/lib/product-type';
 import { normalizeUsdaIngredientsText, searchUsdaBrandedFoods, toUsdaBarcode } from '@/lib/usda';
 import { submitProductReport } from '@/lib/reports';
 import { loadFavoriteBarcodes, toggleFavorite } from '@/lib/user-product-data';
+import { getDietaryAnalysis } from '@/lib/dietary-analysis';
 import { useAuth } from '@/hooks/useAuth';
 import ReportIssueModal from '@/components/ReportIssueModal';
 import { supabase } from '@/lib/supabase';
 import type { ScoredProduct } from '@/lib/recommendations';
+import { getProductByBarcode, searchOpenFoodFactsProducts } from '@/lib/openfoodfacts';
 import type { OpenFoodFactsProduct } from '@/lib/openfoodfacts';
 import type { UsdaBrandedFood } from '@/lib/usda';
 import type { ProductReportIssueType } from '@/lib/reports';
@@ -230,7 +235,7 @@ export default function SearchScreen() {
       {/* Header */}
       <View style={styles.header}>
         <Text style={styles.title}>Search</Text>
-        <Text style={styles.subtitle}>Find products by name or barcode</Text>
+        <Text style={styles.subtitle}>Find food, beauty, and household products by name or barcode</Text>
       </View>
 
       {authLoading ? (
@@ -303,8 +308,7 @@ export default function SearchScreen() {
               <SearchIcon size={48} color={colors.textMuted} />
               <Text style={styles.emptyTitle}>Search for products</Text>
               <Text style={styles.emptyBody}>
-                Enter a product name to search US stores. Products are filtered to only show US
-                retailers.
+                Enter a product name to search food, beauty, and household products.
               </Text>
             </View>
           ) : isLoading ? (
@@ -443,13 +447,22 @@ function useSearch(searchQuery: string, enabled: boolean) {
 async function searchWithFallbacks(query: string): Promise<ScoredProduct[]> {
   const trimmed = query.trim();
   const normalized = trimmed.toLowerCase().endsWith('s') ? trimmed.slice(0, -1) : trimmed;
-  const termVariants = Array.from(new Set([trimmed, normalized].filter(Boolean)));
+  const dePunctuated = trimmed.replace(/[^a-z0-9\s]/gi, ' ').replace(/\s+/g, ' ').trim();
+  const termVariants = Array.from(new Set([trimmed, normalized, dePunctuated].filter(Boolean)));
   const countryVariants: Array<string | null> = ['en:united-states', null];
+  const barcodeQuery = trimmed.replace(/[^0-9]/g, '');
+
   const offTasks = termVariants.flatMap((term) =>
     countryVariants.map((country) =>
-      fetchRecommendations(null, term, 'all', null, false, country).catch(
-        () => [] as ScoredProduct[]
-      )
+      searchOpenFoodFactsProducts(term, country, 40)
+        .then((products) =>
+          products.map((product) => {
+            const result = runEuCheck(product.eNumbers, product.ingredientsText);
+            const score = scoreProduct(result);
+            return { product, result, score } as ScoredProduct;
+          })
+        )
+        .catch(() => [] as ScoredProduct[])
     )
   );
   const usdaTask = searchUsdaBrandedFoods(trimmed)
@@ -458,27 +471,65 @@ async function searchWithFallbacks(query: string): Promise<ScoredProduct[]> {
     )
     .catch(() => [] as ScoredProduct[]);
 
-  const obfTask = searchOpenBeautyFactsProducts(trimmed)
-    .then((products) =>
-      products.map((p) => {
-        const result = runEuCosmeticCheck(p.ingredientsText);
-        const score = scoreCosmeticProduct(result);
-        return { product: p, result, score } as ScoredProduct;
-      })
+  const obfTask = Promise.all(
+    termVariants.map((term) =>
+      searchOpenBeautyFactsProducts(term, 25)
+        .then((products) =>
+          products.map((p) => {
+            const result = runEuCosmeticCheck(p.ingredientsText);
+            const score = scoreCosmeticProduct(result);
+            return { product: p, result, score } as ScoredProduct;
+          })
+        )
+        .catch(() => [] as ScoredProduct[])
     )
-    .catch(() => [] as ScoredProduct[]);
+  ).then((results) => results.flat());
 
-  const opfTask = searchOpenProductsFactsProducts(trimmed)
-    .then((products) =>
-      products.map((p) => {
-        const result = runEuCheck([], p.ingredientsText);
-        const score = scoreProduct(result);
-        return { product: p, result, score } as ScoredProduct;
-      })
+  const opfTask = Promise.all(
+    termVariants.map((term) =>
+      searchOpenProductsFactsProducts(term, 25)
+        .then((products) =>
+          products.map((p) => {
+            const result = runEuCheck([], p.ingredientsText);
+            const score = scoreProduct(result);
+            return { product: p, result, score } as ScoredProduct;
+          })
+        )
+        .catch(() => [] as ScoredProduct[])
     )
-    .catch(() => [] as ScoredProduct[]);
+  ).then((results) => results.flat());
 
-  const settled = await Promise.all([...offTasks, usdaTask, obfTask, opfTask]);
+  const exactBarcodeTask =
+    barcodeQuery.length >= 8
+      ? Promise.all([
+          getProductByBarcode(barcodeQuery),
+          getBeautyProductByBarcode(barcodeQuery),
+          getHouseholdProductByBarcode(barcodeQuery),
+        ])
+          .then(([food, beauty, household]) => {
+            const exactResults: ScoredProduct[] = [];
+
+            if (food) {
+              const result = runEuCheck(food.eNumbers, food.ingredientsText);
+              exactResults.push({ product: food, result, score: scoreProduct(result) });
+            }
+
+            if (beauty) {
+              const result = runEuCosmeticCheck(beauty.ingredientsText);
+              exactResults.push({ product: beauty, result, score: scoreCosmeticProduct(result) });
+            }
+
+            if (household) {
+              const result = runEuCheck([], household.ingredientsText);
+              exactResults.push({ product: household, result, score: scoreProduct(result) });
+            }
+
+            return exactResults;
+          })
+          .catch(() => [] as ScoredProduct[])
+      : Promise.resolve([] as ScoredProduct[]);
+
+  const settled = await Promise.all([...offTasks, usdaTask, obfTask, opfTask, exactBarcodeTask]);
   const combinedResults = settled.flat();
 
   const deduped = dedupeSearchResults(combinedResults);
@@ -509,6 +560,27 @@ function mapUsdaFoodToScoredProduct(food: UsdaBrandedFood): ScoredProduct | null
     analysisFlags: [],
     categoriesTags: [],
     stores: [],
+    metaScores: {
+      nutriScoreGrade: null,
+      nutriScoreScore: null,
+      ecoScoreGrade: null,
+      ecoScoreScore: null,
+      novaGroup: null,
+    },
+    nutritionFacts: food.nutrition
+      ? {
+          basis: 'serving',
+          servingSize: null,
+          calories: food.nutrition.calories,
+          fat: food.nutrition.fat,
+          saturatedFat: null,
+          carbohydrate: food.nutrition.carbohydrate,
+          sugar: food.nutrition.sugar,
+          fiber: food.nutrition.fiber,
+          protein: food.nutrition.protein,
+          sodium: food.nutrition.sodium,
+        }
+      : null,
   };
 
   const result = runEuCheck([], ingredientsText);
@@ -532,14 +604,17 @@ function isRelevantToQuery(item: ScoredProduct, terms: string[]): boolean {
 function getRelevanceScore(item: ScoredProduct, terms: string[]): number {
   const name = normalizeForSearch(item.product.name);
   const brand = normalizeForSearch(item.product.brand ?? '');
+  const barcode = normalizeForSearch(item.product.barcode ?? '');
   const haystack = `${name} ${brand}`.trim();
-  if (!haystack) return 0;
+  if (!haystack && !barcode) return 0;
 
   let score = 0;
   for (const rawTerm of terms) {
     const term = normalizeForSearch(rawTerm);
     if (!term) continue;
 
+    if (barcode && barcode === term) score += 400;
+    if (barcode && barcode.includes(term)) score += 220;
     if (name === term) score += 250;
     if (name.includes(term)) score += 150;
     if (brand.includes(term)) score += 90;
@@ -548,6 +623,12 @@ function getRelevanceScore(item: ScoredProduct, terms: string[]): number {
     const tokens = term.split(' ').filter((token) => token.length > 1);
     if (tokens.length > 0 && tokens.every((token) => haystack.includes(token))) {
       score += 40;
+    }
+    if (
+      tokens.length > 1 &&
+      tokens.filter((token) => haystack.includes(token)).length >= Math.ceil(tokens.length / 2)
+    ) {
+      score += 20;
     }
   }
 
@@ -568,6 +649,25 @@ function dedupeSearchResults(items: ScoredProduct[]): ScoredProduct[] {
   }
 
   return deduped;
+}
+
+function scoreChipColor(value: string | number | null, type: 'grade' | 'nova'): string {
+  if (value == null) return colors.unknown;
+  if (type === 'grade') {
+    const g = String(value).toLowerCase();
+    if (g === 'a' || g === 'b') return colors.approved;
+    if (g === 'c') return colors.warning;
+    return colors.restricted;
+  }
+  const n = Number(value);
+  if (n <= 2) return colors.approved;
+  if (n === 3) return colors.warning;
+  return colors.restricted;
+}
+
+function normalizeNutriGrade(grade: string | null): string | null {
+  if (!grade) return null;
+  return grade.toLowerCase() === 'e' ? 'f' : grade.toLowerCase();
 }
 
 function ProductRow({
@@ -592,6 +692,11 @@ function ProductRow({
   const isBeauty = productType === 'beauty';
   const isHousehold = productType === 'household';
   const flagCount = result.banned.length + result.restricted.length + result.warning.length;
+  const nutriScore = normalizeNutriGrade(product.metaScores.nutriScoreGrade)?.toUpperCase() ?? null;
+  const ecoScore = product.metaScores.ecoScoreGrade?.toUpperCase() ?? null;
+  const novaGroup = product.metaScores.novaGroup;
+  const dietaryAnalysis = getDietaryAnalysis(product).slice(0, 3);
+  const nutritionFacts = product.nutritionFacts;
   const storeLabel = (() => {
     if (isBeauty || !product.stores.length) return null;
     const match = getMatchingUsStore(product.stores);
@@ -631,6 +736,92 @@ function ProductRow({
           </Text>
           {storeLabel && <Text style={styles.rowStore}>{storeLabel}</Text>}
         </View>
+        {!isBeauty && !isHousehold && (nutriScore || ecoScore || novaGroup) && (
+          <View style={styles.scoreMetaRow}>
+            {nutriScore && (
+              <Text
+                style={[
+                  styles.scoreMetaChip,
+                  { color: scoreChipColor(nutriScore, 'grade'), backgroundColor: `${scoreChipColor(nutriScore, 'grade')}22` },
+                ]}
+              >
+                Nutri {nutriScore}
+              </Text>
+            )}
+            {ecoScore && (
+              <Text
+                style={[
+                  styles.scoreMetaChip,
+                  { color: scoreChipColor(ecoScore, 'grade'), backgroundColor: `${scoreChipColor(ecoScore, 'grade')}22` },
+                ]}
+              >
+                Eco {ecoScore}
+              </Text>
+            )}
+            {novaGroup != null && (
+              <Text
+                style={[
+                  styles.scoreMetaChip,
+                  { color: scoreChipColor(novaGroup, 'nova'), backgroundColor: `${scoreChipColor(novaGroup, 'nova')}22` },
+                ]}
+              >
+                NOVA {novaGroup}
+              </Text>
+            )}
+          </View>
+        )}
+        {!isBeauty && !isHousehold && dietaryAnalysis.length > 0 && (
+          <View style={styles.scoreMetaRow}>
+            {dietaryAnalysis.map((item) => (
+              <Text
+                key={item.key}
+                style={[
+                  styles.scoreMetaChip,
+                  item.tone === 'good' && styles.dietaryChipGood,
+                  item.tone === 'warning' && styles.dietaryChipWarning,
+                  item.tone === 'neutral' && styles.dietaryChipNeutral,
+                ]}
+                numberOfLines={1}
+              >
+                {item.label}
+              </Text>
+            ))}
+          </View>
+        )}
+        {!isBeauty && !isHousehold && nutritionFacts && (
+          <View style={styles.nutritionLabelMini}>
+            <Text style={styles.nutritionLabelMiniTitle}>Nutrition Facts</Text>
+            {nutritionFacts.basis && (
+              <Text style={styles.nutritionLabelMiniBasis}>
+                {nutritionFacts.basis === '100g' ? 'Per 100g' : 'Per serving'}
+              </Text>
+            )}
+            {nutritionFacts.calories && (
+              <View style={[styles.nutritionLabelMiniRow, styles.nutritionLabelMiniRowStrong]}>
+                <Text style={styles.nutritionLabelMiniNameStrong}>Calories</Text>
+                <Text style={styles.nutritionLabelMiniValueStrong}>{nutritionFacts.calories}</Text>
+              </View>
+            )}
+            {nutritionFacts.protein && (
+              <View style={styles.nutritionLabelMiniRow}>
+                <Text style={styles.nutritionLabelMiniName}>Protein</Text>
+                <Text style={styles.nutritionLabelMiniValue}>{nutritionFacts.protein}g</Text>
+              </View>
+            )}
+            {nutritionFacts.sugar && (
+              <View style={styles.nutritionLabelMiniRow}>
+                <Text style={styles.nutritionLabelMiniName}>Sugar</Text>
+                <Text style={styles.nutritionLabelMiniValue}>{nutritionFacts.sugar}g</Text>
+              </View>
+            )}
+            {nutritionFacts.fat && (
+              <View style={styles.nutritionLabelMiniRow}>
+                <Text style={styles.nutritionLabelMiniName}>Fat</Text>
+                <Text style={styles.nutritionLabelMiniValue}>{nutritionFacts.fat}g</Text>
+              </View>
+            )}
+          </View>
+        )}
         {missingIngredientsReportCount > 0 && (
           <View style={styles.rowMissingBadge}>
             <Text style={styles.rowMissingBadgeText}>
@@ -795,6 +986,88 @@ const styles = StyleSheet.create({
   rowFlagsClean: { color: colors.approved },
   rowType: { ...typography.caption2, color: colors.textSecondary },
   rowStore: { ...typography.caption2, color: colors.textMuted },
+  scoreMetaRow: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: spacing.xs,
+    marginTop: spacing.xs,
+  },
+  scoreMetaChip: {
+    ...typography.caption2,
+    color: colors.textPrimary,
+    backgroundColor: colors.surfaceElevated,
+    borderRadius: radius.full,
+    paddingHorizontal: spacing.sm,
+    paddingVertical: 4,
+    overflow: 'hidden',
+  },
+  nutritionLabelMini: {
+    marginTop: spacing.xs,
+    alignSelf: 'flex-start',
+    minWidth: 150,
+    backgroundColor: '#fff',
+    borderRadius: radius.sm,
+    borderWidth: 1,
+    borderColor: '#111',
+    paddingHorizontal: spacing.sm,
+    paddingVertical: spacing.xs,
+  },
+  nutritionLabelMiniTitle: {
+    fontSize: 15,
+    lineHeight: 18,
+    fontWeight: '900',
+    color: '#111',
+  },
+  nutritionLabelMiniBasis: {
+    ...typography.caption2,
+    color: '#111',
+    marginTop: 2,
+    marginBottom: 4,
+  },
+  nutritionLabelMiniRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    gap: spacing.sm,
+    paddingVertical: 3,
+    borderTopWidth: 1,
+    borderTopColor: '#111',
+  },
+  nutritionLabelMiniRowStrong: {
+    borderTopWidth: 2,
+    marginTop: 4,
+  },
+  nutritionLabelMiniName: {
+    ...typography.caption2,
+    color: '#111',
+    fontWeight: '700',
+  },
+  nutritionLabelMiniValue: {
+    ...typography.caption2,
+    color: '#111',
+    fontWeight: '700',
+  },
+  nutritionLabelMiniNameStrong: {
+    ...typography.caption1,
+    color: '#111',
+    fontWeight: '900',
+  },
+  nutritionLabelMiniValueStrong: {
+    ...typography.caption1,
+    color: '#111',
+    fontWeight: '900',
+  },
+  dietaryChipGood: {
+    backgroundColor: colors.approvedLight,
+    color: colors.approved,
+  },
+  dietaryChipWarning: {
+    backgroundColor: colors.warningLight,
+    color: colors.warning,
+  },
+  dietaryChipNeutral: {
+    backgroundColor: colors.surfaceElevated,
+    color: colors.textSecondary,
+  },
   rowMissingBadge: {
     alignSelf: 'flex-start',
     marginTop: spacing.xs,

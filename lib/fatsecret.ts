@@ -18,6 +18,9 @@ export type FatSecretNutrition = {
   sodium: string | null;
   fiber: string | null;
   sugar: string | null;
+  saturatedFat: string | null;
+  /** Serving size in grams (null when unit is not 'g' or missing) */
+  metricServingAmountG: number | null;
 };
 
 export type FatSecretProduct = {

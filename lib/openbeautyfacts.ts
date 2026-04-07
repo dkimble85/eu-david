@@ -41,6 +41,14 @@ function parseBeautyProduct(p: RawBeautyProduct, barcode?: string): OpenFoodFact
     analysisFlags: p.labels_tags || [],
     categoriesTags: p.categories_tags || [],
     stores: [],
+    metaScores: {
+      nutriScoreGrade: null,
+      nutriScoreScore: null,
+      ecoScoreGrade: null,
+      ecoScoreScore: null,
+      novaGroup: null,
+    },
+    nutritionFacts: null,
   };
 }
 

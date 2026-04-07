@@ -12,8 +12,38 @@ const FIELDS = [
   'categories_tags',
   'countries_tags',
   'stores_tags',
+  'nutriscore_grade',
+  'nutriscore_score',
+  'nutrition_grades',
+  'nova_group',
+  'ecoscore_grade',
+  'ecoscore_score',
+  'nutriments',
+  'nutrition_data_per',
+  'serving_size',
   'code',
 ].join(',');
+
+export type ProductMetaScores = {
+  nutriScoreGrade: string | null;
+  nutriScoreScore: number | null;
+  ecoScoreGrade: string | null;
+  ecoScoreScore: number | null;
+  novaGroup: number | null;
+};
+
+export type ProductNutritionFacts = {
+  basis: string | null;
+  servingSize: string | null;
+  calories: string | null;
+  fat: string | null;
+  saturatedFat: string | null;
+  carbohydrate: string | null;
+  sugar: string | null;
+  fiber: string | null;
+  protein: string | null;
+  sodium: string | null;
+};
 
 export type OpenFoodFactsProduct = {
   barcode: string | null;
@@ -26,6 +56,8 @@ export type OpenFoodFactsProduct = {
   analysisFlags: string[];
   categoriesTags: string[];
   stores: string[];
+  metaScores: ProductMetaScores;
+  nutritionFacts: ProductNutritionFacts | null;
 };
 
 type RawOpenFoodFactsProduct = {
@@ -39,6 +71,15 @@ type RawOpenFoodFactsProduct = {
   ingredients_analysis_tags?: string[];
   categories_tags?: string[];
   stores_tags?: string[];
+  nutriscore_grade?: string;
+  nutriscore_score?: number;
+  nutrition_grades?: string;
+  nova_group?: number;
+  ecoscore_grade?: string;
+  ecoscore_score?: number;
+  nutrition_data_per?: string;
+  serving_size?: string;
+  nutriments?: Record<string, number | string | undefined>;
 };
 
 function parseENumber(tag: string): string {
@@ -48,6 +89,42 @@ function parseENumber(tag: string): string {
 
 function parseAllergen(tag: string): string {
   return tag.replace(/^en:/, '').replace(/-/g, ' ');
+}
+
+function formatNutritionValue(value: unknown): string | null {
+  if (typeof value === 'number' && Number.isFinite(value)) {
+    return Number.isInteger(value) ? String(value) : value.toFixed(1);
+  }
+  if (typeof value === 'string' && value.trim()) return value.trim();
+  return null;
+}
+
+function parseNutritionFacts(
+  nutriments?: Record<string, number | string | undefined>,
+  nutritionDataPer?: string,
+  servingSize?: string
+): ProductNutritionFacts | null {
+  if (!nutriments) return null;
+
+  const facts: ProductNutritionFacts = {
+    basis: nutritionDataPer ?? null,
+    servingSize: servingSize ?? null,
+    calories: formatNutritionValue(nutriments['energy-kcal_100g'] ?? nutriments['energy-kcal']),
+    fat: formatNutritionValue(nutriments.fat_100g ?? nutriments.fat),
+    saturatedFat: formatNutritionValue(
+      nutriments['saturated-fat_100g'] ?? nutriments['saturated-fat']
+    ),
+    carbohydrate: formatNutritionValue(
+      nutriments.carbohydrates_100g ?? nutriments.carbohydrates
+    ),
+    sugar: formatNutritionValue(nutriments.sugars_100g ?? nutriments.sugars),
+    fiber: formatNutritionValue(nutriments.fiber_100g ?? nutriments.fiber),
+    protein: formatNutritionValue(nutriments.proteins_100g ?? nutriments.proteins),
+    sodium: formatNutritionValue(nutriments.sodium_100g ?? nutriments.sodium),
+  };
+
+  const hasAnyValue = Object.values(facts).some((value) => value !== null);
+  return hasAnyValue ? facts : null;
 }
 
 export async function getProductByBarcode(barcode: string): Promise<OpenFoodFactsProduct | null> {
@@ -74,6 +151,15 @@ export async function getProductByBarcode(barcode: string): Promise<OpenFoodFact
     analysisFlags: p.ingredients_analysis_tags || [],
     categoriesTags: p.categories_tags || [],
     stores: p.stores_tags || [],
+    metaScores: {
+      nutriScoreGrade: p.nutriscore_grade ?? p.nutrition_grades ?? null,
+      nutriScoreScore:
+        typeof p.nutriscore_score === 'number' ? p.nutriscore_score : null,
+      ecoScoreGrade: p.ecoscore_grade ?? null,
+      ecoScoreScore: typeof p.ecoscore_score === 'number' ? p.ecoscore_score : null,
+      novaGroup: typeof p.nova_group === 'number' ? p.nova_group : null,
+    },
+    nutritionFacts: parseNutritionFacts(p.nutriments, p.nutrition_data_per, p.serving_size),
   };
 }
 
@@ -89,6 +175,15 @@ export function parseProduct(p: RawOpenFoodFactsProduct): OpenFoodFactsProduct {
     analysisFlags: p.ingredients_analysis_tags || [],
     categoriesTags: p.categories_tags || [],
     stores: p.stores_tags || [],
+    metaScores: {
+      nutriScoreGrade: p.nutriscore_grade ?? p.nutrition_grades ?? null,
+      nutriScoreScore:
+        typeof p.nutriscore_score === 'number' ? p.nutriscore_score : null,
+      ecoScoreGrade: p.ecoscore_grade ?? null,
+      ecoScoreScore: typeof p.ecoscore_score === 'number' ? p.ecoscore_score : null,
+      novaGroup: typeof p.nova_group === 'number' ? p.nova_group : null,
+    },
+    nutritionFacts: parseNutritionFacts(p.nutriments, p.nutrition_data_per, p.serving_size),
   };
 }
 

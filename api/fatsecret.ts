@@ -85,6 +85,11 @@ async function getFoodDetails(foodId: string, token: string) {
           sodium: serving.sodium ?? null,
           fiber: serving.fiber ?? null,
           sugar: serving.sugar ?? null,
+          saturatedFat: serving.saturated_fat ?? null,
+          metricServingAmountG:
+            serving.metric_serving_unit === 'g' && serving.metric_serving_amount != null
+              ? Number(serving.metric_serving_amount)
+              : null,
         }
       : null,
   };

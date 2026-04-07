@@ -302,6 +302,13 @@
       "category": "acidity-regulator"
     },
     "e341": { "name": "Calcium phosphates", "status": "approved", "category": "raising-agent" },
+    "e341i": {
+      "name": "Monocalcium phosphate",
+      "status": "approved",
+      "category": "raising-agent",
+      "commonNames": ["monocalcium phosphate", "calcium dihydrogen phosphate", "calcium biphosphate"],
+      "notes": "Used as a leavening acid in baking powder and self-raising flour. Reacts with sodium bicarbonate (E500) to produce CO₂. Also acts as an acidity regulator and mineral supplement. Permitted in the EU under Regulation (EC) No 1333/2008."
+    },
     "e350": { "name": "Sodium malates", "status": "approved", "category": "acidity-regulator" },
     "e351": { "name": "Potassium malate", "status": "approved", "category": "acidity-regulator" },
     "e352": { "name": "Calcium malates", "status": "approved", "category": "acidity-regulator" },
@@ -338,6 +345,12 @@
     "e450": { "name": "Diphosphates", "status": "approved", "category": "raising-agent" },
     "e451": { "name": "Triphosphates", "status": "approved", "category": "raising-agent" },
     "e452": { "name": "Polyphosphates", "status": "approved", "category": "raising-agent" },
+    "e452i": {
+      "name": "Sodium polyphosphate",
+      "status": "approved",
+      "category": "raising-agent",
+      "commonNames": ["sodium polyphosphate", "sodium polyphosphates"]
+    },
     "e460": { "name": "Cellulose", "status": "approved", "category": "bulking-agent" },
     "e461": { "name": "Methyl cellulose", "status": "approved", "category": "thickener" },
     "e462": { "name": "Ethyl cellulose", "status": "approved", "category": "binder" },
@@ -389,6 +402,13 @@
       "category": "emulsifier"
     },
     "e500": { "name": "Sodium carbonates", "status": "approved", "category": "raising-agent" },
+    "e500ii": {
+      "name": "Sodium hydrogen carbonate",
+      "status": "approved",
+      "category": "raising-agent",
+      "commonNames": ["sodium hydrogen carbonate", "sodium bicarbonate", "baking soda", "bicarbonate of soda", "nahcolite"],
+      "notes": "Common baking soda. Releases CO₂ when heated or reacts with acid (e.g. E341i), causing dough to rise. Also used as an acidity regulator and anti-caking agent. Widely regarded as safe; one of the most commonly used food additives worldwide. Permitted in the EU under Regulation (EC) No 1333/2008."
+    },
     "e501": { "name": "Potassium carbonates", "status": "approved", "category": "raising-agent" },
     "e503": { "name": "Ammonium carbonates", "status": "approved", "category": "raising-agent" },
     "e504": {

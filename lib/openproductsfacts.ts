@@ -46,6 +46,14 @@ function parseHouseholdProduct(
     analysisFlags: product.labels_tags || [],
     categoriesTags: product.categories_tags || [],
     stores: product.stores_tags || [],
+    metaScores: {
+      nutriScoreGrade: null,
+      nutriScoreScore: null,
+      ecoScoreGrade: null,
+      ecoScoreScore: null,
+      novaGroup: null,
+    },
+    nutritionFacts: null,
   };
 }
 

@@ -15,94 +15,75 @@ import { supabase } from '@/lib/supabase';
 import { useAuth } from '@/hooks/useAuth';
 import { useProduct } from '@/hooks/useProduct';
 import { useAlternatives } from '@/hooks/useAlternatives';
-import { useUsdaVerificationEnabled } from '@/hooks/useUsdaVerification';
 import { scoreProduct } from '@/lib/eu-check';
-import { compareSources } from '@/lib/source-compare';
 import { submitProductReport } from '@/lib/reports';
 import { loadFavoriteBarcodes, saveScanToHistory, toggleFavorite } from '@/lib/user-product-data';
+import { getDietaryAnalysis } from '@/lib/dietary-analysis';
 import ProductCard from '@/components/ProductCard';
 import IngredientList from '@/components/IngredientList';
 import AlternativesList from '@/components/AlternativesList';
 import ReportIssueModal from '@/components/ReportIssueModal';
 import type { CheckedIngredient } from '@/lib/eu-check';
+import type { ProductNutritionFacts } from '@/lib/openfoodfacts';
 import type { ProductReportIssueType } from '@/lib/reports';
 
-type GlutenDetection = {
-  hasGluten: boolean;
-  reason: string | null;
+type FoodMetaScores = {
+  nutriScoreGrade: string | null;
+  nutriScoreScore: number | null;
+  ecoScoreGrade: string | null;
+  ecoScoreScore: number | null;
+  novaGroup: number | null;
 };
 
-type PalmOilDetection = {
-  hasPalmOil: boolean;
-  reason: string | null;
-};
-
-function detectGluten(ingredientsText: string | null, allergens: string[] = []): GlutenDetection {
-  const allergenHit = allergens.some((allergen) => {
-    const normalized = allergen.toLowerCase().trim();
-    if (normalized.includes('gluten free')) return false;
-    return normalized === 'gluten' || /\bcontains gluten\b/.test(normalized);
-  });
-  if (allergenHit) return { hasGluten: true, reason: 'allergen tag indicates gluten' };
-  if (!ingredientsText) return { hasGluten: false, reason: null };
-
-  const text = ingredientsText.toLowerCase();
-  const hasGlutenFreeClaim = /\bgluten[-\s]?free\b/.test(text);
-  const hasDirectGlutenTerm = /\bgluten\b/.test(text);
-  const hasGrainSource =
-    /\bwheat\b/.test(text) ||
-    /\bbarley\b/.test(text) ||
-    /\brye\b/.test(text) ||
-    /\btriticale\b/.test(text);
-  const hasMaltGlutenSource =
-    /\bbarley malt\b/.test(text) || /\bmalt extract\b/.test(text) || /\bmalt flour\b/.test(text);
-  const hasOnlyMaltodextrinMaltSignal =
-    /\bmaltodextrin\b/.test(text) &&
-    !hasDirectGlutenTerm &&
-    !hasGrainSource &&
-    !hasMaltGlutenSource;
-  const hasExplicitGlutenSource = hasDirectGlutenTerm || hasGrainSource || hasMaltGlutenSource;
-
-  // Avoid false positives from ingredients like maltodextrin in gluten-free products.
-  if (hasGlutenFreeClaim && !hasExplicitGlutenSource) {
-    return { hasGluten: false, reason: null };
+function getScoreTone(value: string | number | null, type: 'grade' | 'nova') {
+  if (value == null) return colors.unknown;
+  if (type === 'grade') {
+    const grade = String(value).toLowerCase();
+    if (grade === 'a' || grade === 'b') return colors.approved;
+    if (grade === 'c') return colors.warning;
+    return colors.restricted;
   }
-
-  if (hasOnlyMaltodextrinMaltSignal) return { hasGluten: false, reason: null };
-  if (hasDirectGlutenTerm) return { hasGluten: true, reason: 'ingredient text contains "gluten"' };
-  if (hasGrainSource)
-    return { hasGluten: true, reason: 'ingredient text contains wheat/barley/rye/triticale' };
-  if (hasMaltGlutenSource)
-    return {
-      hasGluten: true,
-      reason: 'ingredient text contains barley malt/malt extract/malt flour',
-    };
-  return { hasGluten: false, reason: null };
+  const group = Number(value);
+  if (group <= 2) return colors.approved;
+  if (group === 3) return colors.warning;
+  return colors.restricted;
 }
 
-function detectPalmOil(ingredientsText: string | null): PalmOilDetection {
-  if (!ingredientsText) return { hasPalmOil: false, reason: null };
-  const text = ingredientsText.toLowerCase();
-  const patterns: Array<{ pattern: RegExp; reason: string }> = [
-    { pattern: /\bpalm oil\b/, reason: 'ingredient text contains "palm oil"' },
-    { pattern: /\bpalm fat\b/, reason: 'ingredient text contains "palm fat"' },
-    { pattern: /\bpalm kernel oil\b/, reason: 'ingredient text contains "palm kernel oil"' },
-    { pattern: /\bpalm kernel fat\b/, reason: 'ingredient text contains "palm kernel fat"' },
-    { pattern: /\bpalm olein\b/, reason: 'ingredient text contains "palm olein"' },
-    { pattern: /\bpalm stearin\b/, reason: 'ingredient text contains "palm stearin"' },
-    {
-      pattern: /\bvegetable (?:oil|fat)s?\s*\((?:[^)]*\bpalm\b[^)]*)\)/,
-      reason: 'ingredient text contains vegetable oil/fat blend with palm',
-    },
-    {
-      pattern: /\bpalm(?:\s*and\/or\s*palm kernel)?\s*(?:oil|fat)\b/,
-      reason: 'ingredient text contains palm-derived oil/fat',
-    },
-  ];
+function normalizeNutriGrade(grade: string | null): string | null {
+  if (!grade) return null;
+  return grade.toLowerCase() === 'e' ? 'f' : grade.toLowerCase();
+}
 
-  const match = patterns.find(({ pattern }) => pattern.test(text));
-  if (match) return { hasPalmOil: true, reason: match.reason };
-  return { hasPalmOil: false, reason: null };
+function nutriScoreLabel(grade: string | null): string {
+  switch (normalizeNutriGrade(grade)) {
+    case 'a': return 'Excellent nutritional quality';
+    case 'b': return 'Good nutritional quality';
+    case 'c': return 'Average nutritional quality';
+    case 'd': return 'Poor nutritional quality';
+    case 'f': return 'Bad nutritional quality';
+    default: return 'Not rated';
+  }
+}
+
+function ecoScoreLabel(grade: string | null): string {
+  switch (grade?.toLowerCase()) {
+    case 'a': return 'Very low environmental impact';
+    case 'b': return 'Low environmental impact';
+    case 'c': return 'Moderate environmental impact';
+    case 'd': return 'High environmental impact';
+    case 'e': return 'Very high environmental impact';
+    default: return 'Not rated';
+  }
+}
+
+function novaLabel(group: number | null): string {
+  switch (group) {
+    case 1: return 'Unprocessed or minimally processed';
+    case 2: return 'Processed culinary ingredients';
+    case 3: return 'Processed food';
+    case 4: return 'Ultra-processed food';
+    default: return 'Not rated';
+  }
 }
 
 export default function ProductScreen() {
@@ -115,43 +96,21 @@ export default function ProductScreen() {
   const [historySaveError, setHistorySaveError] = useState(false);
   const [favorite, setFavorite] = useState(false);
   const [favoriteError, setFavoriteError] = useState(false);
-  const [showNutritionFacts, setShowNutritionFacts] = useState(false);
   const [showReportModal, setShowReportModal] = useState(false);
   const [reportSubmitting, setReportSubmitting] = useState(false);
   const [reportStatus, setReportStatus] = useState<string | null>(null);
   const [missingIngredientsReportCount, setMissingIngredientsReportCount] = useState<number>(0);
-  const [showSourceVerification, setShowSourceVerification] = useState(false);
 
   const offProduct = data?.off ?? null;
-  const fsProduct = data?.fs ?? null;
   const euResult = data?.euResult ?? null;
   const productType = data?.productType ?? 'food';
   const isBeauty = productType === 'beauty';
-  const productName = offProduct?.name ?? fsProduct?.name ?? '';
-  const brand = offProduct?.brand ?? fsProduct?.brand ?? null;
-  const { data: verificationData, isLoading: verificationLoading } = useUsdaVerificationEnabled(
-    productName,
-    brand,
-    showSourceVerification
-  );
-  const sourceComparison =
-    offProduct?.ingredientsText && euResult && verificationData
-      ? compareSources(
-          offProduct.ingredientsText,
-          verificationData.ingredientsText,
-          euResult,
-          verificationData.euResult
-        )
-      : null;
-  const glutenDetection = detectGluten(
-    offProduct?.ingredientsText ?? null,
-    offProduct?.allergens ?? []
-  );
-  const palmOilDetection = detectPalmOil(offProduct?.ingredientsText ?? null);
-  const hasGluten = glutenDetection.hasGluten;
-  const hasPalmOil = palmOilDetection.hasPalmOil;
-  const hasNutritionFacts = Boolean(fsProduct?.nutrition);
+  const productName = offProduct?.name ?? '';
+  const brand = offProduct?.brand ?? null;
   const reportBarcode = offProduct?.barcode ?? barcode ?? null;
+  const metaScores = offProduct?.metaScores ?? null;
+  const dietaryAnalysis = getDietaryAnalysis(offProduct);
+  const nutritionFacts = offProduct?.nutritionFacts;
 
   useEffect(() => {
     setHistorySaved(false);
@@ -207,7 +166,7 @@ export default function ProductScreen() {
   useEffect(() => {
     if (!user || !barcode || !data) return;
     if (historySaved) return;
-    if (from && from !== 'scan') return;
+    if (from === 'history') return;
 
     const result = euResult
       ? {
@@ -221,7 +180,7 @@ export default function ProductScreen() {
     saveScanToHistory({
       userId: user.id,
       barcode,
-      productName: offProduct?.name ?? fsProduct?.name ?? null,
+      productName: offProduct?.name ?? null,
       result,
       productType,
     }).then((response) => {
@@ -239,7 +198,6 @@ export default function ProductScreen() {
     historySaved,
     euResult,
     offProduct?.name,
-    fsProduct?.name,
     productType,
   ]);
 
@@ -253,7 +211,7 @@ export default function ProductScreen() {
     const response = await toggleFavorite({
       userId: user.id,
       barcode,
-      productName: offProduct?.name ?? fsProduct?.name ?? null,
+      productName: offProduct?.name ?? null,
       productType,
       currentlyFavorite: favorite,
     });
@@ -382,6 +340,13 @@ export default function ProductScreen() {
           />
         )}
 
+        {!isBeauty &&
+          productType === 'food' &&
+          metaScores &&
+          (metaScores.nutriScoreGrade ||
+            metaScores.ecoScoreGrade ||
+            metaScores.novaGroup != null) && <ScoreSummaryCard scores={metaScores} />}
+
         {isBeauty && (
           <View style={styles.cosmeticRegCard}>
             <Text style={styles.cosmeticRegText}>
@@ -390,70 +355,37 @@ export default function ProductScreen() {
           </View>
         )}
 
-        {!isBeauty && hasNutritionFacts && (
-          <View style={styles.nutritionToggleWrap}>
-            <TouchableOpacity
-              style={styles.nutritionToggleButton}
-              onPress={() => setShowNutritionFacts((prev) => !prev)}
-              activeOpacity={0.8}
-            >
-              <Text style={styles.nutritionToggleText}>
-                {showNutritionFacts ? 'Hide Nutrition Facts' : 'Show Nutrition Facts'}
-              </Text>
-            </TouchableOpacity>
-          </View>
-        )}
-
-        {!isBeauty && showNutritionFacts && fsProduct?.nutrition && (
-          <View style={styles.nutritionCard}>
-            <Text style={styles.sectionTitle}>Nutrition (per serving)</Text>
-            <View style={styles.nutritionGrid}>
-              <NutritionItem label="Calories" value={fsProduct.nutrition.calories} unit="" />
-              <NutritionItem label="Fat" value={fsProduct.nutrition.fat} unit="g" />
-              <NutritionItem label="Carbs" value={fsProduct.nutrition.carbohydrate} unit="g" />
-              <NutritionItem label="Protein" value={fsProduct.nutrition.protein} unit="g" />
-              <NutritionItem label="Sodium" value={fsProduct.nutrition.sodium} unit="mg" />
-              <NutritionItem label="Fiber" value={fsProduct.nutrition.fiber} unit="g" />
-            </View>
-          </View>
-        )}
-
-        {offProduct?.allergens && offProduct.allergens.length > 0 && (
-          <View style={styles.allergenCard}>
-            <Text style={styles.sectionTitle}>Allergens</Text>
-            <View style={styles.allergenTags}>
-              {offProduct.allergens.map((a) => (
-                <View key={a} style={styles.allergenTag}>
-                  <Text style={styles.allergenText}>{a}</Text>
+        {!isBeauty && dietaryAnalysis.length > 0 && (
+          <View style={styles.dietaryCard}>
+            <Text style={styles.sectionTitle}>Dietary Analysis</Text>
+            <View style={styles.dietaryTags}>
+              {dietaryAnalysis.map((item) => (
+                <View
+                  key={item.key}
+                  style={[
+                    styles.dietaryTag,
+                    item.tone === 'good' && styles.dietaryTagGood,
+                    item.tone === 'warning' && styles.dietaryTagWarning,
+                    item.tone === 'neutral' && styles.dietaryTagNeutral,
+                  ]}
+                >
+                  <Text
+                    style={[
+                      styles.dietaryTagText,
+                      item.tone === 'good' && styles.dietaryTagTextGood,
+                      item.tone === 'warning' && styles.dietaryTagTextWarning,
+                      item.tone === 'neutral' && styles.dietaryTagTextNeutral,
+                    ]}
+                  >
+                    {item.label}
+                  </Text>
                 </View>
               ))}
             </View>
           </View>
         )}
 
-        {!isBeauty && hasGluten && (
-          <View style={styles.glutenAlertCard}>
-            <Text style={styles.glutenAlertTitle}>Gluten Detected</Text>
-            <Text style={styles.glutenAlertBody}>
-              This product appears to contain gluten-based ingredients or allergens.
-            </Text>
-            {__DEV__ && glutenDetection.reason ? (
-              <Text style={styles.glutenDebugText}>Debug: {glutenDetection.reason}</Text>
-            ) : null}
-          </View>
-        )}
-
-        {!isBeauty && hasPalmOil && (
-          <View style={styles.palmOilAlertCard}>
-            <Text style={styles.palmOilAlertTitle}>Palm Oil Detected</Text>
-            <Text style={styles.palmOilAlertBody}>
-              This product appears to contain palm oil or a palm-derived oil ingredient.
-            </Text>
-            {__DEV__ && palmOilDetection.reason ? (
-              <Text style={styles.glutenDebugText}>Debug: {palmOilDetection.reason}</Text>
-            ) : null}
-          </View>
-        )}
+        {!isBeauty && nutritionFacts && <NutritionFactsCard nutrition={nutritionFacts} />}
 
         {euResult && !euResult.hasAnyIngredientData && (
           <View style={styles.missingIngredientsCard}>
@@ -512,105 +444,6 @@ export default function ProductScreen() {
           </View>
         )}
 
-        {!isBeauty && <View style={styles.verificationCard}>
-          <View style={styles.verificationHeaderRow}>
-            <Text style={styles.verificationTitle}>Source Verification (OFF vs USDA)</Text>
-            <TouchableOpacity
-              style={styles.verificationToggleButton}
-              onPress={() => setShowSourceVerification((prev) => !prev)}
-              activeOpacity={0.8}
-            >
-              <Text style={styles.verificationToggleText}>
-                {showSourceVerification ? 'Hide' : 'Show'}
-              </Text>
-            </TouchableOpacity>
-          </View>
-          {!showSourceVerification ? (
-            <Text style={styles.verificationBody}>
-              Tap Show to compare ingredient findings between OFF and USDA.
-            </Text>
-          ) : verificationLoading ? (
-            <Text style={styles.verificationBody}>Comparing with USDA ingredient data...</Text>
-          ) : !verificationData || !sourceComparison ? (
-            <Text style={styles.verificationBody}>
-              No USDA comparison match was found for this product.
-            </Text>
-          ) : (
-            <>
-              <View style={styles.verificationRow}>
-                <Text style={styles.verificationLabel}>USDA Match</Text>
-                <Text style={styles.verificationValue}>
-                  {verificationData.usdaFood.description}
-                </Text>
-              </View>
-              {verificationData.usdaFood.brandOwner ? (
-                <View style={styles.verificationRow}>
-                  <Text style={styles.verificationLabel}>Brand</Text>
-                  <Text style={styles.verificationValue}>
-                    {verificationData.usdaFood.brandOwner}
-                  </Text>
-                </View>
-              ) : null}
-              <View style={styles.verificationRow}>
-                <Text style={styles.verificationLabel}>Confidence</Text>
-                <Text
-                  style={[
-                    styles.verificationBadge,
-                    sourceComparison.confidence === 'high' && styles.confidenceHigh,
-                    sourceComparison.confidence === 'medium' && styles.confidenceMedium,
-                    sourceComparison.confidence === 'low' && styles.confidenceLow,
-                  ]}
-                >
-                  {sourceComparison.confidence.toUpperCase()}
-                </Text>
-              </View>
-              <Text style={styles.verificationBody}>
-                Ingredient overlap: {Math.round(sourceComparison.overlapRatio * 100)}%
-              </Text>
-              <Text style={styles.verificationBody}>
-                Shared flagged findings: {sourceComparison.sharedFlagged.length}
-              </Text>
-              <Text style={styles.verificationBody}>
-                OFF-only flagged findings: {sourceComparison.offOnlyFlagged.length}
-              </Text>
-              <Text style={styles.verificationBody}>
-                USDA-only flagged findings: {sourceComparison.usdaOnlyFlagged.length}
-              </Text>
-
-              {sourceComparison.sharedFlagged.length > 0 ? (
-                <>
-                  <Text style={styles.verificationSubTitle}>Shared flagged ingredients</Text>
-                  <Text style={styles.verificationBody}>
-                    {formatIngredientNames(sourceComparison.sharedFlagged.map((item) => item.name))}
-                  </Text>
-                </>
-              ) : null}
-
-              {sourceComparison.offOnlyFlagged.length > 0 ? (
-                <>
-                  <Text style={styles.verificationSubTitle}>OFF-only flagged ingredients</Text>
-                  <Text style={styles.verificationBody}>
-                    {formatIngredientNames(
-                      sourceComparison.offOnlyFlagged.map((item) => item.name)
-                    )}
-                  </Text>
-                </>
-              ) : null}
-
-              {sourceComparison.usdaOnlyFlagged.length > 0 ? (
-                <>
-                  <Text style={styles.verificationSubTitle}>USDA-only flagged ingredients</Text>
-                  <Text style={styles.verificationBody}>
-                    {formatIngredientNames(
-                      sourceComparison.usdaOnlyFlagged.map((item) => item.name)
-                    )}
-                  </Text>
-                </>
-              ) : null}
-            </>
-          )}
-        </View>}
-
         {!isBeauty && <AlternativesList alternatives={alternatives} loading={altLoading} />}
       </ScrollView>
 
@@ -634,29 +467,121 @@ export default function ProductScreen() {
   );
 }
 
-function NutritionItem({
-  label,
-  value,
-  unit,
-}: {
-  label: string;
-  value: string | null;
-  unit: string;
-}) {
-  if (!value) return null;
+function ScoreSummaryCard({ scores }: { scores: FoodMetaScores }) {
+  const items = [
+    scores.nutriScoreGrade != null && {
+      label: 'Nutri-Score',
+      value: normalizeNutriGrade(scores.nutriScoreGrade)?.toUpperCase() ?? 'N/A',
+      description: nutriScoreLabel(scores.nutriScoreGrade),
+      sub:
+        typeof scores.nutriScoreScore === 'number'
+          ? `Raw score: ${scores.nutriScoreScore}`
+          : null,
+      color: getScoreTone(normalizeNutriGrade(scores.nutriScoreGrade), 'grade'),
+    },
+    scores.ecoScoreGrade != null && {
+      label: 'Eco-Score',
+      value: scores.ecoScoreGrade.toUpperCase(),
+      description: ecoScoreLabel(scores.ecoScoreGrade),
+      sub:
+        typeof scores.ecoScoreScore === 'number' ? `Score: ${scores.ecoScoreScore}/100` : null,
+      color: getScoreTone(scores.ecoScoreGrade, 'grade'),
+    },
+    scores.novaGroup != null && {
+      label: 'NOVA',
+      value: String(scores.novaGroup),
+      description: novaLabel(scores.novaGroup),
+      sub: null,
+      color: getScoreTone(scores.novaGroup, 'nova'),
+    },
+  ].filter(Boolean) as {
+    label: string;
+    value: string;
+    description: string;
+    sub: string | null;
+    color: string;
+  }[];
+
   return (
-    <View style={styles.nutritionItem}>
-      <Text style={styles.nutritionValue}>
-        {value}
-        {unit}
-      </Text>
-      <Text style={styles.nutritionLabel}>{label}</Text>
+    <View style={styles.scoreCard}>
+      <Text style={styles.sectionTitle}>Food Scores</Text>
+      <View style={styles.scoreGrid}>
+        {items.map((item) => (
+          <View
+            key={item.label}
+            style={[styles.scoreBox, { borderTopColor: item.color, borderTopWidth: 2 }]}
+          >
+            <Text style={styles.scoreLabel}>{item.label}</Text>
+            <Text style={[styles.scoreValue, { color: item.color }]}>{item.value}</Text>
+            <Text style={styles.scoreDescription}>{item.description}</Text>
+            {item.sub && <Text style={styles.scoreDetail}>{item.sub}</Text>}
+          </View>
+        ))}
+      </View>
     </View>
   );
 }
 
-function formatIngredientNames(names: string[]): string {
-  return Array.from(new Set(names)).slice(0, 6).join(', ');
+function NutritionFactsCard({ nutrition }: { nutrition: ProductNutritionFacts }) {
+  const label =
+    nutrition.basis === 'serving'
+      ? 'Per serving'
+      : nutrition.basis === '100g'
+        ? 'Per 100g'
+        : null;
+
+  return (
+    <View style={styles.nutritionCard}>
+      <Text style={styles.nutritionFactsTitle}>Nutrition Facts</Text>
+      {nutrition.servingSize && (
+        <Text style={styles.nutritionServingSize}>Serving size {nutrition.servingSize}</Text>
+      )}
+      {label && <Text style={styles.nutritionBasis}>{label}</Text>}
+      <View style={styles.nutritionDividerHeavy} />
+      <NutritionLabelRow label="Calories" value={nutrition.calories} unit="" highlight />
+      <View style={styles.nutritionDividerMedium} />
+      <NutritionLabelRow label="Total Fat" value={nutrition.fat} unit="g" />
+      <NutritionLabelRow label="Saturated Fat" value={nutrition.saturatedFat} unit="g" indented />
+      <NutritionLabelRow label="Total Carbohydrate" value={nutrition.carbohydrate} unit="g" />
+      <NutritionLabelRow label="Sugars" value={nutrition.sugar} unit="g" indented />
+      <NutritionLabelRow label="Fiber" value={nutrition.fiber} unit="g" indented />
+      <NutritionLabelRow label="Protein" value={nutrition.protein} unit="g" />
+      <NutritionLabelRow label="Sodium" value={nutrition.sodium} unit="g" />
+    </View>
+  );
+}
+
+function NutritionLabelRow({
+  label,
+  value,
+  unit,
+  highlight = false,
+  indented = false,
+}: {
+  label: string;
+  value: string | null;
+  unit: string;
+  highlight?: boolean;
+  indented?: boolean;
+}) {
+  if (!value) return null;
+  return (
+    <View style={[styles.nutritionLabelRow, highlight && styles.nutritionLabelRowHighlight]}>
+      <Text
+        style={[
+          styles.nutritionLabelName,
+          highlight && styles.nutritionLabelNameHighlight,
+          indented && styles.nutritionLabelNameIndented,
+        ]}
+      >
+        {label}
+      </Text>
+      <Text style={[styles.nutritionLabelValue, highlight && styles.nutritionLabelValueHighlight]}>
+        {value}
+        {unit}
+      </Text>
+    </View>
+  );
 }
 
 function IngredientDetailModal({
@@ -752,80 +677,131 @@ const styles = StyleSheet.create({
   historyErrorText: { ...typography.caption1, color: colors.warning },
 
   sectionTitle: { ...typography.headline, color: colors.textPrimary, marginBottom: spacing.sm },
-
-  nutritionToggleWrap: {
-    alignItems: 'flex-start',
-  },
-  nutritionToggleButton: {
-    backgroundColor: colors.surface,
-    borderRadius: radius.md,
-    borderWidth: 1,
-    borderColor: colors.border,
-    paddingVertical: spacing.sm,
-    paddingHorizontal: spacing.md,
-  },
-  nutritionToggleText: {
-    ...typography.callout,
-    color: colors.euGold,
-    fontWeight: '600',
-  },
-
   nutritionCard: {
+    backgroundColor: '#fff',
+    borderRadius: radius.lg,
+    padding: spacing.md,
+    borderWidth: 1,
+    borderColor: '#111',
+  },
+  nutritionFactsTitle: {
+    fontSize: 30,
+    lineHeight: 34,
+    fontWeight: '900',
+    color: '#111',
+  },
+  nutritionServingSize: {
+    ...typography.callout,
+    color: '#111',
+    fontWeight: '600',
+    marginTop: spacing.xs,
+  },
+  nutritionBasis: {
+    ...typography.caption1,
+    color: '#111',
+    marginTop: 2,
+    marginBottom: spacing.xs,
+  },
+  nutritionDividerHeavy: {
+    height: 8,
+    backgroundColor: '#111',
+    marginBottom: spacing.xs,
+  },
+  nutritionDividerMedium: {
+    height: 4,
+    backgroundColor: '#111',
+    marginVertical: spacing.xs,
+  },
+  scoreCard: {
     backgroundColor: colors.surface,
     borderRadius: radius.lg,
     padding: spacing.md,
   },
-  nutritionGrid: { flexDirection: 'row', flexWrap: 'wrap', gap: spacing.sm },
-  nutritionItem: {
-    width: '30%',
+  scoreGrid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: spacing.sm,
+  },
+  scoreBox: {
+    flexGrow: 1,
+    flexBasis: '30%',
+    minWidth: 96,
     backgroundColor: colors.surfaceElevated,
-    borderRadius: radius.sm,
+    borderRadius: radius.md,
     padding: spacing.sm,
-    alignItems: 'center',
     gap: 2,
   },
-  nutritionValue: { ...typography.headline, color: colors.textPrimary },
-  nutritionLabel: { ...typography.caption2, color: colors.textMuted },
+  scoreLabel: { ...typography.caption1, color: colors.textMuted, textTransform: 'uppercase', letterSpacing: 0.5 },
+  scoreValue: { ...typography.title2, fontWeight: '700' },
+  scoreDescription: { ...typography.caption1, color: colors.textSecondary, lineHeight: 16 },
+  scoreDetail: { ...typography.caption2, color: colors.textMuted, marginTop: 2 },
+  nutritionLabelRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'flex-end',
+    paddingVertical: 6,
+    borderTopWidth: 1,
+    borderTopColor: '#111',
+  },
+  nutritionLabelRowHighlight: {
+    paddingVertical: spacing.xs,
+    borderTopWidth: 0,
+  },
+  nutritionLabelName: {
+    ...typography.callout,
+    color: '#111',
+    fontWeight: '700',
+    flex: 1,
+    paddingRight: spacing.sm,
+  },
+  nutritionLabelNameHighlight: {
+    fontSize: 24,
+    lineHeight: 28,
+    fontWeight: '900',
+  },
+  nutritionLabelNameIndented: {
+    paddingLeft: spacing.md,
+    fontWeight: '600',
+  },
+  nutritionLabelValue: {
+    ...typography.callout,
+    color: '#111',
+    fontWeight: '700',
+  },
+  nutritionLabelValueHighlight: {
+    fontSize: 24,
+    lineHeight: 28,
+    fontWeight: '900',
+  },
 
-  allergenCard: {
+  dietaryCard: {
     backgroundColor: colors.surface,
     borderRadius: radius.lg,
     padding: spacing.md,
   },
-  allergenTags: { flexDirection: 'row', flexWrap: 'wrap', gap: spacing.sm },
-  allergenTag: {
-    backgroundColor: colors.warningLight,
+  dietaryTags: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: spacing.sm,
+  },
+  dietaryTag: {
     borderRadius: radius.full,
     paddingHorizontal: spacing.sm,
     paddingVertical: spacing.xs,
   },
-  allergenText: {
-    ...typography.caption1,
-    color: colors.warning,
-    fontWeight: '600',
-    textTransform: 'capitalize',
+  dietaryTagGood: {
+    backgroundColor: colors.approvedLight,
   },
-  glutenAlertCard: {
+  dietaryTagWarning: {
     backgroundColor: colors.warningLight,
-    borderRadius: radius.lg,
-    padding: spacing.md,
-    borderWidth: 1,
-    borderColor: colors.warning,
-    gap: spacing.xs,
   },
-  glutenAlertTitle: { ...typography.callout, color: colors.warning, fontWeight: '700' },
-  glutenAlertBody: { ...typography.subhead, color: colors.textSecondary, lineHeight: 20 },
-  glutenDebugText: { ...typography.caption2, color: colors.textMuted },
-  palmOilAlertCard: {
-    backgroundColor: colors.restrictedLight,
-    borderRadius: radius.lg,
-    padding: spacing.md,
-    borderWidth: 1,
-    borderColor: colors.restricted,
-    gap: spacing.xs,
+  dietaryTagNeutral: {
+    backgroundColor: colors.surfaceElevated,
   },
-  palmOilAlertTitle: { ...typography.callout, color: colors.restricted, fontWeight: '700' },
-  palmOilAlertBody: { ...typography.subhead, color: colors.textSecondary, lineHeight: 20 },
+  dietaryTagText: { ...typography.caption1, fontWeight: '600' },
+  dietaryTagTextGood: { color: colors.approved },
+  dietaryTagTextWarning: { color: colors.warning },
+  dietaryTagTextNeutral: { color: colors.textSecondary },
   missingIngredientsCard: {
     backgroundColor: colors.unknownLight,
     borderRadius: radius.lg,
@@ -879,64 +855,6 @@ const styles = StyleSheet.create({
     padding: spacing.md,
   },
   rawText: { ...typography.subhead, color: colors.textSecondary, lineHeight: 22 },
-
-  verificationCard: {
-    backgroundColor: colors.surface,
-    borderRadius: radius.lg,
-    padding: spacing.md,
-    gap: spacing.xs,
-  },
-  verificationHeaderRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    gap: spacing.sm,
-  },
-  verificationTitle: { ...typography.headline, color: colors.textPrimary },
-  verificationToggleButton: {
-    borderWidth: 1,
-    borderColor: colors.border,
-    borderRadius: radius.full,
-    paddingHorizontal: spacing.sm,
-    paddingVertical: 4,
-    backgroundColor: colors.surfaceElevated,
-  },
-  verificationToggleText: {
-    ...typography.caption1,
-    color: colors.euGold,
-    fontWeight: '700',
-  },
-  verificationRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    gap: spacing.md,
-  },
-  verificationLabel: { ...typography.subhead, color: colors.textMuted },
-  verificationValue: {
-    ...typography.subhead,
-    color: colors.textPrimary,
-    flex: 1,
-    textAlign: 'right',
-  },
-  verificationBody: { ...typography.subhead, color: colors.textSecondary, lineHeight: 20 },
-  verificationSubTitle: {
-    ...typography.subhead,
-    color: colors.textPrimary,
-    fontWeight: '700',
-    marginTop: spacing.sm,
-  },
-  verificationBadge: {
-    ...typography.caption1,
-    fontWeight: '700',
-    borderRadius: radius.full,
-    paddingHorizontal: spacing.sm,
-    paddingVertical: 2,
-    overflow: 'hidden',
-  },
-  confidenceHigh: { color: colors.approved, backgroundColor: colors.approvedLight },
-  confidenceMedium: { color: colors.warning, backgroundColor: colors.warningLight },
-  confidenceLow: { color: colors.restricted, backgroundColor: colors.restrictedLight },
 
   modalBackdrop: { flex: 1, backgroundColor: 'rgba(0,0,0,0.5)' },
   modalSheet: {

@@ -21,6 +21,12 @@ export default function TabsLayout() {
       <Tabs.Screen
         name="index"
         options={{
+          href: null,
+        }}
+      />
+      <Tabs.Screen
+        name="scan"
+        options={{
           title: 'Scan',
           tabBarIcon: ({ focused }) => <ScanBarcode color={iconColor(focused)} size={iconSize} />,
         }}
@@ -61,10 +67,11 @@ const styles = StyleSheet.create({
     position: 'absolute',
     left: spacing.md,
     right: spacing.md,
-    bottom: spacing.md,
-    height: 72,
-    paddingTop: spacing.xs,
-    paddingBottom: spacing.xs,
+    bottom: spacing.lg,
+    height: 61,
+    paddingTop: 4,
+    paddingBottom: 8,
+    paddingHorizontal: spacing.xs,
     borderTopWidth: 0,
     borderRadius: radius.xl,
     backgroundColor: 'rgba(28, 31, 46, 0.94)',
@@ -79,6 +86,7 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
   tabItem: {
-    paddingTop: 2,
+    paddingTop: 1,
+    paddingHorizontal: 2,
   },
 });

@@ -11,6 +11,16 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
+import { useIsFocused } from '@react-navigation/native';
+import {
+  CircleCheck,
+  Flag,
+  Grid2x2,
+  Heart,
+  House,
+  Sparkles,
+  UtensilsCrossed,
+} from 'lucide-react-native';
 import { colors, radius, spacing, typography } from '@/constants/theme';
 import { useAuth } from '@/hooks/useAuth';
 import { supabase } from '@/lib/supabase';
@@ -20,7 +30,7 @@ import { loadFavoriteBarcodes } from '@/lib/user-product-data';
 
 type HistoryFilter = 'all' | 'favorites' | 'food' | 'beauty' | 'household' | 'approved' | 'flagged';
 
-type HistoryStatus = 'approved' | 'flagged' | 'unknown';
+type HistoryStatus = 'banned' | 'restricted' | 'warning' | 'approved' | 'unknown';
 
 type HistoryItem = {
   row: ScanHistoryRow;
@@ -34,20 +44,25 @@ const FILTERS: Array<{ key: HistoryFilter; label: string }> = [
   { key: 'food', label: 'Food' },
   { key: 'beauty', label: 'Beauty' },
   { key: 'household', label: 'Household' },
-  { key: 'approved', label: 'Approved' },
+  { key: 'approved', label: 'Compliant' },
   { key: 'flagged', label: 'Flagged' },
 ];
 
+const FILTER_ICONS: Record<HistoryFilter, React.ComponentType<{ color: string; size?: number }>> = {
+  all: Grid2x2,
+  favorites: Heart,
+  food: UtensilsCrossed,
+  beauty: Sparkles,
+  household: House,
+  approved: CircleCheck,
+  flagged: Flag,
+};
+
 function getHistoryStatus(result: ScanResult | null): HistoryStatus {
   if (!result) return 'unknown';
-  if (
-    (result.status && (result.status === 'approved' || result.status === 'flagged')) ||
-    result.bannedCount > 0 ||
-    result.restrictedCount > 0 ||
-    result.warningCount > 0
-  ) {
-    return result.status === 'approved' ? 'approved' : 'flagged';
-  }
+  if (result.bannedCount > 0) return 'banned';
+  if (result.restrictedCount > 0) return 'restricted';
+  if (result.warningCount > 0) return 'warning';
   return 'approved';
 }
 
@@ -61,6 +76,7 @@ function getProductType(result: ScanResult | null): ProductType {
 
 export default function HistoryScreen() {
   const { user } = useAuth();
+  const isFocused = useIsFocused();
   const [scans, setScans] = useState<ScanHistoryRow[]>([]);
   const [loading, setLoading] = useState(true);
   const [fetchError, setFetchError] = useState(false);
@@ -88,11 +104,13 @@ export default function HistoryScreen() {
   }
 
   useEffect(() => {
+    if (!isFocused) return;
     loadHistory();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user]);
+  }, [user, isFocused]);
 
   useEffect(() => {
+    if (!isFocused) return;
     if (!user) {
       setFavoriteBarcodes(new Set());
       return;
@@ -100,7 +118,7 @@ export default function HistoryScreen() {
     loadFavoriteBarcodes(user.id).then((barcodes) => {
       setFavoriteBarcodes(barcodes);
     });
-  }, [user]);
+  }, [user, isFocused]);
 
   const historyItems = useMemo<HistoryItem[]>(() => {
     return scans.map((row) => {
@@ -119,7 +137,11 @@ export default function HistoryScreen() {
       return historyItems.filter((item) => favoriteBarcodes.has(item.row.barcode));
     }
     if (activeFilter === 'approved') return historyItems.filter((item) => item.status === 'approved');
-    if (activeFilter === 'flagged') return historyItems.filter((item) => item.status === 'flagged');
+    if (activeFilter === 'flagged')
+      return historyItems.filter(
+        (item) =>
+          item.status === 'banned' || item.status === 'restricted' || item.status === 'warning'
+      );
     return historyItems.filter((item) => item.productType === activeFilter);
   }, [activeFilter, favoriteBarcodes, historyItems]);
 
@@ -213,16 +235,22 @@ export default function HistoryScreen() {
       <ScrollView
         horizontal
         showsHorizontalScrollIndicator={false}
+        style={styles.filtersScroll}
         contentContainerStyle={styles.filtersRow}
       >
         {FILTERS.map((filter) => {
           const active = activeFilter === filter.key;
+          const Icon = FILTER_ICONS[filter.key];
           return (
             <TouchableOpacity
               key={filter.key}
               style={[styles.filterChip, active && styles.filterChipActive]}
               onPress={() => setActiveFilter(filter.key)}
             >
+              <Icon
+                size={14}
+                color={active ? '#fff' : colors.textSecondary}
+              />
               <Text style={[styles.filterText, active && styles.filterTextActive]}>{filter.label}</Text>
             </TouchableOpacity>
           );
@@ -256,11 +284,26 @@ function HistoryRow({ item }: { item: HistoryItem }) {
   });
 
   const statusColor =
-    item.status === 'flagged'
-      ? colors.warning
-      : item.status === 'approved'
-        ? colors.approved
-        : colors.unknown;
+    item.status === 'banned'
+      ? colors.banned
+      : item.status === 'restricted'
+        ? colors.restricted
+        : item.status === 'warning'
+          ? colors.warning
+          : item.status === 'approved'
+            ? colors.approved
+            : colors.unknown;
+
+  const statusBg =
+    item.status === 'banned'
+      ? colors.bannedLight
+      : item.status === 'restricted'
+        ? colors.restrictedLight
+        : item.status === 'warning'
+          ? colors.warningLight
+          : item.status === 'approved'
+            ? colors.approvedLight
+            : colors.unknownLight;
 
   const typeLabel =
     item.productType === 'household'
@@ -273,7 +316,7 @@ function HistoryRow({ item }: { item: HistoryItem }) {
 
   return (
     <TouchableOpacity
-      style={[styles.row, { borderLeftColor: statusColor }]}
+      style={[styles.row, { borderLeftColor: statusColor, backgroundColor: statusBg }]}
       onPress={() => router.push(`/product/${item.row.barcode}?from=history`)}
       activeOpacity={0.7}
     >
@@ -285,7 +328,15 @@ function HistoryRow({ item }: { item: HistoryItem }) {
           <Text style={styles.rowDate}>{date}</Text>
           <Text style={styles.rowType}>{typeLabel}</Text>
           <Text style={[styles.rowStatus, { color: statusColor }]}>
-            {item.status === 'flagged' ? 'Flagged' : item.status === 'approved' ? 'Approved' : 'Unknown'}
+            {item.status === 'banned'
+            ? 'Banned'
+            : item.status === 'restricted'
+              ? 'Restricted'
+              : item.status === 'warning'
+                ? 'Warning'
+                : item.status === 'approved'
+                  ? 'Approved'
+                  : 'Unknown'}
           </Text>
         </View>
       </View>
@@ -328,15 +379,25 @@ const styles = StyleSheet.create({
   filtersRow: {
     paddingHorizontal: spacing.lg,
     paddingBottom: spacing.sm,
+    alignItems: 'center',
     gap: spacing.sm,
   },
+  filtersScroll: {
+    flexGrow: 0,
+  },
   filterChip: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing.xs,
     borderWidth: 1,
     borderColor: colors.border,
     borderRadius: radius.full,
     paddingHorizontal: spacing.md,
-    paddingVertical: spacing.xs,
+    paddingVertical: 6,
     backgroundColor: colors.surface,
+    alignSelf: 'flex-start',
+    flexShrink: 0,
+    minWidth: 0,
   },
   filterChipActive: {
     backgroundColor: colors.euBlue,

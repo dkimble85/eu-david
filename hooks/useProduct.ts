@@ -7,6 +7,7 @@ import { runEuCheck } from '@/lib/eu-check';
 import { runEuCosmeticCheck } from '@/lib/eu-cosmetic-check';
 import { classifyProductByCategories } from '@/lib/product-type';
 import { extractUsdaFdcId, getUsdaFoodById, normalizeUsdaIngredientsText } from '@/lib/usda';
+import { calculateNutriScore, fatSecretTo100gInputs } from '@/lib/nutriscore';
 import type { OpenFoodFactsProduct } from '@/lib/openfoodfacts';
 import type { UsdaBrandedFood } from '@/lib/usda';
 import type { ProductType } from '@/lib/product-type';
@@ -132,7 +133,7 @@ async function fetchProduct(barcode: string) {
       ? normalizeUsdaIngredientsText(food.ingredients)
       : null;
     const matchedOff = await resolveOffMatchForUsdaFood(food);
-    const off = matchedOff ?? {
+    let off = matchedOff ?? {
       barcode,
       name: food.description || 'Unknown Product',
       brand: food.brandOwner || null,
@@ -143,7 +144,43 @@ async function fetchProduct(barcode: string) {
       analysisFlags: [],
       categoriesTags: [],
       stores: [],
+      metaScores: {
+        nutriScoreGrade: null,
+        nutriScoreScore: null,
+        ecoScoreGrade: null,
+        ecoScoreScore: null,
+        novaGroup: null,
+      },
+      nutritionFacts: food.nutrition
+        ? {
+            basis: 'serving',
+            servingSize: null,
+            calories: food.nutrition.calories,
+            fat: food.nutrition.fat,
+            saturatedFat: null,
+            carbohydrate: food.nutrition.carbohydrate,
+            sugar: food.nutrition.sugar,
+            fiber: food.nutrition.fiber,
+            protein: food.nutrition.protein,
+            sodium: food.nutrition.sodium,
+          }
+        : null,
     };
+    // Fill Nutri-Score from USDA per-100g data when OFF match doesn't have it
+    if (!off.metaScores.nutriScoreGrade && food.nutriScoreInputs100g) {
+      const computed = calculateNutriScore(food.nutriScoreInputs100g);
+      if (computed) {
+        off = {
+          ...off,
+          metaScores: {
+            ...off.metaScores,
+            nutriScoreGrade: computed.grade,
+            nutriScoreScore: computed.score,
+          },
+        };
+      }
+    }
+
     const euResult = runEuCheck(off.eNumbers ?? [], off.ingredientsText ?? null);
     const fs = {
       foodId: String(food.fdcId),
@@ -151,7 +188,7 @@ async function fetchProduct(barcode: string) {
       brand: food.brandOwner || null,
       nutrition: food.nutrition ?? null,
     };
-    return { off, fs, euResult };
+    return { off, fs, euResult, productType: 'food' as ProductType };
   }
 
   const [off, obf, opf, fs] = await Promise.all([
@@ -181,7 +218,52 @@ async function fetchProduct(barcode: string) {
       ? runEuCosmeticCheck(off?.ingredientsText ?? null)
       : runEuCheck(off?.eNumbers ?? [], off?.ingredientsText ?? null);
 
-  return { off, fs: productType === 'food' ? fs : null, euResult, productType };
+  // Fill Nutri-Score from FatSecret per-100g data when OFF doesn't have it
+  let resolvedOff = off;
+  if (
+    resolvedOff &&
+    productType === 'food' &&
+    !resolvedOff.metaScores.nutriScoreGrade &&
+    fs?.nutrition
+  ) {
+    const inputs = fatSecretTo100gInputs(fs.nutrition);
+    if (inputs) {
+      const computed = calculateNutriScore(inputs);
+      if (computed) {
+        resolvedOff = {
+          ...resolvedOff,
+          metaScores: {
+            ...resolvedOff.metaScores,
+            nutriScoreGrade: computed.grade,
+            nutriScoreScore: computed.score,
+          },
+        };
+      }
+    }
+  }
+
+  if (resolvedOff && productType === 'food' && !resolvedOff.nutritionFacts && fs?.nutrition) {
+    resolvedOff = {
+      ...resolvedOff,
+      nutritionFacts: {
+        basis: 'serving',
+        servingSize:
+          typeof fs.nutrition.metricServingAmountG === 'number'
+            ? `${fs.nutrition.metricServingAmountG} g`
+            : null,
+        calories: fs.nutrition.calories,
+        fat: fs.nutrition.fat,
+        saturatedFat: fs.nutrition.saturatedFat,
+        carbohydrate: fs.nutrition.carbohydrate,
+        sugar: fs.nutrition.sugar,
+        fiber: fs.nutrition.fiber,
+        protein: fs.nutrition.protein,
+        sodium: fs.nutrition.sodium,
+      },
+    };
+  }
+
+  return { off: resolvedOff, fs: productType === 'food' ? fs : null, euResult, productType };
 }
 
 export function useProduct(barcode: string) {
