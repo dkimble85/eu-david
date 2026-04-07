@@ -7,11 +7,37 @@ import { supabase } from '@/lib/supabase';
 import type { Session, User } from '@supabase/supabase-js';
 
 WebBrowser.maybeCompleteAuthSession();
+const E2E_AUTH_STORAGE_KEY = 'eu-david:e2e-auth-user';
 
 function firstParam(
   value: string | string[] | undefined
 ): string | undefined {
   return Array.isArray(value) ? value[0] : value;
+}
+
+function getE2EUser(): User | null {
+  if (process.env.EXPO_PUBLIC_E2E !== '1' || Platform.OS !== 'web' || typeof window === 'undefined') {
+    return null;
+  }
+
+  try {
+    const raw = window.localStorage.getItem(E2E_AUTH_STORAGE_KEY);
+    if (!raw) return null;
+
+    const parsed = JSON.parse(raw) as Partial<User> & { id?: string; email?: string };
+    if (typeof parsed.id !== 'string' || parsed.id.length === 0) return null;
+
+    return {
+      id: parsed.id,
+      email: parsed.email ?? 'e2e@example.com',
+      app_metadata: parsed.app_metadata ?? {},
+      user_metadata: parsed.user_metadata ?? {},
+      aud: parsed.aud ?? 'authenticated',
+      created_at: parsed.created_at ?? new Date(0).toISOString(),
+    } as User;
+  } catch {
+    return null;
+  }
 }
 
 export function useAuth() {
@@ -20,6 +46,14 @@ export function useAuth() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    const e2eUser = getE2EUser();
+    if (e2eUser) {
+      setSession({ user: e2eUser } as Session);
+      setUser(e2eUser);
+      setLoading(false);
+      return () => undefined;
+    }
+
     supabase.auth
       .getSession()
       .then(({ data: { session } }) => {

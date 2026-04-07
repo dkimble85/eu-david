@@ -35,17 +35,25 @@ export default function BarcodeScanner({ onScan, active }: Props) {
     );
   }
 
+  if (!active) {
+    return (
+      <View style={styles.container}>
+        <View style={styles.inactiveCamera} />
+        <ScannerOverlay />
+      </View>
+    );
+  }
+
   return (
     <View style={styles.container}>
       <CameraView
         style={StyleSheet.absoluteFill}
-        active={active}
         facing="back"
         mode="picture"
         barcodeScannerSettings={{
           barcodeTypes: ['ean13', 'ean8', 'upc_a', 'upc_e', 'code128', 'code39', 'qr'],
         }}
-        onBarcodeScanned={active ? (result) => onScan(result.data) : undefined}
+        onBarcodeScanned={(result) => onScan(result.data)}
       />
       <ScannerOverlay />
     </View>
@@ -105,6 +113,10 @@ const styles = StyleSheet.create({
     aspectRatio: 3 / 4,
     borderRadius: 16,
     overflow: 'hidden',
+    backgroundColor: '#000',
+  },
+  inactiveCamera: {
+    ...StyleSheet.absoluteFillObject,
     backgroundColor: '#000',
   },
   placeholder: {

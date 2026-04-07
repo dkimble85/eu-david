@@ -16,6 +16,16 @@ export default function BarcodeScanner({ onScan, active }: Props) {
     },
   });
 
+  if (!active) {
+    return (
+      <View style={styles.container}>
+        <div style={{ width: '100%', height: '100%', position: 'relative', backgroundColor: '#000' }}>
+          <ScannerOverlay />
+        </div>
+      </View>
+    );
+  }
+
   return (
     <View style={styles.container}>
       <div style={{ width: '100%', height: '100%', position: 'relative' }}>

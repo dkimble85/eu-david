@@ -36,9 +36,17 @@ export default function ScanScreen() {
   );
 
   const scanner = useScanner(handleScan);
+  const shouldRenderCamera = isFocused && cameraActive && scanner.state === 'scanning';
 
   React.useEffect(() => {
-    if (isFocused && !authLoading && user && !cameraActive) {
+    if (!isFocused) {
+      setCameraActive(false);
+      scanner.pause();
+      setLoading(false);
+      return;
+    }
+
+    if (!authLoading && user && !cameraActive) {
       setError(null);
       setCameraActive(true);
       scanner.start();
@@ -70,10 +78,16 @@ export default function ScanScreen() {
     <SafeAreaView style={styles.safe}>
       <View style={styles.container}>
         <View style={styles.scannerWrapper}>
-          <TouchableOpacity style={styles.closeButton} onPress={closeScanner} activeOpacity={0.85}>
+          <TouchableOpacity
+            style={styles.closeButton}
+            onPress={closeScanner}
+            activeOpacity={0.85}
+            accessibilityRole="button"
+            accessibilityLabel="Close scanner"
+          >
             <X size={20} color={colors.textPrimary} />
           </TouchableOpacity>
-          <BarcodeScanner onScan={scanner.handleDecode} active={scanner.state === 'scanning'} />
+          <BarcodeScanner onScan={scanner.handleDecode} active={shouldRenderCamera} />
           {loading && (
             <View style={styles.loadingOverlay}>
               <ActivityIndicator size="large" color={colors.euGold} />

@@ -21,14 +21,13 @@ function exportWebBuild() {
     env: {
       ...process.env,
       EXPO_NO_TELEMETRY: '1',
+      EXPO_PUBLIC_E2E: '1',
       CI: process.env.CI ?? '1',
     },
   });
 }
 
-if (!existsSync(webDistDir) || !existsSync(path.join(webDistDir, 'index.html'))) {
-  exportWebBuild();
-}
+exportWebBuild();
 
 const contentTypes = new Map([
   ['.html', 'text/html; charset=utf-8'],
