@@ -73,6 +73,19 @@ export default function ReleaseNotesProvider({ children }: { children: React.Rea
 
   const showUpdateBanner = availableVersion != null && dismissedVersion !== availableVersion;
 
+  const handleRefreshUpdate = React.useCallback(() => {
+    if (!availableVersion) return;
+
+    setDismissedVersion(availableVersion);
+    setShowChangelog(false);
+
+    if (Platform.OS === 'web' && typeof window !== 'undefined') {
+      window.setTimeout(() => {
+        window.location.reload();
+      }, 0);
+    }
+  }, [availableVersion]);
+
   const value = React.useMemo<ReleaseContextValue>(
     () => ({
       openChangelog: () => setShowChangelog(true),
@@ -104,11 +117,7 @@ export default function ReleaseNotesProvider({ children }: { children: React.Rea
                 </TouchableOpacity>
                 <TouchableOpacity
                   style={styles.bannerPrimary}
-                  onPress={() => {
-                    if (Platform.OS === 'web' && typeof window !== 'undefined') {
-                      window.location.reload();
-                    }
-                  }}
+                  onPress={handleRefreshUpdate}
                   activeOpacity={0.85}
                 >
                   <Text style={styles.bannerPrimaryText}>Refresh</Text>
@@ -252,4 +261,3 @@ const styles = StyleSheet.create({
   releaseDate: { ...typography.caption1, color: colors.textMuted },
   releaseChange: { ...typography.subhead, color: colors.textSecondary, lineHeight: 21 },
 });
-

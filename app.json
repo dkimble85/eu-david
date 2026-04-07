@@ -2,7 +2,7 @@
   "expo": {
     "name": "EU David",
     "slug": "eu-david",
-    "version": "1.0.8",
+    "version": "1.0.9",
     "scheme": "eu-david",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -16,7 +16,7 @@
     "ios": {
       "supportsTablet": false,
       "bundleIdentifier": "com.eudavid.app",
-      "buildNumber": "108",
+      "buildNumber": "109",
       "icon": "./assets/icon.png",
       "infoPlist": {
         "NSCameraUsageDescription": "EU David needs camera access to scan food barcodes.",
@@ -24,7 +24,7 @@
       }
     },
     "android": {
-      "versionCode": 108,
+      "versionCode": 109,
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#0F1117"
