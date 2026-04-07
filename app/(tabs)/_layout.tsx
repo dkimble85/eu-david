@@ -70,7 +70,7 @@ const styles = StyleSheet.create({
     bottom: spacing.lg,
     height: 61,
     paddingTop: 4,
-    paddingBottom: 8,
+    paddingBottom: 14,
     paddingHorizontal: spacing.xs,
     borderTopWidth: 0,
     borderRadius: radius.xl,

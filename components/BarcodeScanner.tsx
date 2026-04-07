@@ -39,7 +39,9 @@ export default function BarcodeScanner({ onScan, active }: Props) {
     <View style={styles.container}>
       <CameraView
         style={StyleSheet.absoluteFill}
+        active={active}
         facing="back"
+        mode="picture"
         barcodeScannerSettings={{
           barcodeTypes: ['ean13', 'ean8', 'upc_a', 'upc_e', 'code128', 'code39', 'qr'],
         }}
