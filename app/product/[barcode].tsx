@@ -30,8 +30,6 @@ import type { ProductReportIssueType } from '@/lib/reports';
 type FoodMetaScores = {
   nutriScoreGrade: string | null;
   nutriScoreScore: number | null;
-  ecoScoreGrade: string | null;
-  ecoScoreScore: number | null;
   novaGroup: number | null;
 };
 
@@ -61,17 +59,6 @@ function nutriScoreLabel(grade: string | null): string {
     case 'c': return 'Average nutritional quality';
     case 'd': return 'Poor nutritional quality';
     case 'f': return 'Bad nutritional quality';
-    default: return 'Not rated';
-  }
-}
-
-function ecoScoreLabel(grade: string | null): string {
-  switch (grade?.toLowerCase()) {
-    case 'a': return 'Very low environmental impact';
-    case 'b': return 'Low environmental impact';
-    case 'c': return 'Moderate environmental impact';
-    case 'd': return 'High environmental impact';
-    case 'e': return 'Very high environmental impact';
     default: return 'Not rated';
   }
 }
@@ -343,9 +330,9 @@ export default function ProductScreen() {
         {!isBeauty &&
           productType === 'food' &&
           metaScores &&
-          (metaScores.nutriScoreGrade ||
-            metaScores.ecoScoreGrade ||
-            metaScores.novaGroup != null) && <ScoreSummaryCard scores={metaScores} />}
+          (metaScores.nutriScoreGrade || metaScores.novaGroup != null) && (
+            <ScoreSummaryCard scores={metaScores} />
+          )}
 
         {isBeauty && (
           <View style={styles.cosmeticRegCard}>
@@ -478,14 +465,6 @@ function ScoreSummaryCard({ scores }: { scores: FoodMetaScores }) {
           ? `Raw score: ${scores.nutriScoreScore}`
           : null,
       color: getScoreTone(normalizeNutriGrade(scores.nutriScoreGrade), 'grade'),
-    },
-    scores.ecoScoreGrade != null && {
-      label: 'Eco-Score',
-      value: scores.ecoScoreGrade.toUpperCase(),
-      description: ecoScoreLabel(scores.ecoScoreGrade),
-      sub:
-        typeof scores.ecoScoreScore === 'number' ? `Score: ${scores.ecoScoreScore}/100` : null,
-      color: getScoreTone(scores.ecoScoreGrade, 'grade'),
     },
     scores.novaGroup != null && {
       label: 'NOVA',

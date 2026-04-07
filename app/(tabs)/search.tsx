@@ -693,7 +693,6 @@ function ProductRow({
   const isHousehold = productType === 'household';
   const flagCount = result.banned.length + result.restricted.length + result.warning.length;
   const nutriScore = normalizeNutriGrade(product.metaScores.nutriScoreGrade)?.toUpperCase() ?? null;
-  const ecoScore = product.metaScores.ecoScoreGrade?.toUpperCase() ?? null;
   const novaGroup = product.metaScores.novaGroup;
   const dietaryAnalysis = getDietaryAnalysis(product).slice(0, 3);
   const nutritionFacts = product.nutritionFacts;
@@ -736,7 +735,7 @@ function ProductRow({
           </Text>
           {storeLabel && <Text style={styles.rowStore}>{storeLabel}</Text>}
         </View>
-        {!isBeauty && !isHousehold && (nutriScore || ecoScore || novaGroup) && (
+        {!isBeauty && !isHousehold && (nutriScore || novaGroup) && (
           <View style={styles.scoreMetaRow}>
             {nutriScore && (
               <Text
@@ -746,16 +745,6 @@ function ProductRow({
                 ]}
               >
                 Nutri {nutriScore}
-              </Text>
-            )}
-            {ecoScore && (
-              <Text
-                style={[
-                  styles.scoreMetaChip,
-                  { color: scoreChipColor(ecoScore, 'grade'), backgroundColor: `${scoreChipColor(ecoScore, 'grade')}22` },
-                ]}
-              >
-                Eco {ecoScore}
               </Text>
             )}
             {novaGroup != null && (
