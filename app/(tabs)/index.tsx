@@ -15,7 +15,7 @@ export default function TabsIndexRedirect() {
     );
   }
 
-  return <Redirect href="/scan" />;
+  return <Redirect href="/history" />;
 }
 
 const styles = StyleSheet.create({

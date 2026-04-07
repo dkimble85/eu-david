@@ -7,11 +7,6 @@ import { X } from 'lucide-react-native';
 import BarcodeScanner from '@/components/BarcodeScanner';
 import { colors, radius, spacing, typography } from '@/constants/theme';
 import { useAuth } from '@/hooks/useAuth';
-import {
-  getCameraPermissionPreference,
-  saveCameraPermissionPreference,
-  type CameraPermissionPreference,
-} from '@/lib/camera-preferences';
 import { useScanner } from '@/hooks/useScanner';
 
 export default function ScanScreen() {
@@ -21,11 +16,6 @@ export default function ScanScreen() {
   const isFocused = useIsFocused();
   const { user, loading: authLoading } = useAuth();
   const wasFocusedRef = useRef(false);
-  const cameraPreferenceRef = useRef<CameraPermissionPreference | null>(
-    getCameraPermissionPreference(user)
-  );
-  const [cameraPreference, setCameraPreference] =
-    useState<CameraPermissionPreference | null>(cameraPreferenceRef.current);
 
   const handleScan = useCallback(
     async (barcode: string) => {
@@ -47,12 +37,6 @@ export default function ScanScreen() {
 
   const scanner = useScanner(handleScan);
   const shouldRenderCamera = isFocused && cameraActive && scanner.state === 'scanning';
-
-  React.useEffect(() => {
-    const nextPreference = getCameraPermissionPreference(user);
-    cameraPreferenceRef.current = nextPreference;
-    setCameraPreference(nextPreference);
-  }, [user]);
 
   React.useEffect(() => {
     if (!isFocused) {
@@ -84,17 +68,6 @@ export default function ScanScreen() {
     }
   }, [authLoading, user]);
 
-  const handlePermissionResolved = useCallback(
-    (granted: boolean) => {
-      if (!user || !granted || cameraPreferenceRef.current === 'granted') return;
-
-      cameraPreferenceRef.current = 'granted';
-      setCameraPreference('granted');
-      void saveCameraPermissionPreference('granted');
-    },
-    [user]
-  );
-
   function closeScanner() {
     setCameraActive(false);
     scanner.pause();
@@ -117,8 +90,7 @@ export default function ScanScreen() {
           <BarcodeScanner
             onScan={scanner.handleDecode}
             active={shouldRenderCamera}
-            autoRequestPermission={cameraPreference !== 'granted'}
-            onPermissionResolved={handlePermissionResolved}
+            autoRequestPermission={isFocused}
           />
           {loading && (
             <View style={styles.loadingOverlay}>

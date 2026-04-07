@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Linking, StyleSheet, TouchableOpacity, View, Text } from 'react-native';
 import { CameraView, useCameraPermissions } from 'expo-camera';
 import { colors, spacing, typography } from '@/constants/theme';
@@ -6,37 +6,20 @@ type Props = {
   onScan: (barcode: string) => void;
   active: boolean;
   autoRequestPermission: boolean;
-  onPermissionResolved?: (granted: boolean) => void;
 };
 
 export default function BarcodeScanner({
   onScan,
   active,
   autoRequestPermission,
-  onPermissionResolved,
 }: Props) {
   const [permission, requestPermission] = useCameraPermissions();
   const [requestingPermission, setRequestingPermission] = useState(false);
   const requestedPermissionRef = useRef(false);
-  const reportedPermissionRef = useRef<boolean | null>(null);
-
-  const reportPermission = useCallback(
-    (granted: boolean) => {
-      if (reportedPermissionRef.current === granted) return;
-      reportedPermissionRef.current = granted;
-      onPermissionResolved?.(granted);
-    },
-    [onPermissionResolved]
-  );
 
   useEffect(() => {
     if (!permission) return;
-
-    if (permission.granted) {
-      setRequestingPermission(false);
-      reportPermission(true);
-      return;
-    }
+    if (permission.granted) return;
 
     if (
       autoRequestPermission &&
@@ -46,29 +29,18 @@ export default function BarcodeScanner({
     ) {
       requestedPermissionRef.current = true;
       setRequestingPermission(true);
-      void requestPermission()
-        .then((result) => {
-          reportPermission(result.granted);
-        })
-        .finally(() => {
-          setRequestingPermission(false);
-        });
-      return;
+      void requestPermission().finally(() => {
+        setRequestingPermission(false);
+      });
     }
-
-    if (permission.status !== 'undetermined') {
-      setRequestingPermission(false);
-      reportPermission(false);
-    }
-  }, [autoRequestPermission, permission, reportPermission, requestPermission]);
+  }, [autoRequestPermission, permission, requestPermission]);
 
   async function handlePermissionAction() {
     if (!permission) return;
 
     if (permission.canAskAgain) {
       setRequestingPermission(true);
-      const result = await requestPermission();
-      reportPermission(result.granted);
+      await requestPermission();
       setRequestingPermission(false);
       return;
     }
