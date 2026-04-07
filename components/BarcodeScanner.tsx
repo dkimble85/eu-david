@@ -1,23 +1,82 @@
-import React, { useEffect } from 'react';
-import { StyleSheet, View, Text } from 'react-native';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { Linking, StyleSheet, TouchableOpacity, View, Text } from 'react-native';
 import { CameraView, useCameraPermissions } from 'expo-camera';
 import { colors, spacing, typography } from '@/constants/theme';
-
 type Props = {
   onScan: (barcode: string) => void;
   active: boolean;
+  autoRequestPermission: boolean;
+  onPermissionResolved?: (granted: boolean) => void;
 };
 
-export default function BarcodeScanner({ onScan, active }: Props) {
+export default function BarcodeScanner({
+  onScan,
+  active,
+  autoRequestPermission,
+  onPermissionResolved,
+}: Props) {
   const [permission, requestPermission] = useCameraPermissions();
+  const [requestingPermission, setRequestingPermission] = useState(false);
+  const requestedPermissionRef = useRef(false);
+  const reportedPermissionRef = useRef<boolean | null>(null);
+
+  const reportPermission = useCallback(
+    (granted: boolean) => {
+      if (reportedPermissionRef.current === granted) return;
+      reportedPermissionRef.current = granted;
+      onPermissionResolved?.(granted);
+    },
+    [onPermissionResolved]
+  );
 
   useEffect(() => {
-    if (permission && !permission.granted && permission.canAskAgain) {
-      requestPermission();
-    }
-  }, [permission, requestPermission]);
+    if (!permission) return;
 
-  if (!permission || permission.status === 'undetermined') {
+    if (permission.granted) {
+      setRequestingPermission(false);
+      reportPermission(true);
+      return;
+    }
+
+    if (
+      autoRequestPermission &&
+      permission.status === 'undetermined' &&
+      permission.canAskAgain &&
+      !requestedPermissionRef.current
+    ) {
+      requestedPermissionRef.current = true;
+      setRequestingPermission(true);
+      void requestPermission()
+        .then((result) => {
+          reportPermission(result.granted);
+        })
+        .finally(() => {
+          setRequestingPermission(false);
+        });
+      return;
+    }
+
+    if (permission.status !== 'undetermined') {
+      setRequestingPermission(false);
+      reportPermission(false);
+    }
+  }, [autoRequestPermission, permission, reportPermission, requestPermission]);
+
+  async function handlePermissionAction() {
+    if (!permission) return;
+
+    if (permission.canAskAgain) {
+      setRequestingPermission(true);
+      const result = await requestPermission();
+      reportPermission(result.granted);
+      setRequestingPermission(false);
+      return;
+    }
+
+    await Linking.openSettings();
+  }
+
+  if (!permission || requestingPermission) {
     return (
       <View style={styles.placeholder}>
         <Text style={styles.placeholderText}>Requesting camera permission...</Text>
@@ -29,8 +88,19 @@ export default function BarcodeScanner({ onScan, active }: Props) {
     return (
       <View style={styles.placeholder}>
         <Text style={styles.placeholderText}>
-          Camera access was denied. Please enable it in Settings → EU David → Camera.
+          {permission.canAskAgain
+            ? 'Camera access is off. Enable it when you want to scan products.'
+            : 'Camera access was denied. Please enable it in Settings → EU David → Camera.'}
         </Text>
+        <TouchableOpacity
+          style={styles.permissionButton}
+          onPress={handlePermissionAction}
+          activeOpacity={0.85}
+        >
+          <Text style={styles.permissionButtonText}>
+            {permission.canAskAgain ? 'Enable camera' : 'Open Settings'}
+          </Text>
+        </TouchableOpacity>
       </View>
     );
   }
@@ -132,6 +202,18 @@ const styles = StyleSheet.create({
     ...typography.body,
     color: colors.textSecondary,
     textAlign: 'center',
+  },
+  permissionButton: {
+    marginTop: spacing.md,
+    backgroundColor: colors.euBlue,
+    borderRadius: 12,
+    paddingVertical: spacing.sm,
+    paddingHorizontal: spacing.lg,
+  },
+  permissionButtonText: {
+    ...typography.subhead,
+    color: '#fff',
+    fontWeight: '700',
   },
   overlay: {
     ...StyleSheet.absoluteFillObject,

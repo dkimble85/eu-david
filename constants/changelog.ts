@@ -6,6 +6,15 @@ export type ReleaseNote = {
 
 export const RELEASE_NOTES: ReleaseNote[] = [
   {
+    version: '1.0.10',
+    date: '2026-04-07',
+    changes: [
+      'Removed the new-version notification banner from the app shell.',
+      'Updated camera permission handling so only an approved camera choice is remembered.',
+      'Kept a manual camera enable path available when access is turned off.',
+    ],
+  },
+  {
     version: '1.0.7',
     date: '2026-04-06',
     changes: [
