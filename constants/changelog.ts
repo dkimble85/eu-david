@@ -6,6 +6,15 @@ export type ReleaseNote = {
 
 export const RELEASE_NOTES: ReleaseNote[] = [
   {
+    version: '1.0.7',
+    date: '2026-04-06',
+    changes: [
+      'Split the scan experience into separate guest and authenticated routes for a cleaner flow.',
+      'Refined the logged-out scan landing page and increased the guest hero logo size.',
+      'Deduplicated additive aliases like TBHQ so the same banned ingredient does not appear twice.',
+    ],
+  },
+  {
     version: '1.0.5',
     date: '2026-04-06',
     changes: [
@@ -41,4 +50,3 @@ export const RELEASE_NOTES: ReleaseNote[] = [
     ],
   },
 ];
-

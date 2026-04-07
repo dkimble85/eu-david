@@ -1,9 +1,9 @@
 {
-  "latestVersion": "1.0.5",
+  "latestVersion": "1.0.7",
   "releasedAt": "2026-04-06",
   "summary": [
-    "Fixed bottom tab labels clipping under icons.",
-    "Improved scanner camera behavior on native and web.",
-    "Polished floating tab bar spacing."
+    "Split guest and signed-in scan flows into dedicated routes.",
+    "Refined the logged-out scan landing page and hero layout.",
+    "Deduplicated additive aliases like TBHQ so repeated banned flags collapse into one finding."
   ]
 }

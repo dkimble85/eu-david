@@ -39,6 +39,32 @@ export type EuCheckResult = {
   hasAnyIngredientData: boolean;
 };
 
+function canonicalIngredientIdentity(item: Pick<CheckedIngredient, 'key' | 'name'>): string {
+  const normalizedName = item.name
+    .toLowerCase()
+    .replace(/[()]/g, ' ')
+    .replace(/[^a-z0-9]+/g, ' ')
+    .split(' ')
+    .filter(Boolean);
+
+  if (normalizedName.length === 0) {
+    return item.key.toLowerCase();
+  }
+
+  return Array.from(new Set(normalizedName)).sort().join(' ');
+}
+
+function shouldReplaceIngredient(current: CheckedIngredient, next: CheckedIngredient): boolean {
+  if (current.isENumber !== next.isENumber) {
+    return next.isENumber;
+  }
+
+  const currentHasMoreMetadata = Number(Boolean(current.notes)) + Number(Boolean(current.bannedSince));
+  const nextHasMoreMetadata = Number(Boolean(next.notes)) + Number(Boolean(next.bannedSince));
+
+  return nextHasMoreMetadata > currentHasMoreMetadata;
+}
+
 function checkENumbers(eNumbers: string[]): CheckedIngredient[] {
   return eNumbers.map((code) => {
     const record = db.additives[code];
@@ -122,15 +148,20 @@ export function runEuCheck(eNumbers: string[], ingredientsText: string | null): 
   const fromENumbers = checkENumbers(eNumbers);
   const fromText = ingredientsText ? checkIngredientText(ingredientsText) : [];
 
-  // Merge, dedupe by key
-  const seen = new Set<string>();
-  const all: CheckedIngredient[] = [];
+  // Merge, dedupe by canonical additive identity so variants like
+  // "tert-Butylhydroquinone (TBHQ)" and "TBHQ (tert-Butylhydroquinone)"
+  // collapse into a single finding.
+  const allByIdentity = new Map<string, CheckedIngredient>();
   for (const item of [...fromENumbers, ...fromText]) {
-    if (!seen.has(item.key)) {
-      seen.add(item.key);
-      all.push(item);
+    const identity = canonicalIngredientIdentity(item);
+    const existing = allByIdentity.get(identity);
+
+    if (!existing || shouldReplaceIngredient(existing, item)) {
+      allByIdentity.set(identity, item);
     }
   }
+
+  const all = Array.from(allByIdentity.values());
 
   const result: EuCheckResult = {
     banned: all.filter((i) => i.status === 'banned'),

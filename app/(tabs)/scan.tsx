@@ -1,14 +1,5 @@
 import React, { useCallback, useRef, useState } from 'react';
-import {
-  StyleSheet,
-  Text,
-  View,
-  TouchableOpacity,
-  ActivityIndicator,
-  Image,
-  ScrollView,
-  useWindowDimensions,
-} from 'react-native';
+import { ActivityIndicator, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
 import { useIsFocused } from '@react-navigation/native';
@@ -22,9 +13,6 @@ export default function ScanScreen() {
   const [cameraActive, setCameraActive] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const { width } = useWindowDimensions();
-  const isDesktop = width >= 1024;
-  const isMobile = width < 768;
   const isFocused = useIsFocused();
   const { user, loading: authLoading } = useAuth();
   const wasFocusedRef = useRef(false);
@@ -66,15 +54,11 @@ export default function ScanScreen() {
     wasFocusedRef.current = isFocused;
   }, [isFocused, cameraActive, loading, scanner]);
 
-  function startScanning() {
-    if (authLoading) return;
-    if (!user) {
-      router.push('/(auth)/login');
-      return;
+  React.useEffect(() => {
+    if (!authLoading && !user) {
+      router.replace('/(auth)/scan');
     }
-    setCameraActive(true);
-    scanner.start();
-  }
+  }, [authLoading, user]);
 
   function closeScanner() {
     setCameraActive(false);
@@ -84,106 +68,40 @@ export default function ScanScreen() {
 
   return (
     <SafeAreaView style={styles.safe}>
-      <ScrollView
-        contentContainerStyle={[styles.container, isMobile && styles.containerCompact]}
-        showsVerticalScrollIndicator={false}
-        scrollEnabled={cameraActive}
-        keyboardShouldPersistTaps="handled"
-      >
-        {!cameraActive && !user && (
-          <View style={styles.heroHeader}>
-            <Image
-              source={require('@/assets/logo.png')}
-              style={[
-                styles.logoImageBase,
-                isDesktop
-                  ? styles.logoImageDesktop
-                  : isMobile
-                    ? styles.logoImageMobile
-                  : styles.logoImageDefault,
-              ]}
-            />
-          </View>
-        )}
-
-        {cameraActive ? (
-          <View style={styles.scannerWrapper}>
-            <TouchableOpacity style={styles.closeButton} onPress={closeScanner} activeOpacity={0.85}>
-              <X size={20} color={colors.textPrimary} />
-            </TouchableOpacity>
-            <BarcodeScanner onScan={scanner.handleDecode} active={scanner.state === 'scanning'} />
-            {loading && (
-              <View style={styles.loadingOverlay}>
-                <ActivityIndicator size="large" color={colors.euGold} />
-                <Text style={styles.loadingText}>Looking up product...</Text>
-              </View>
-            )}
-            {error && (
-              <View style={styles.errorBox}>
-                <Text style={styles.errorText}>{error}</Text>
-                <TouchableOpacity onPress={scanner.resume}>
-                  <Text style={styles.retryText}>Tap to scan again</Text>
-                </TouchableOpacity>
-              </View>
-            )}
-          </View>
-        ) : (
-          <View style={[styles.cta, isMobile && styles.ctaCompact]}>
-            <View style={styles.heroCard}>
-              <View style={styles.heroCardHeader}>
-                <Text style={styles.heroEyebrow}>EU barcode checker</Text>
-                <Text style={styles.heroTitle}>Check yourself before you wreck yourself</Text>
-                <Text style={styles.heroBody}>
-                  Instantly spot ingredients that are banned, restricted, or warning-labeled in
-                  the European Union.
-                </Text>
-              </View>
-              <View style={[styles.illustrationBox, isMobile && styles.illustrationBoxCompact]}>
-                <Image
-                  source={require('@/assets/barcode-hero.png')}
-                  style={styles.barcodeImage}
-                  resizeMode="contain"
-                />
-              </View>
-              <View style={styles.heroPoints}>
-                <Text style={styles.heroPoint}>Food, beauty, and household products</Text>
-              </View>
+      <View style={styles.container}>
+        <View style={styles.scannerWrapper}>
+          <TouchableOpacity style={styles.closeButton} onPress={closeScanner} activeOpacity={0.85}>
+            <X size={20} color={colors.textPrimary} />
+          </TouchableOpacity>
+          <BarcodeScanner onScan={scanner.handleDecode} active={scanner.state === 'scanning'} />
+          {loading && (
+            <View style={styles.loadingOverlay}>
+              <ActivityIndicator size="large" color={colors.euGold} />
+              <Text style={styles.loadingText}>Looking up product...</Text>
             </View>
-            {!user && <Text style={styles.signInHint}>Sign in to start scanning and save results.</Text>}
-            <TouchableOpacity style={styles.scanButton} onPress={startScanning} activeOpacity={0.8}>
-              <Text style={styles.scanButtonText}>
-                {authLoading ? 'Checking account...' : user ? '📷 Start Scanning' : 'Sign In to Scan'}
-              </Text>
-            </TouchableOpacity>
-          </View>
-        )}
-      </ScrollView>
+          )}
+          {error && (
+            <View style={styles.errorBox}>
+              <Text style={styles.errorText}>{error}</Text>
+              <TouchableOpacity onPress={scanner.resume}>
+                <Text style={styles.retryText}>Tap to scan again</Text>
+              </TouchableOpacity>
+            </View>
+          )}
+        </View>
+      </View>
     </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
   safe: { flex: 1, backgroundColor: colors.background },
-  container: { flexGrow: 1, padding: spacing.lg, gap: spacing.md, justifyContent: 'center' },
-  containerCompact: { paddingVertical: spacing.sm, gap: spacing.sm, justifyContent: 'center' },
-  heroHeader: { gap: spacing.xs, marginTop: -spacing.sm },
-  logoImageBase: {
-    alignSelf: 'center',
-    resizeMode: 'contain',
+  container: {
+    flex: 1,
+    padding: spacing.lg,
+    justifyContent: 'center',
   },
-  logoImageMobile: {
-    width: 250,
-    height: 168,
-  },
-  logoImageDefault: {
-    width: 480,
-    height: 320,
-  },
-  logoImageDesktop: {
-    width: 720,
-    height: 480,
-  },
-  scannerWrapper: { flex: 1, gap: spacing.md },
+  scannerWrapper: { flex: 1, justifyContent: 'center', gap: spacing.md },
   closeButton: {
     position: 'absolute',
     top: spacing.md,
@@ -219,78 +137,4 @@ const styles = StyleSheet.create({
   },
   errorText: { ...typography.callout, color: colors.banned, textAlign: 'center' },
   retryText: { ...typography.subhead, color: colors.textSecondary },
-  cta: { flex: 1, alignItems: 'center', justifyContent: 'center', gap: spacing.md },
-  ctaCompact: { gap: spacing.sm },
-  heroCard: {
-    alignSelf: 'stretch',
-    backgroundColor: colors.surface,
-    borderRadius: radius.xl,
-    borderWidth: 1,
-    borderColor: colors.border,
-    padding: spacing.lg,
-    gap: spacing.md,
-  },
-  heroCardHeader: {
-    alignItems: 'center',
-    gap: spacing.xs,
-  },
-  heroEyebrow: {
-    ...typography.caption1,
-    color: colors.euGold,
-    fontWeight: '700',
-    textTransform: 'uppercase',
-    letterSpacing: 0.8,
-  },
-  heroTitle: {
-    ...typography.title2,
-    color: colors.textPrimary,
-    textAlign: 'center',
-  },
-  heroBody: {
-    ...typography.callout,
-    color: colors.textSecondary,
-    textAlign: 'center',
-    maxWidth: 300,
-  },
-  illustrationBox: {
-    alignSelf: 'center',
-    width: '100%',
-    height: 132,
-    borderRadius: radius.lg,
-    backgroundColor: colors.surfaceElevated,
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderWidth: 1,
-    borderColor: colors.border,
-  },
-  illustrationBoxCompact: {
-    height: 116,
-  },
-  heroPoints: {
-    gap: spacing.xs,
-  },
-  heroPoint: {
-    ...typography.subhead,
-    color: colors.textPrimary,
-    textAlign: 'center',
-  },
-  signInHint: { ...typography.caption1, color: colors.textMuted, textAlign: 'center', maxWidth: 280 },
-  barcodeImage: {
-    width: '88%',
-    height: '70%',
-  },
-  scanButton: {
-    backgroundColor: colors.euBlue,
-    borderRadius: radius.lg,
-    paddingVertical: spacing.md,
-    alignSelf: 'stretch',
-    marginTop: spacing.sm,
-    alignItems: 'center',
-    shadowColor: colors.euBlue,
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.45,
-    shadowRadius: 12,
-    elevation: 8,
-  },
-  scanButtonText: { ...typography.title2, color: '#fff', fontWeight: '800' },
 });
