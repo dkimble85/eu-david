@@ -8,10 +8,11 @@ import {
   TextInput,
   Image,
   ActivityIndicator,
+  ScrollView,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
-import { Search as SearchIcon, ScanBarcode } from 'lucide-react-native';
+import { Grid2x2, House, Search as SearchIcon, Sparkles, UtensilsCrossed, ScanBarcode } from 'lucide-react-native';
 import { colors, radius, spacing, typography } from '@/constants/theme';
 import { getMatchingUsStore } from '@/lib/recommendations';
 import { runEuCheck, scoreProduct } from '@/lib/eu-check';
@@ -39,6 +40,24 @@ const SEARCH_CACHE_TTL_MS = 5 * 60 * 1000;
 const REPORT_COUNT_CACHE_TTL_MS = 5 * 60 * 1000;
 const searchCache = new Map<string, { expiresAt: number; data: ScoredProduct[] }>();
 const reportCountCache = new Map<string, { expiresAt: number; count: number }>();
+type SearchFilter = 'all' | 'food' | 'beauty' | 'household';
+
+const SEARCH_FILTERS: Array<{ key: SearchFilter; label: string }> = [
+  { key: 'all', label: 'All' },
+  { key: 'food', label: 'Food' },
+  { key: 'beauty', label: 'Beauty' },
+  { key: 'household', label: 'Household' },
+];
+
+const SEARCH_FILTER_ICONS: Record<
+  SearchFilter,
+  React.ComponentType<{ color: string; size?: number }>
+> = {
+  all: Grid2x2,
+  food: UtensilsCrossed,
+  beauty: Sparkles,
+  household: House,
+};
 
 export default function SearchScreen() {
   const { user, loading: authLoading } = useAuth();
@@ -55,8 +74,14 @@ export default function SearchScreen() {
     {}
   );
   const [favoriteBarcodes, setFavoriteBarcodes] = useState<Set<string>>(new Set());
+  const [selectedFilter, setSelectedFilter] = useState<SearchFilter>('all');
 
   const { data, isLoading, isError, refetch } = useSearch(submittedQuery, Boolean(user) && !authLoading);
+  const filteredData = React.useMemo(() => {
+    if (!data) return data;
+    if (selectedFilter === 'all') return data;
+    return data.filter((item) => getSearchResultProductType(item.product) === selectedFilter);
+  }, [data, selectedFilter]);
 
   const handleSearch = useCallback(() => {
     if (authLoading) return;
@@ -254,53 +279,81 @@ export default function SearchScreen() {
         </View>
       ) : (
         <>
-          {/* Search bar */}
-          <View style={styles.searchRow}>
-            <TextInput
-              style={styles.searchInput}
-              value={searchQuery}
-              onChangeText={setSearchQuery}
-              onSubmitEditing={handleSearch}
-              placeholder="Search by product name..."
-              placeholderTextColor={colors.textMuted}
-              returnKeyType="search"
-              autoCapitalize="none"
-              autoCorrect={false}
-            />
-            <TouchableOpacity style={styles.searchButton} onPress={handleSearch}>
-              <SearchIcon size={20} color="#fff" />
-            </TouchableOpacity>
-          </View>
-
-          {/* Barcode quick-entry toggle */}
-          <View style={styles.barcodeRow}>
-            <TouchableOpacity
-              style={styles.barcodeToggle}
-              onPress={() => setShowBarcodeInput(!showBarcodeInput)}
-            >
-              <ScanBarcode size={16} color={colors.euGold} />
-              <Text style={styles.barcodeToggleText}>Enter barcode manually</Text>
-            </TouchableOpacity>
-          </View>
-
-          {showBarcodeInput && (
-            <View style={styles.barcodeInputRow}>
+          <View style={styles.controlsSection}>
+            {/* Search bar */}
+            <View style={styles.searchRow}>
               <TextInput
-                style={styles.barcodeInput}
-                value={barcodeInput}
-                onChangeText={setBarcodeInput}
-                onSubmitEditing={handleBarcodeSubmit}
-                placeholder="Enter barcode number..."
+                style={styles.searchInput}
+                value={searchQuery}
+                onChangeText={setSearchQuery}
+                onSubmitEditing={handleSearch}
+                placeholder="Search by product name..."
                 placeholderTextColor={colors.textMuted}
-                keyboardType="number-pad"
-                returnKeyType="go"
+                returnKeyType="search"
                 autoCapitalize="none"
+                autoCorrect={false}
               />
-              <TouchableOpacity style={styles.searchButton} onPress={handleBarcodeSubmit}>
-                <Text style={styles.searchButtonText}>Go</Text>
+              <TouchableOpacity style={styles.searchButton} onPress={handleSearch}>
+                <SearchIcon size={20} color="#fff" />
               </TouchableOpacity>
             </View>
-          )}
+
+            {/* Barcode quick-entry toggle */}
+            <View style={styles.barcodeRow}>
+              <TouchableOpacity
+                style={styles.barcodeToggle}
+                onPress={() => setShowBarcodeInput(!showBarcodeInput)}
+              >
+                <ScanBarcode size={16} color={colors.euGold} />
+                <Text style={styles.barcodeToggleText}>Enter barcode manually</Text>
+              </TouchableOpacity>
+            </View>
+
+            {showBarcodeInput && (
+              <View style={styles.barcodeInputRow}>
+                <TextInput
+                  style={styles.barcodeInput}
+                  value={barcodeInput}
+                  onChangeText={setBarcodeInput}
+                  onSubmitEditing={handleBarcodeSubmit}
+                  placeholder="Enter barcode number..."
+                  placeholderTextColor={colors.textMuted}
+                  keyboardType="number-pad"
+                  returnKeyType="go"
+                  autoCapitalize="none"
+                />
+                <TouchableOpacity style={styles.searchButton} onPress={handleBarcodeSubmit}>
+                  <Text style={styles.searchButtonText}>Go</Text>
+                </TouchableOpacity>
+              </View>
+            )}
+
+            <ScrollView
+              horizontal
+              showsHorizontalScrollIndicator={false}
+              style={styles.filtersScroll}
+              contentContainerStyle={styles.filterRow}
+            >
+              {SEARCH_FILTERS.map((filter) => {
+                const active = selectedFilter === filter.key;
+                const Icon = SEARCH_FILTER_ICONS[filter.key];
+                return (
+                  <TouchableOpacity
+                    key={filter.key}
+                    style={[styles.filterChip, active && styles.filterChipActive]}
+                    onPress={() => setSelectedFilter(filter.key)}
+                    activeOpacity={0.8}
+                  >
+                    <Icon size={14} color={active ? '#fff' : colors.textSecondary} />
+                    <Text style={[styles.filterChipText, active && styles.filterChipTextActive]}>
+                      {filter.label}
+                    </Text>
+                  </TouchableOpacity>
+                );
+              })}
+            </ScrollView>
+            <View style={styles.sectionDivider} />
+          </View>
 
           {/* Results */}
           {!hasQuery ? (
@@ -331,9 +384,17 @@ export default function SearchScreen() {
               <Text style={styles.emptyTitle}>No products found</Text>
               <Text style={styles.emptyBody}>Try a different search term.</Text>
             </View>
+          ) : !filteredData || filteredData.length === 0 ? (
+            <View style={styles.empty}>
+              <Text style={styles.emptyEmoji}>🧭</Text>
+              <Text style={styles.emptyTitle}>No {selectedFilter} matches</Text>
+              <Text style={styles.emptyBody}>
+                Try switching filters to view the other results from this search.
+              </Text>
+            </View>
           ) : (
             <FlatList
-              data={data}
+              data={filteredData}
               keyExtractor={(item, i) => item.product.barcode ?? `${i}`}
               contentContainerStyle={styles.list}
               showsVerticalScrollIndicator={false}
@@ -476,9 +537,13 @@ async function searchWithFallbacks(query: string): Promise<ScoredProduct[]> {
       searchOpenBeautyFactsProducts(term, 25)
         .then((products) =>
           products.map((p) => {
+            const product = {
+              ...p,
+              categoriesTags: Array.from(new Set([...p.categoriesTags, 'en:beauty-products'])),
+            };
             const result = runEuCosmeticCheck(p.ingredientsText);
             const score = scoreCosmeticProduct(result);
-            return { product: p, result, score } as ScoredProduct;
+            return { product, result, score } as ScoredProduct;
           })
         )
         .catch(() => [] as ScoredProduct[])
@@ -490,9 +555,13 @@ async function searchWithFallbacks(query: string): Promise<ScoredProduct[]> {
       searchOpenProductsFactsProducts(term, 25)
         .then((products) =>
           products.map((p) => {
+            const product = {
+              ...p,
+              categoriesTags: Array.from(new Set([...p.categoriesTags, 'en:household-products'])),
+            };
             const result = runEuCheck([], p.ingredientsText);
             const score = scoreProduct(result);
-            return { product: p, result, score } as ScoredProduct;
+            return { product, result, score } as ScoredProduct;
           })
         )
         .catch(() => [] as ScoredProduct[])
@@ -532,14 +601,14 @@ async function searchWithFallbacks(query: string): Promise<ScoredProduct[]> {
   const settled = await Promise.all([...offTasks, usdaTask, obfTask, opfTask, exactBarcodeTask]);
   const combinedResults = settled.flat();
 
-  const deduped = dedupeSearchResults(combinedResults);
-  const relevant = deduped.filter((item) => isRelevantToQuery(item, termVariants));
-
-  return relevant.sort((a, b) => {
+  const relevant = combinedResults.filter((item) => isRelevantToQuery(item, termVariants));
+  const ranked = relevant.sort((a, b) => {
     const relevanceDelta = getRelevanceScore(b, termVariants) - getRelevanceScore(a, termVariants);
     if (relevanceDelta !== 0) return relevanceDelta;
     return b.score - a.score;
   });
+
+  return dedupeSearchResults(ranked);
 }
 
 function mapUsdaFoodToScoredProduct(food: UsdaBrandedFood): ScoredProduct | null {
@@ -597,6 +666,18 @@ function normalizeForSearch(value: string): string {
     .trim();
 }
 
+function normalizeCategoryTagsForSearch(tags: string[]): string[] {
+  return tags
+    .map((tag) =>
+      normalizeForSearch(
+        tag
+          .replace(/^[a-z]{2}:/i, '')
+          .replace(/-/g, ' ')
+      )
+    )
+    .filter(Boolean);
+}
+
 function isRelevantToQuery(item: ScoredProduct, terms: string[]): boolean {
   return getRelevanceScore(item, terms) > 0;
 }
@@ -605,13 +686,21 @@ function getRelevanceScore(item: ScoredProduct, terms: string[]): number {
   const name = normalizeForSearch(item.product.name);
   const brand = normalizeForSearch(item.product.brand ?? '');
   const barcode = normalizeForSearch(item.product.barcode ?? '');
+  const categoryTerms = normalizeCategoryTagsForSearch(item.product.categoriesTags);
+  const categoriesHaystack = categoryTerms.join(' ');
   const haystack = `${name} ${brand}`.trim();
-  if (!haystack && !barcode) return 0;
+  const brandThenName = `${brand} ${name}`.trim();
+  const searchablePhraseFields = [name, brand, haystack, brandThenName, categoriesHaystack].filter(
+    Boolean
+  );
+  if (!haystack && !barcode && !categoriesHaystack) return 0;
 
   let score = 0;
   for (const rawTerm of terms) {
     const term = normalizeForSearch(rawTerm);
     if (!term) continue;
+    const isPhrase = term.includes(' ');
+    const tokens = term.split(' ').filter((token) => token.length > 1);
 
     if (barcode && barcode === term) score += 400;
     if (barcode && barcode.includes(term)) score += 220;
@@ -619,16 +708,33 @@ function getRelevanceScore(item: ScoredProduct, terms: string[]): number {
     if (name.includes(term)) score += 150;
     if (brand.includes(term)) score += 90;
     if (haystack.includes(term)) score += 70;
+    if (categoriesHaystack.includes(term)) score += 65;
 
-    const tokens = term.split(' ').filter((token) => token.length > 1);
-    if (tokens.length > 0 && tokens.every((token) => haystack.includes(token))) {
-      score += 40;
+    if (isPhrase && searchablePhraseFields.some((field) => field.includes(term))) {
+      score += 120;
     }
+
+    if (tokens.length > 0 && tokens.every((token) => haystack.includes(token))) {
+      score += isPhrase ? 40 : 60;
+    }
+
+    if (tokens.length > 0 && tokens.every((token) => categoriesHaystack.includes(token))) {
+      score += isPhrase ? 35 : 50;
+    }
+
     if (
       tokens.length > 1 &&
       tokens.filter((token) => haystack.includes(token)).length >= Math.ceil(tokens.length / 2)
     ) {
       score += 20;
+    }
+
+    if (
+      tokens.length > 1 &&
+      tokens.filter((token) => categoriesHaystack.includes(token)).length >=
+        Math.ceil(tokens.length / 2)
+    ) {
+      score += 15;
     }
   }
 
@@ -670,6 +776,18 @@ function normalizeNutriGrade(grade: string | null): string | null {
   return grade.toLowerCase() === 'e' ? 'f' : grade.toLowerCase();
 }
 
+function getSearchResultProductType(
+  product: OpenFoodFactsProduct
+): 'food' | 'beauty' | 'household' {
+  const classified = classifyProductByCategories(product.categoriesTags);
+  if (classified === 'food' || classified === 'beauty' || classified === 'household') {
+    return classified;
+  }
+
+  if (product.barcode?.startsWith('usda-')) return 'food';
+  return 'food';
+}
+
 function ProductRow({
   item,
   missingIngredientsReportCount,
@@ -688,7 +806,7 @@ function ProductRow({
   }) => void;
 }) {
   const { product, result, score } = item;
-  const productType = classifyProductByCategories(product.categoriesTags);
+  const productType = getSearchResultProductType(product);
   const isBeauty = productType === 'beauty';
   const isHousehold = productType === 'household';
   const flagCount = result.banned.length + result.restricted.length + result.warning.length;
@@ -868,6 +986,10 @@ const styles = StyleSheet.create({
   },
   title: { ...typography.title2, color: colors.textPrimary },
   subtitle: { ...typography.subhead, color: colors.textSecondary },
+  controlsSection: {
+    backgroundColor: colors.background,
+    zIndex: 1,
+  },
 
   searchRow: {
     flexDirection: 'row',
@@ -894,6 +1016,41 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   searchButtonText: { ...typography.callout, color: '#fff', fontWeight: '600' },
+  filtersScroll: {
+    flexGrow: 0,
+  },
+  filterRow: {
+    paddingHorizontal: spacing.lg,
+    paddingBottom: spacing.lg,
+    alignItems: 'center',
+    gap: spacing.sm,
+  },
+  filterChip: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing.xs,
+    paddingHorizontal: spacing.md,
+    paddingVertical: 6,
+    borderRadius: radius.full,
+    backgroundColor: colors.surface,
+    borderWidth: 1,
+    borderColor: colors.border,
+    alignSelf: 'flex-start',
+    flexShrink: 0,
+  },
+  filterChipActive: {
+    backgroundColor: colors.euBlue,
+    borderColor: colors.euBlue,
+  },
+  filterChipText: {
+    ...typography.caption1,
+    color: colors.textSecondary,
+    fontWeight: '600',
+    flexShrink: 0,
+  },
+  filterChipTextActive: {
+    color: '#fff',
+  },
 
   barcodeRow: {
     paddingHorizontal: spacing.lg,
@@ -923,6 +1080,12 @@ const styles = StyleSheet.create({
     ...typography.callout,
     color: colors.textPrimary,
   },
+  sectionDivider: {
+    height: 1,
+    backgroundColor: colors.border,
+    marginHorizontal: spacing.lg,
+    marginBottom: spacing.sm,
+  },
 
   empty: {
     flex: 1,
@@ -943,7 +1106,7 @@ const styles = StyleSheet.create({
   },
   retryText: { ...typography.callout, color: '#fff', fontWeight: '600' },
 
-  list: { padding: spacing.lg, gap: spacing.sm, paddingBottom: spacing.xxl },
+  list: { padding: spacing.lg, paddingTop: spacing.md, gap: spacing.sm, paddingBottom: spacing.xxl },
   row: {
     flexDirection: 'row',
     alignItems: 'center',

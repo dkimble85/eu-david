@@ -256,6 +256,7 @@ export default function HistoryScreen() {
           );
         })}
       </ScrollView>
+      <View style={styles.sectionDivider} />
       {visibleItems.length === 0 ? (
         <View style={styles.centered}>
           <Text style={styles.title}>No items for this filter</Text>
@@ -384,6 +385,12 @@ const styles = StyleSheet.create({
   },
   filtersScroll: {
     flexGrow: 0,
+  },
+  sectionDivider: {
+    height: 1,
+    backgroundColor: colors.border,
+    marginHorizontal: spacing.lg,
+    marginBottom: spacing.sm,
   },
   filterChip: {
     flexDirection: 'row',
