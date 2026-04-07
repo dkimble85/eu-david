@@ -1,9 +1,9 @@
 {
-  "latestVersion": "1.0.10",
+  "latestVersion": "1.0.11",
   "releasedAt": "2026-04-07",
   "summary": [
-    "Removed the in-app new-version notification banner.",
-    "Only remember camera permission after the user explicitly allows access.",
-    "Preserved a manual camera enable path when access is turned off."
+    "Updated CI workflows to actions v6 on Node 24.",
+    "Addressed GitHub runner deprecation warnings for Node 20 actions.",
+    "Bumped release and build versions for the new deployment."
   ]
 }

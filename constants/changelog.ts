@@ -6,6 +6,15 @@ export type ReleaseNote = {
 
 export const RELEASE_NOTES: ReleaseNote[] = [
   {
+    version: '1.0.11',
+    date: '2026-04-07',
+    changes: [
+      'Updated GitHub Actions workflows to use checkout/setup-node v6.',
+      'Moved CI runtime from Node 20 to Node 24 for upcoming runner changes.',
+      'Bumped app release and build versions for this deployment.',
+    ],
+  },
+  {
     version: '1.0.10',
     date: '2026-04-07',
     changes: [
