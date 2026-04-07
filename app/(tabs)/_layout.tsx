@@ -68,9 +68,9 @@ const styles = StyleSheet.create({
     left: spacing.md,
     right: spacing.md,
     bottom: spacing.lg,
-    height: 68,
-    paddingTop: 4,
-    paddingBottom: 12,
+    height: 72,
+    paddingTop: 5,
+    paddingBottom: 10,
     paddingHorizontal: spacing.xs,
     borderTopWidth: 0,
     borderRadius: radius.xl,
@@ -89,7 +89,7 @@ const styles = StyleSheet.create({
   },
   tabItem: {
     paddingTop: 3,
-    paddingBottom: 3,
+    paddingBottom: 5,
     paddingHorizontal: 2,
   },
 });

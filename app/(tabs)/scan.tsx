@@ -87,7 +87,7 @@ export default function ScanScreen() {
       <ScrollView
         contentContainerStyle={[styles.container, isMobile && styles.containerCompact]}
         showsVerticalScrollIndicator={false}
-        scrollEnabled={!cameraActive}
+        scrollEnabled={cameraActive}
         keyboardShouldPersistTaps="handled"
       >
         {!cameraActive && !user && (
@@ -100,12 +100,9 @@ export default function ScanScreen() {
                   ? styles.logoImageDesktop
                   : isMobile
                     ? styles.logoImageMobile
-                    : styles.logoImageDefault,
+                  : styles.logoImageDefault,
               ]}
             />
-            <View style={styles.header}>
-              <Text style={styles.subtitle}>Scan a barcode to check EU compliance</Text>
-            </View>
           </View>
         )}
 
@@ -132,28 +129,27 @@ export default function ScanScreen() {
           </View>
         ) : (
           <View style={[styles.cta, isMobile && styles.ctaCompact]}>
-            <View style={[styles.illustrationBox, isMobile && styles.illustrationBoxCompact]}>
-              <View style={styles.barcodeRow}>
-                {[3, 1, 2, 1, 3, 1, 1, 2, 1, 3, 2, 1, 1, 2, 3, 1, 2, 1, 1, 3].map((width, i) => (
-                  <View
-                    key={i}
-                    style={[
-                      styles.barcodeBar,
-                      {
-                        width: width * 3,
-                        backgroundColor: i % 2 === 0 ? colors.textPrimary : 'transparent',
-                      },
-                    ]}
-                  />
-                ))}
+            <View style={styles.heroCard}>
+              <View style={styles.heroCardHeader}>
+                <Text style={styles.heroEyebrow}>EU barcode checker</Text>
+                <Text style={styles.heroTitle}>Check yourself before you wreck yourself</Text>
+                <Text style={styles.heroBody}>
+                  Instantly spot ingredients that are banned, restricted, or warning-labeled in
+                  the European Union.
+                </Text>
+              </View>
+              <View style={[styles.illustrationBox, isMobile && styles.illustrationBoxCompact]}>
+                <Image
+                  source={require('@/assets/barcode-hero.png')}
+                  style={styles.barcodeImage}
+                  resizeMode="contain"
+                />
+              </View>
+              <View style={styles.heroPoints}>
+                <Text style={styles.heroPoint}>Food, beauty, and household products</Text>
               </View>
             </View>
-            <Text style={styles.ctaTitle}>Check yourself before you wreck yourself</Text>
-            <Text style={[styles.ctaBody, isMobile && styles.ctaBodyCompact]}>
-              Scan with your phone camera to quickly check ingredients banned or restricted in the
-              EU.
-            </Text>
-            {!user && <Text style={styles.signInHint}>Sign in to start scanning barcodes.</Text>}
+            {!user && <Text style={styles.signInHint}>Sign in to start scanning and save results.</Text>}
             <TouchableOpacity style={styles.scanButton} onPress={startScanning} activeOpacity={0.8}>
               <Text style={styles.scanButtonText}>
                 {authLoading ? 'Checking account...' : user ? '📷 Start Scanning' : 'Sign In to Scan'}
@@ -168,16 +164,16 @@ export default function ScanScreen() {
 
 const styles = StyleSheet.create({
   safe: { flex: 1, backgroundColor: colors.background },
-  container: { flexGrow: 1, padding: spacing.lg, gap: spacing.lg },
-  containerCompact: { paddingVertical: spacing.md, gap: spacing.md },
-  heroHeader: { gap: spacing.lg * 0.119952, marginTop: -spacing.lg * 0.43125 },
+  container: { flexGrow: 1, padding: spacing.lg, gap: spacing.md, justifyContent: 'center' },
+  containerCompact: { paddingVertical: spacing.sm, gap: spacing.sm, justifyContent: 'center' },
+  heroHeader: { gap: spacing.xs, marginTop: -spacing.sm },
   logoImageBase: {
     alignSelf: 'center',
     resizeMode: 'contain',
   },
   logoImageMobile: {
-    width: 320,
-    height: 214,
+    width: 250,
+    height: 168,
   },
   logoImageDefault: {
     width: 480,
@@ -187,8 +183,6 @@ const styles = StyleSheet.create({
     width: 720,
     height: 480,
   },
-  header: { alignItems: 'center', gap: spacing.xs },
-  subtitle: { ...typography.title2, color: colors.textSecondary, textAlign: 'center' },
   scannerWrapper: { flex: 1, gap: spacing.md },
   closeButton: {
     position: 'absolute',
@@ -225,40 +219,72 @@ const styles = StyleSheet.create({
   },
   errorText: { ...typography.callout, color: colors.banned, textAlign: 'center' },
   retryText: { ...typography.subhead, color: colors.textSecondary },
-  cta: { flex: 1, alignItems: 'center', justifyContent: 'center', gap: spacing.lg },
-  ctaCompact: { gap: spacing.md },
-  illustrationBox: {
-    width: 120,
-    height: 120,
-    borderRadius: radius.xl,
+  cta: { flex: 1, alignItems: 'center', justifyContent: 'center', gap: spacing.md },
+  ctaCompact: { gap: spacing.sm },
+  heroCard: {
+    alignSelf: 'stretch',
     backgroundColor: colors.surface,
+    borderRadius: radius.xl,
+    borderWidth: 1,
+    borderColor: colors.border,
+    padding: spacing.lg,
+    gap: spacing.md,
+  },
+  heroCardHeader: {
+    alignItems: 'center',
+    gap: spacing.xs,
+  },
+  heroEyebrow: {
+    ...typography.caption1,
+    color: colors.euGold,
+    fontWeight: '700',
+    textTransform: 'uppercase',
+    letterSpacing: 0.8,
+  },
+  heroTitle: {
+    ...typography.title2,
+    color: colors.textPrimary,
+    textAlign: 'center',
+  },
+  heroBody: {
+    ...typography.callout,
+    color: colors.textSecondary,
+    textAlign: 'center',
+    maxWidth: 300,
+  },
+  illustrationBox: {
+    alignSelf: 'center',
+    width: '100%',
+    height: 132,
+    borderRadius: radius.lg,
+    backgroundColor: colors.surfaceElevated,
     alignItems: 'center',
     justifyContent: 'center',
+    borderWidth: 1,
+    borderColor: colors.border,
   },
   illustrationBoxCompact: {
-    width: 92,
-    height: 92,
+    height: 116,
   },
-  ctaTitle: { ...typography.title2, color: colors.textPrimary, textAlign: 'center' },
-  ctaBody: { ...typography.body, color: colors.textSecondary, textAlign: 'center', maxWidth: 300 },
-  ctaBodyCompact: { maxWidth: 280 },
-  signInHint: { ...typography.caption1, color: colors.textMuted, textAlign: 'center' },
-  barcodeRow: {
-    flexDirection: 'row',
-    alignItems: 'stretch',
-    height: 64,
-    maxWidth: 90,
-    overflow: 'hidden',
+  heroPoints: {
+    gap: spacing.xs,
   },
-  barcodeBar: {
-    height: '100%',
+  heroPoint: {
+    ...typography.subhead,
+    color: colors.textPrimary,
+    textAlign: 'center',
+  },
+  signInHint: { ...typography.caption1, color: colors.textMuted, textAlign: 'center', maxWidth: 280 },
+  barcodeImage: {
+    width: '88%',
+    height: '70%',
   },
   scanButton: {
     backgroundColor: colors.euBlue,
     borderRadius: radius.lg,
-    paddingVertical: spacing.lg,
+    paddingVertical: spacing.md,
     alignSelf: 'stretch',
-    marginTop: spacing.md,
+    marginTop: spacing.sm,
     alignItems: 'center',
     shadowColor: colors.euBlue,
     shadowOffset: { width: 0, height: 4 },

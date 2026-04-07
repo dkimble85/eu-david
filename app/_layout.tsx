@@ -6,6 +6,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { StyleSheet, View } from 'react-native';
 import { useAuth } from '@/hooks/useAuth';
 import { colors } from '@/constants/theme';
+import ReleaseNotesProvider from '@/components/ReleaseNotesProvider';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -25,13 +26,15 @@ export default function RootLayout() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <GestureHandlerRootView style={styles.root}>
-        <StatusBar style="light" />
-        <Stack screenOptions={{ headerShown: false }}>
-          {session ? <Stack.Screen name="(tabs)" /> : <Stack.Screen name="(auth)" />}
-          <Stack.Screen name="product/[barcode]" options={{ presentation: 'modal' }} />
-        </Stack>
-      </GestureHandlerRootView>
+      <ReleaseNotesProvider>
+        <GestureHandlerRootView style={styles.root}>
+          <StatusBar style="light" />
+          <Stack screenOptions={{ headerShown: false }}>
+            {session ? <Stack.Screen name="(tabs)" /> : <Stack.Screen name="(auth)" />}
+            <Stack.Screen name="product/[barcode]" options={{ presentation: 'modal' }} />
+          </Stack>
+        </GestureHandlerRootView>
+      </ReleaseNotesProvider>
     </QueryClientProvider>
   );
 }

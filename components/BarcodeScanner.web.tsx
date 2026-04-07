@@ -22,6 +22,11 @@ export default function BarcodeScanner({ onScan, active }: Props) {
         <video
           ref={ref as React.RefObject<HTMLVideoElement>}
           style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+          autoPlay
+          muted
+          playsInline
+          controls={false}
+          disablePictureInPicture
         />
         <ScannerOverlay />
       </div>

@@ -1,0 +1,9 @@
+{
+  "latestVersion": "1.0.5",
+  "releasedAt": "2026-04-06",
+  "summary": [
+    "Fixed bottom tab labels clipping under icons.",
+    "Improved scanner camera behavior on native and web.",
+    "Polished floating tab bar spacing."
+  ]
+}

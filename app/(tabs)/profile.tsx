@@ -5,10 +5,18 @@ import { router } from 'expo-router';
 import Constants from 'expo-constants';
 import { colors, radius, spacing, typography } from '@/constants/theme';
 import { useAuth } from '@/hooks/useAuth';
+import { useReleaseNotes } from '@/components/ReleaseNotesProvider';
 
 export default function ProfileScreen() {
   const { user, signOut } = useAuth();
+  const { openChangelog } = useReleaseNotes();
   const releaseVersion = Constants.expoConfig?.version ?? '1.0.0';
+  const iosBuild = Constants.expoConfig?.ios?.buildNumber ?? null;
+  const androidBuild =
+    typeof Constants.expoConfig?.android?.versionCode === 'number'
+      ? String(Constants.expoConfig.android.versionCode)
+      : null;
+  const buildVersion = iosBuild ?? androidBuild;
 
   if (!user) {
     return (
@@ -52,7 +60,18 @@ export default function ProfileScreen() {
             (EC Regulation No 1333/2008). Ingredients not on this list are banned by default in the
             European Union.
           </Text>
-          <Text style={styles.versionText}>Release version: v{releaseVersion}</Text>
+          <View style={styles.versionCard}>
+            <View style={styles.versionRow}>
+              <Text style={styles.versionLabel}>App Version</Text>
+              <Text style={styles.versionValue}>v{releaseVersion}</Text>
+            </View>
+            {buildVersion && (
+              <View style={styles.versionRow}>
+                <Text style={styles.versionLabel}>Build</Text>
+                <Text style={styles.versionValue}>{buildVersion}</Text>
+              </View>
+            )}
+          </View>
         </View>
 
         <View style={styles.infoCard}>
@@ -74,6 +93,15 @@ export default function ProfileScreen() {
               <Text style={styles.navItemTitle}>Regulated Ingredients</Text>
               <Text style={styles.navItemSubtitle}>
                 Browse food + cosmetic ingredient restrictions and EU codes
+              </Text>
+            </View>
+            <Text style={styles.navItemArrow}>›</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.navItem} onPress={openChangelog} activeOpacity={0.8}>
+            <View style={styles.navItemTextWrap}>
+              <Text style={styles.navItemTitle}>Changelog</Text>
+              <Text style={styles.navItemSubtitle}>
+                Review what changed in recent app releases
               </Text>
             </View>
             <Text style={styles.navItemArrow}>›</Text>
@@ -131,7 +159,23 @@ const styles = StyleSheet.create({
   },
   cardTitle: { ...typography.callout, color: colors.textPrimary, fontWeight: '600' },
   cardBody: { ...typography.subhead, color: colors.textSecondary, lineHeight: 22 },
-  versionText: { ...typography.caption1, color: colors.textMuted, marginTop: spacing.xs },
+  versionCard: {
+    marginTop: spacing.xs,
+    backgroundColor: colors.surfaceElevated,
+    borderRadius: radius.md,
+    borderWidth: 1,
+    borderColor: colors.border,
+    padding: spacing.sm,
+    gap: spacing.xs,
+  },
+  versionRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    gap: spacing.md,
+  },
+  versionLabel: { ...typography.caption1, color: colors.textMuted, fontWeight: '600' },
+  versionValue: { ...typography.callout, color: colors.textPrimary, fontWeight: '700' },
   navItem: {
     marginTop: spacing.xs,
     backgroundColor: colors.surfaceElevated,
