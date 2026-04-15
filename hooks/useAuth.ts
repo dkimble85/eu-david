@@ -9,14 +9,16 @@ import type { Session, User } from '@supabase/supabase-js';
 WebBrowser.maybeCompleteAuthSession();
 const E2E_AUTH_STORAGE_KEY = 'eu-david:e2e-auth-user';
 
-function firstParam(
-  value: string | string[] | undefined
-): string | undefined {
+function firstParam(value: string | string[] | undefined): string | undefined {
   return Array.isArray(value) ? value[0] : value;
 }
 
 function getE2EUser(): User | null {
-  if (process.env.EXPO_PUBLIC_E2E !== '1' || Platform.OS !== 'web' || typeof window === 'undefined') {
+  if (
+    process.env.EXPO_PUBLIC_E2E !== '1' ||
+    Platform.OS !== 'web' ||
+    typeof window === 'undefined'
+  ) {
     return null;
   }
 

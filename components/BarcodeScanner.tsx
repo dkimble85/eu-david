@@ -8,11 +8,7 @@ type Props = {
   autoRequestPermission: boolean;
 };
 
-export default function BarcodeScanner({
-  onScan,
-  active,
-  autoRequestPermission,
-}: Props) {
+export default function BarcodeScanner({ onScan, active, autoRequestPermission }: Props) {
   const [permission, requestPermission] = useCameraPermissions();
   const [requestingPermission, setRequestingPermission] = useState(false);
   const requestedPermissionRef = useRef(false);

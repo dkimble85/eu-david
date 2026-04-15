@@ -127,9 +127,21 @@ function extractNutriScoreInputs100g(food: UsdaFoodResponse): UsdaNutriScoreInpu
 
   const kcal = findFoodNutrientAmount(nutrients, { id: 1008, number: '208' });
   const saturatedFat = findFoodNutrientAmount(nutrients, { id: 1258, number: '606' });
-  const sugars = findFoodNutrientAmount(nutrients, { id: 2000, number: '269', includesName: 'sugar' });
-  const sodium = findFoodNutrientAmount(nutrients, { id: 1093, number: '307', includesName: 'sodium' });
-  const fiber = findFoodNutrientAmount(nutrients, { id: 1079, number: '291', includesName: 'fiber' });
+  const sugars = findFoodNutrientAmount(nutrients, {
+    id: 2000,
+    number: '269',
+    includesName: 'sugar',
+  });
+  const sodium = findFoodNutrientAmount(nutrients, {
+    id: 1093,
+    number: '307',
+    includesName: 'sodium',
+  });
+  const fiber = findFoodNutrientAmount(nutrients, {
+    id: 1079,
+    number: '291',
+    includesName: 'fiber',
+  });
   const protein = findFoodNutrientAmount(nutrients, { id: 1003, number: '203' });
 
   if (kcal == null && saturatedFat == null) return null;

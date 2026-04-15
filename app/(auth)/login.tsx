@@ -193,7 +193,12 @@ const styles = StyleSheet.create({
   },
   buttonDisabled: { opacity: 0.6 },
   buttonText: { ...typography.headline, color: '#fff' },
-  dividerRow: { flexDirection: 'row', alignItems: 'center', gap: spacing.sm, marginTop: spacing.xs },
+  dividerRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing.sm,
+    marginTop: spacing.xs,
+  },
   dividerLine: { flex: 1, height: 1, backgroundColor: colors.border },
   dividerText: { ...typography.caption1, color: colors.textMuted, textTransform: 'uppercase' },
   googleButton: {

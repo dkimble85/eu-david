@@ -50,22 +50,22 @@ const food = foodDb as unknown as FoodDb;
 const cosmetic = cosmeticDb as unknown as CosmeticDb;
 
 function titleizeCategory(value: string): string {
-  return value
-    .replace(/-/g, ' ')
-    .replace(/\b\w/g, (match) => match.toUpperCase());
+  return value.replace(/-/g, ' ').replace(/\b\w/g, (match) => match.toUpperCase());
 }
 
 export function getRegulatedIngredients(): RegulatedIngredient[] {
-  const foodAdditives: RegulatedIngredient[] = Object.entries(food.additives).map(([key, record]) => ({
-    id: `food:${key}`,
-    name: record.name,
-    status: record.status,
-    category: titleizeCategory(record.category),
-    source: 'food',
-    euCode: key.toUpperCase(),
-    notes: record.notes ?? null,
-    bannedSince: record.bannedSince ?? null,
-  }));
+  const foodAdditives: RegulatedIngredient[] = Object.entries(food.additives).map(
+    ([key, record]) => ({
+      id: `food:${key}`,
+      name: record.name,
+      status: record.status,
+      category: titleizeCategory(record.category),
+      source: 'food',
+      euCode: key.toUpperCase(),
+      notes: record.notes ?? null,
+      bannedSince: record.bannedSince ?? null,
+    })
+  );
 
   const foodNamedIngredients: RegulatedIngredient[] = Object.entries(food.nonEnumber ?? {}).map(
     ([key, record]) => ({

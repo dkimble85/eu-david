@@ -9,7 +9,9 @@ test.describe('Scan Camera Lifecycle', () => {
     await page.getByRole('tab', { name: 'Scan' }).click();
 
     await expect(page.getByText('Align barcode within the frame')).toBeVisible();
-    await expect.poll(async () => (await readCameraState(page))?.getUserMediaCalls ?? 0).toBeGreaterThan(0);
+    await expect
+      .poll(async () => (await readCameraState(page))?.getUserMediaCalls ?? 0)
+      .toBeGreaterThan(0);
 
     await page.getByRole('tab', { name: 'History' }).click();
     await expect(page.getByText(/Sign in to view history|No scans yet/)).toBeVisible();
@@ -24,7 +26,9 @@ test.describe('Scan Camera Lifecycle', () => {
     await page.getByRole('tab', { name: 'Scan' }).click();
 
     await expect(page.getByText('Align barcode within the frame')).toBeVisible();
-    await expect.poll(async () => (await readCameraState(page))?.getUserMediaCalls ?? 0).toBeGreaterThan(0);
+    await expect
+      .poll(async () => (await readCameraState(page))?.getUserMediaCalls ?? 0)
+      .toBeGreaterThan(0);
 
     await page.getByLabel('Close scanner').click();
     await expect(page.getByText(/Sign in to view history|No scans yet/)).toBeVisible();

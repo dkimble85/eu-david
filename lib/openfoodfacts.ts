@@ -114,9 +114,7 @@ function parseNutritionFacts(
     saturatedFat: formatNutritionValue(
       nutriments['saturated-fat_100g'] ?? nutriments['saturated-fat']
     ),
-    carbohydrate: formatNutritionValue(
-      nutriments.carbohydrates_100g ?? nutriments.carbohydrates
-    ),
+    carbohydrate: formatNutritionValue(nutriments.carbohydrates_100g ?? nutriments.carbohydrates),
     sugar: formatNutritionValue(nutriments.sugars_100g ?? nutriments.sugars),
     fiber: formatNutritionValue(nutriments.fiber_100g ?? nutriments.fiber),
     protein: formatNutritionValue(nutriments.proteins_100g ?? nutriments.proteins),
@@ -153,8 +151,7 @@ export async function getProductByBarcode(barcode: string): Promise<OpenFoodFact
     stores: p.stores_tags || [],
     metaScores: {
       nutriScoreGrade: p.nutriscore_grade ?? p.nutrition_grades ?? null,
-      nutriScoreScore:
-        typeof p.nutriscore_score === 'number' ? p.nutriscore_score : null,
+      nutriScoreScore: typeof p.nutriscore_score === 'number' ? p.nutriscore_score : null,
       ecoScoreGrade: p.ecoscore_grade ?? null,
       ecoScoreScore: typeof p.ecoscore_score === 'number' ? p.ecoscore_score : null,
       novaGroup: typeof p.nova_group === 'number' ? p.nova_group : null,
@@ -177,8 +174,7 @@ export function parseProduct(p: RawOpenFoodFactsProduct): OpenFoodFactsProduct {
     stores: p.stores_tags || [],
     metaScores: {
       nutriScoreGrade: p.nutriscore_grade ?? p.nutrition_grades ?? null,
-      nutriScoreScore:
-        typeof p.nutriscore_score === 'number' ? p.nutriscore_score : null,
+      nutriScoreScore: typeof p.nutriscore_score === 'number' ? p.nutriscore_score : null,
       ecoScoreGrade: p.ecoscore_grade ?? null,
       ecoScoreScore: typeof p.ecoscore_score === 'number' ? p.ecoscore_score : null,
       novaGroup: typeof p.nova_group === 'number' ? p.nova_group : null,

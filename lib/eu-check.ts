@@ -59,7 +59,8 @@ function shouldReplaceIngredient(current: CheckedIngredient, next: CheckedIngred
     return next.isENumber;
   }
 
-  const currentHasMoreMetadata = Number(Boolean(current.notes)) + Number(Boolean(current.bannedSince));
+  const currentHasMoreMetadata =
+    Number(Boolean(current.notes)) + Number(Boolean(current.bannedSince));
   const nextHasMoreMetadata = Number(Boolean(next.notes)) + Number(Boolean(next.bannedSince));
 
   return nextHasMoreMetadata > currentHasMoreMetadata;

@@ -2,8 +2,9 @@ import { createClient } from '@supabase/supabase-js';
 import { Platform } from 'react-native';
 import type { ProductType } from '@/lib/product-type';
 
-const supabaseUrl = process.env.EXPO_PUBLIC_SUPABASE_URL!;
-const supabaseAnonKey = process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY!;
+const supabaseUrl = process.env.EXPO_PUBLIC_SUPABASE_URL ?? 'https://placeholder.supabase.co';
+const supabaseAnonKey =
+  process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY ?? 'placeholder-anon-key-for-build-only';
 
 export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
   auth: {

@@ -51,16 +51,17 @@ async function saveFavoriteBarcodesToMetadata(barcodes: Set<string>) {
 
 export function computeHistoryStatus(result: ScanResult | null): HistoryStatus {
   if (!result) return 'unknown';
-  if ((result.bannedCount ?? 0) > 0 || (result.restrictedCount ?? 0) > 0 || (result.warningCount ?? 0) > 0) {
+  if (
+    (result.bannedCount ?? 0) > 0 ||
+    (result.restrictedCount ?? 0) > 0 ||
+    (result.warningCount ?? 0) > 0
+  ) {
     return 'flagged';
   }
   return 'approved';
 }
 
-function getHistoryDuplicateKey(row: {
-  barcode: string | null;
-  product_name: string | null;
-}) {
+function getHistoryDuplicateKey(row: { barcode: string | null; product_name: string | null }) {
   return `${row.barcode ?? ''}::${(row.product_name ?? '').trim().toLowerCase()}`;
 }
 
@@ -88,7 +89,10 @@ export async function cleanupUserScanHistory(userId: string) {
   }
 
   if (idsToDelete.length > 0) {
-    const { error: deleteError } = await supabase.from('scan_history').delete().in('id', idsToDelete);
+    const { error: deleteError } = await supabase
+      .from('scan_history')
+      .delete()
+      .in('id', idsToDelete);
     if (deleteError) return { ok: false as const, error: deleteError };
   }
 
@@ -104,7 +108,8 @@ export async function saveScanToHistory(params: {
 }) {
   const { userId, barcode, productName, result, productType } = params;
   const resultWithMeta = result
-    ? ({ ...result, productType, status: computeHistoryStatus(result) } satisfies ScanResult & ScanResultMeta)
+    ? ({ ...result, productType, status: computeHistoryStatus(result) } satisfies ScanResult &
+        ScanResultMeta)
     : null;
 
   const insert = await supabase.from('scan_history').insert({
@@ -119,10 +124,7 @@ export async function saveScanToHistory(params: {
 }
 
 export async function loadFavoriteBarcodes(userId: string): Promise<Set<string>> {
-  const { data, error } = await supabase
-    .from('favorites')
-    .select('barcode')
-    .eq('user_id', userId);
+  const { data, error } = await supabase.from('favorites').select('barcode').eq('user_id', userId);
 
   if (error || !data) {
     return loadFavoriteBarcodesFromMetadata();

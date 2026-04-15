@@ -1,12 +1,5 @@
 import React, { useMemo, useState } from 'react';
-import {
-  StyleSheet,
-  Text,
-  View,
-  FlatList,
-  TouchableOpacity,
-  TextInput,
-} from 'react-native';
+import { StyleSheet, Text, View, FlatList, TouchableOpacity, TextInput } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
 import { colors, radius, spacing, statusColors, typography } from '@/constants/theme';
@@ -79,15 +72,19 @@ export default function RegulatedIngredientsScreen() {
             >
               <View style={styles.rowHeader}>
                 <Text style={styles.name}>{item.name}</Text>
-                <View style={[styles.statusChip, { backgroundColor: palette.bg }]}> 
-                  <Text style={[styles.statusText, { color: palette.text }]}>{statusLabel(item.status)}</Text>
+                <View style={[styles.statusChip, { backgroundColor: palette.bg }]}>
+                  <Text style={[styles.statusText, { color: palette.text }]}>
+                    {statusLabel(item.status)}
+                  </Text>
                 </View>
               </View>
 
               <View style={styles.metaRow}>
                 <Text style={styles.metaText}>EU Code: {item.euCode}</Text>
                 <Text style={styles.metaDot}>•</Text>
-                <Text style={styles.metaText}>Type: {item.source === 'food' ? 'Food' : 'Cosmetic'}</Text>
+                <Text style={styles.metaText}>
+                  Type: {item.source === 'food' ? 'Food' : 'Cosmetic'}
+                </Text>
               </View>
 
               <Text style={styles.category}>Category: {item.category}</Text>
@@ -104,7 +101,9 @@ export default function RegulatedIngredientsScreen() {
                 </View>
               )}
 
-              <Text style={styles.expandHint}>{expanded ? 'Tap to collapse' : 'Tap to view details'}</Text>
+              <Text style={styles.expandHint}>
+                {expanded ? 'Tap to collapse' : 'Tap to view details'}
+              </Text>
             </TouchableOpacity>
           );
         }}

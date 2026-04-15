@@ -136,7 +136,8 @@ export default function HistoryScreen() {
     if (activeFilter === 'favorites') {
       return historyItems.filter((item) => favoriteBarcodes.has(item.row.barcode));
     }
-    if (activeFilter === 'approved') return historyItems.filter((item) => item.status === 'approved');
+    if (activeFilter === 'approved')
+      return historyItems.filter((item) => item.status === 'approved');
     if (activeFilter === 'flagged')
       return historyItems.filter(
         (item) =>
@@ -247,11 +248,10 @@ export default function HistoryScreen() {
               style={[styles.filterChip, active && styles.filterChipActive]}
               onPress={() => setActiveFilter(filter.key)}
             >
-              <Icon
-                size={14}
-                color={active ? '#fff' : colors.textSecondary}
-              />
-              <Text style={[styles.filterText, active && styles.filterTextActive]}>{filter.label}</Text>
+              <Icon size={14} color={active ? '#fff' : colors.textSecondary} />
+              <Text style={[styles.filterText, active && styles.filterTextActive]}>
+                {filter.label}
+              </Text>
             </TouchableOpacity>
           );
         })}
@@ -261,7 +261,9 @@ export default function HistoryScreen() {
         <View style={styles.centered}>
           <Text style={styles.title}>No items for this filter</Text>
           <Text style={styles.subtitle}>
-            {searchQuery.trim() ? 'Try a different search term.' : 'Try switching to another filter.'}
+            {searchQuery.trim()
+              ? 'Try a different search term.'
+              : 'Try switching to another filter.'}
           </Text>
         </View>
       ) : (
@@ -330,14 +332,14 @@ function HistoryRow({ item }: { item: HistoryItem }) {
           <Text style={styles.rowType}>{typeLabel}</Text>
           <Text style={[styles.rowStatus, { color: statusColor }]}>
             {item.status === 'banned'
-            ? 'Banned'
-            : item.status === 'restricted'
-              ? 'Restricted'
-              : item.status === 'warning'
-                ? 'Warning'
-                : item.status === 'approved'
-                  ? 'Approved'
-                  : 'Unknown'}
+              ? 'Banned'
+              : item.status === 'restricted'
+                ? 'Restricted'
+                : item.status === 'warning'
+                  ? 'Warning'
+                  : item.status === 'approved'
+                    ? 'Approved'
+                    : 'Unknown'}
           </Text>
         </View>
       </View>
@@ -347,10 +349,14 @@ function HistoryRow({ item }: { item: HistoryItem }) {
             <Text style={[styles.statChip, { color: colors.banned }]}>🚫 {result.bannedCount}</Text>
           )}
           {result.restrictedCount > 0 && (
-            <Text style={[styles.statChip, { color: colors.restricted }]}>⚠️ {result.restrictedCount}</Text>
+            <Text style={[styles.statChip, { color: colors.restricted }]}>
+              ⚠️ {result.restrictedCount}
+            </Text>
           )}
           {result.warningCount > 0 && (
-            <Text style={[styles.statChip, { color: colors.warning }]}>⚠ {result.warningCount}</Text>
+            <Text style={[styles.statChip, { color: colors.warning }]}>
+              ⚠ {result.warningCount}
+            </Text>
           )}
         </View>
       )}
@@ -379,12 +385,13 @@ const styles = StyleSheet.create({
   },
   filtersRow: {
     paddingHorizontal: spacing.lg,
-    paddingBottom: spacing.sm,
+    paddingBottom: spacing.lg,
     alignItems: 'center',
     gap: spacing.sm,
   },
   filtersScroll: {
     flexGrow: 0,
+    flexShrink: 0,
   },
   sectionDivider: {
     height: 1,
@@ -396,21 +403,25 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: spacing.xs,
-    borderWidth: 1,
-    borderColor: colors.border,
-    borderRadius: radius.full,
     paddingHorizontal: spacing.md,
     paddingVertical: 6,
+    borderRadius: radius.full,
     backgroundColor: colors.surface,
+    borderWidth: 1,
+    borderColor: colors.border,
     alignSelf: 'flex-start',
     flexShrink: 0,
-    minWidth: 0,
   },
   filterChipActive: {
     backgroundColor: colors.euBlue,
     borderColor: colors.euBlue,
   },
-  filterText: { ...typography.caption1, color: colors.textSecondary, fontWeight: '600' },
+  filterText: {
+    ...typography.caption1,
+    color: colors.textSecondary,
+    fontWeight: '600',
+    flexShrink: 0,
+  },
   filterTextActive: { color: '#fff' },
   centered: {
     flex: 1,

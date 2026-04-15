@@ -1,9 +1,9 @@
 {
-  "latestVersion": "1.0.11",
-  "releasedAt": "2026-04-07",
+  "latestVersion": "1.0.14",
+  "releasedAt": "2026-04-15",
   "summary": [
-    "Updated CI workflows to actions v6 on Node 24.",
-    "Addressed GitHub runner deprecation warnings for Node 20 actions.",
-    "Bumped release and build versions for the new deployment."
+    "Expanded regulated ingredients datasets and improved ingredient risk checks across food and cosmetic flows.",
+    "Refined auth, history, search, and product detail screens plus scanner components for better UX and reliability.",
+    "Stabilized Playwright navigation and camera lifecycle coverage and shipped with lint/format/test validation."
   ]
 }

@@ -1,7 +1,7 @@
 {
   "_meta": {
     "source": "EC Regulation No 1333/2008 on Food Additives",
-    "lastUpdated": "2026-04-04",
+    "lastUpdated": "2026-04-15",
     "notes": "Positive list system: additives NOT in this list are banned by default in EU food"
   },
   "additives": {
@@ -231,7 +231,12 @@
       "status": "approved",
       "category": "antioxidant"
     },
-    "e301": { "name": "Sodium ascorbate", "status": "approved", "category": "antioxidant" },
+    "e301": {
+      "name": "Sodium ascorbate",
+      "status": "approved",
+      "category": "antioxidant",
+      "notes": "Extended June 2025 (Regulation EU 2025/1150): now authorized as antioxidant in microencapsulated vitamin A preparations for infant formula and follow-on formula."
+    },
     "e302": { "name": "Calcium ascorbate", "status": "approved", "category": "antioxidant" },
     "e304": {
       "name": "Fatty acid esters of ascorbic acid",
@@ -306,7 +311,11 @@
       "name": "Monocalcium phosphate",
       "status": "approved",
       "category": "raising-agent",
-      "commonNames": ["monocalcium phosphate", "calcium dihydrogen phosphate", "calcium biphosphate"],
+      "commonNames": [
+        "monocalcium phosphate",
+        "calcium dihydrogen phosphate",
+        "calcium biphosphate"
+      ],
       "notes": "Used as a leavening acid in baking powder and self-raising flour. Reacts with sodium bicarbonate (E500) to produce CO₂. Also acts as an acidity regulator and mineral supplement. Permitted in the EU under Regulation (EC) No 1333/2008."
     },
     "e350": { "name": "Sodium malates", "status": "approved", "category": "acidity-regulator" },
@@ -323,8 +332,18 @@
       "category": "thickener",
       "notes": "Approved in EU; banned in organic EU products. Under ongoing EFSA review."
     },
-    "e410": { "name": "Locust bean gum", "status": "approved", "category": "thickener" },
-    "e412": { "name": "Guar gum", "status": "approved", "category": "thickener" },
+    "e410": {
+      "name": "Locust bean gum",
+      "status": "approved",
+      "category": "thickener",
+      "notes": "Generally approved. Feb 2026 (Regulation EU 2026/196): maximum level reduced to 5,300 mg/kg in dietary foods for infants and young children for special medical purposes (categories 13.1.5.1 and 13.1.5.2)."
+    },
+    "e412": {
+      "name": "Guar gum",
+      "status": "approved",
+      "category": "thickener",
+      "notes": "Generally approved. Feb 2026 (Regulation EU 2026/196): authorization REVOKED in infant formulae (category 13.1.1) and dietary foods for infants for special medical purposes (category 1.5.1) — production/import must cease by August 18, 2026. Still permitted at 10,000 mg/kg in category 13.1.5.2 (dietary foods for infants 4+ months for special medical purposes) until April 27, 2027."
+    },
     "e414": { "name": "Acacia gum (Gum Arabic)", "status": "approved", "category": "thickener" },
     "e415": { "name": "Xanthan gum", "status": "approved", "category": "thickener" },
     "e416": { "name": "Karaya gum", "status": "approved", "category": "thickener" },
@@ -341,7 +360,12 @@
       "category": "emulsifier"
     },
     "e433": { "name": "Polysorbate 80", "status": "approved", "category": "emulsifier" },
-    "e440": { "name": "Pectins", "status": "approved", "category": "thickener" },
+    "e440": {
+      "name": "Pectins",
+      "status": "approved",
+      "category": "thickener",
+      "notes": "Generally approved. Feb 2026 (Regulation EU 2026/196): maximum level reduced to 4,000 mg/kg in dietary foods for infants and young children for special medical purposes (categories 13.1.5.1 and 13.1.5.2)."
+    },
     "e450": { "name": "Diphosphates", "status": "approved", "category": "raising-agent" },
     "e451": { "name": "Triphosphates", "status": "approved", "category": "raising-agent" },
     "e452": { "name": "Polyphosphates", "status": "approved", "category": "raising-agent" },
@@ -406,7 +430,13 @@
       "name": "Sodium hydrogen carbonate",
       "status": "approved",
       "category": "raising-agent",
-      "commonNames": ["sodium hydrogen carbonate", "sodium bicarbonate", "baking soda", "bicarbonate of soda", "nahcolite"],
+      "commonNames": [
+        "sodium hydrogen carbonate",
+        "sodium bicarbonate",
+        "baking soda",
+        "bicarbonate of soda",
+        "nahcolite"
+      ],
       "notes": "Common baking soda. Releases CO₂ when heated or reacts with acid (e.g. E341i), causing dough to rise. Also used as an acidity regulator and anti-caking agent. Widely regarded as safe; one of the most commonly used food additives worldwide. Permitted in the EU under Regulation (EC) No 1333/2008."
     },
     "e501": { "name": "Potassium carbonates", "status": "approved", "category": "raising-agent" },
@@ -467,7 +497,12 @@
       "commonNames": ["dimethylpolysiloxane", "polydimethylsiloxane", "silicone oil"]
     },
     "e903": { "name": "Carnauba wax", "status": "approved", "category": "glazing-agent" },
-    "e904": { "name": "Shellac", "status": "approved", "category": "glazing-agent" },
+    "e904": {
+      "name": "Shellac",
+      "status": "approved",
+      "category": "glazing-agent",
+      "notes": "Jan 2026 (Regulation EU 2026/189): authorization extended to dietary foods for special medical purposes (category 13.2), specifically tablets and coated tablet formats."
+    },
     "e924": {
       "name": "Potassium bromate",
       "status": "banned",
@@ -588,6 +623,24 @@
       "status": "approved",
       "category": "sweetener",
       "commonNames": ["advantame"]
+    },
+    "e999": {
+      "name": "Quillaia extract",
+      "status": "approved",
+      "category": "foaming-agent",
+      "notes": "Oct 2025 (Regulation EU 2025/2084): updated authorized uses and compositional specifications. Effective July 1, 2026. Used as a foaming agent in soft drinks.",
+      "commonNames": ["quillaia extract", "quillaja extract", "soapbark extract", "quillaia"]
+    },
+    "e1450": {
+      "name": "Starch sodium octenyl succinate (OSA starch)",
+      "status": "restricted",
+      "category": "emulsifier",
+      "notes": "Feb 2026 (Regulation EU 2026/196): maximum level reduced to 10,000 mg/kg in dietary foods for infants and young children for special medical purposes (categories 13.1.5.1 and 13.1.5.2), compliance deadline February 18, 2028. Must not contain gluten in infant and follow-on formulae. Stricter microbiological criteria and residual sulphur dioxide limit (10 mg/kg dry basis) now apply.",
+      "commonNames": [
+        "osa starch",
+        "starch sodium octenyl succinate",
+        "octenyl succinic acid starch"
+      ]
     }
   },
   "nonEnumber": {

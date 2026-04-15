@@ -100,9 +100,7 @@ export default function ProfileScreen() {
           <TouchableOpacity style={styles.navItem} onPress={openChangelog} activeOpacity={0.8}>
             <View style={styles.navItemTextWrap}>
               <Text style={styles.navItemTitle}>Changelog</Text>
-              <Text style={styles.navItemSubtitle}>
-                Review what changed in recent app releases
-              </Text>
+              <Text style={styles.navItemSubtitle}>Review what changed in recent app releases</Text>
             </View>
             <Text style={styles.navItemArrow}>›</Text>
           </TouchableOpacity>

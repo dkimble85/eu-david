@@ -12,7 +12,14 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
-import { Grid2x2, House, Search as SearchIcon, Sparkles, UtensilsCrossed, ScanBarcode } from 'lucide-react-native';
+import {
+  Grid2x2,
+  House,
+  Search as SearchIcon,
+  Sparkles,
+  UtensilsCrossed,
+  ScanBarcode,
+} from 'lucide-react-native';
 import { colors, radius, spacing, typography } from '@/constants/theme';
 import { getMatchingUsStore } from '@/lib/recommendations';
 import { runEuCheck, scoreProduct } from '@/lib/eu-check';
@@ -76,7 +83,10 @@ export default function SearchScreen() {
   const [favoriteBarcodes, setFavoriteBarcodes] = useState<Set<string>>(new Set());
   const [selectedFilter, setSelectedFilter] = useState<SearchFilter>('all');
 
-  const { data, isLoading, isError, refetch } = useSearch(submittedQuery, Boolean(user) && !authLoading);
+  const { data, isLoading, isError, refetch } = useSearch(
+    submittedQuery,
+    Boolean(user) && !authLoading
+  );
   const filteredData = React.useMemo(() => {
     if (!data) return data;
     if (selectedFilter === 'all') return data;
@@ -260,7 +270,9 @@ export default function SearchScreen() {
       {/* Header */}
       <View style={styles.header}>
         <Text style={styles.title}>Search</Text>
-        <Text style={styles.subtitle}>Find food, beauty, and household products by name or barcode</Text>
+        <Text style={styles.subtitle}>
+          Find food, beauty, and household products by name or barcode
+        </Text>
       </View>
 
       {authLoading ? (
@@ -272,7 +284,9 @@ export default function SearchScreen() {
         <View style={styles.empty}>
           <SearchIcon size={48} color={colors.textMuted} />
           <Text style={styles.emptyTitle}>Sign in required</Text>
-          <Text style={styles.emptyBody}>Please sign in to search products and check ingredients.</Text>
+          <Text style={styles.emptyBody}>
+            Please sign in to search products and check ingredients.
+          </Text>
           <TouchableOpacity style={styles.retryButton} onPress={() => router.push('/(auth)/login')}>
             <Text style={styles.retryText}>Go to Sign In</Text>
           </TouchableOpacity>
@@ -508,7 +522,10 @@ function useSearch(searchQuery: string, enabled: boolean) {
 async function searchWithFallbacks(query: string): Promise<ScoredProduct[]> {
   const trimmed = query.trim();
   const normalized = trimmed.toLowerCase().endsWith('s') ? trimmed.slice(0, -1) : trimmed;
-  const dePunctuated = trimmed.replace(/[^a-z0-9\s]/gi, ' ').replace(/\s+/g, ' ').trim();
+  const dePunctuated = trimmed
+    .replace(/[^a-z0-9\s]/gi, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
   const termVariants = Array.from(new Set([trimmed, normalized, dePunctuated].filter(Boolean)));
   const countryVariants: Array<string | null> = ['en:united-states', null];
   const barcodeQuery = trimmed.replace(/[^0-9]/g, '');
@@ -668,13 +685,7 @@ function normalizeForSearch(value: string): string {
 
 function normalizeCategoryTagsForSearch(tags: string[]): string[] {
   return tags
-    .map((tag) =>
-      normalizeForSearch(
-        tag
-          .replace(/^[a-z]{2}:/i, '')
-          .replace(/-/g, ' ')
-      )
-    )
+    .map((tag) => normalizeForSearch(tag.replace(/^[a-z]{2}:/i, '').replace(/-/g, ' ')))
     .filter(Boolean);
 }
 
@@ -859,7 +870,10 @@ function ProductRow({
               <Text
                 style={[
                   styles.scoreMetaChip,
-                  { color: scoreChipColor(nutriScore, 'grade'), backgroundColor: `${scoreChipColor(nutriScore, 'grade')}22` },
+                  {
+                    color: scoreChipColor(nutriScore, 'grade'),
+                    backgroundColor: `${scoreChipColor(nutriScore, 'grade')}22`,
+                  },
                 ]}
               >
                 Nutri {nutriScore}
@@ -869,7 +883,10 @@ function ProductRow({
               <Text
                 style={[
                   styles.scoreMetaChip,
-                  { color: scoreChipColor(novaGroup, 'nova'), backgroundColor: `${scoreChipColor(novaGroup, 'nova')}22` },
+                  {
+                    color: scoreChipColor(novaGroup, 'nova'),
+                    backgroundColor: `${scoreChipColor(novaGroup, 'nova')}22`,
+                  },
                 ]}
               >
                 NOVA {novaGroup}
@@ -1106,7 +1123,12 @@ const styles = StyleSheet.create({
   },
   retryText: { ...typography.callout, color: '#fff', fontWeight: '600' },
 
-  list: { padding: spacing.lg, paddingTop: spacing.md, gap: spacing.sm, paddingBottom: spacing.xxl },
+  list: {
+    padding: spacing.lg,
+    paddingTop: spacing.md,
+    gap: spacing.sm,
+    paddingBottom: spacing.xxl,
+  },
   row: {
     flexDirection: 'row',
     alignItems: 'center',

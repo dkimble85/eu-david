@@ -54,22 +54,33 @@ function normalizeNutriGrade(grade: string | null): string | null {
 
 function nutriScoreLabel(grade: string | null): string {
   switch (normalizeNutriGrade(grade)) {
-    case 'a': return 'Excellent nutritional quality';
-    case 'b': return 'Good nutritional quality';
-    case 'c': return 'Average nutritional quality';
-    case 'd': return 'Poor nutritional quality';
-    case 'f': return 'Bad nutritional quality';
-    default: return 'Not rated';
+    case 'a':
+      return 'Excellent nutritional quality';
+    case 'b':
+      return 'Good nutritional quality';
+    case 'c':
+      return 'Average nutritional quality';
+    case 'd':
+      return 'Poor nutritional quality';
+    case 'f':
+      return 'Bad nutritional quality';
+    default:
+      return 'Not rated';
   }
 }
 
 function novaLabel(group: number | null): string {
   switch (group) {
-    case 1: return 'Unprocessed or minimally processed';
-    case 2: return 'Processed culinary ingredients';
-    case 3: return 'Processed food';
-    case 4: return 'Ultra-processed food';
-    default: return 'Not rated';
+    case 1:
+      return 'Unprocessed or minimally processed';
+    case 2:
+      return 'Processed culinary ingredients';
+    case 3:
+      return 'Processed food';
+    case 4:
+      return 'Ultra-processed food';
+    default:
+      return 'Not rated';
   }
 }
 
@@ -177,16 +188,7 @@ export default function ProductScreen() {
       }
       setHistorySaved(true);
     });
-  }, [
-    user,
-    barcode,
-    data,
-    from,
-    historySaved,
-    euResult,
-    offProduct?.name,
-    productType,
-  ]);
+  }, [user, barcode, data, from, historySaved, euResult, offProduct?.name, productType]);
 
   async function handleToggleFavorite() {
     if (!user || !barcode) {
@@ -461,9 +463,7 @@ function ScoreSummaryCard({ scores }: { scores: FoodMetaScores }) {
       value: normalizeNutriGrade(scores.nutriScoreGrade)?.toUpperCase() ?? 'N/A',
       description: nutriScoreLabel(scores.nutriScoreGrade),
       sub:
-        typeof scores.nutriScoreScore === 'number'
-          ? `Raw score: ${scores.nutriScoreScore}`
-          : null,
+        typeof scores.nutriScoreScore === 'number' ? `Raw score: ${scores.nutriScoreScore}` : null,
       color: getScoreTone(normalizeNutriGrade(scores.nutriScoreGrade), 'grade'),
     },
     scores.novaGroup != null && {
@@ -503,11 +503,7 @@ function ScoreSummaryCard({ scores }: { scores: FoodMetaScores }) {
 
 function NutritionFactsCard({ nutrition }: { nutrition: ProductNutritionFacts }) {
   const label =
-    nutrition.basis === 'serving'
-      ? 'Per serving'
-      : nutrition.basis === '100g'
-        ? 'Per 100g'
-        : null;
+    nutrition.basis === 'serving' ? 'Per serving' : nutrition.basis === '100g' ? 'Per 100g' : null;
 
   return (
     <View style={styles.nutritionCard}>
@@ -710,7 +706,12 @@ const styles = StyleSheet.create({
     padding: spacing.sm,
     gap: 2,
   },
-  scoreLabel: { ...typography.caption1, color: colors.textMuted, textTransform: 'uppercase', letterSpacing: 0.5 },
+  scoreLabel: {
+    ...typography.caption1,
+    color: colors.textMuted,
+    textTransform: 'uppercase',
+    letterSpacing: 0.5,
+  },
   scoreValue: { ...typography.title2, fontWeight: '700' },
   scoreDescription: { ...typography.caption1, color: colors.textSecondary, lineHeight: 16 },
   scoreDetail: { ...typography.caption2, color: colors.textMuted, marginTop: 2 },

@@ -33,7 +33,12 @@ export default function ReleaseNotesProvider({ children }: { children: React.Rea
     <ReleaseNotesContext.Provider value={value}>
       <View style={styles.root}>
         {children}
-        <Modal visible={showChangelog} animationType="slide" transparent onRequestClose={() => setShowChangelog(false)}>
+        <Modal
+          visible={showChangelog}
+          animationType="slide"
+          transparent
+          onRequestClose={() => setShowChangelog(false)}
+        >
           <View style={styles.modalBackdrop}>
             <View style={styles.modalCard}>
               <View style={styles.modalHeader}>
@@ -42,7 +47,10 @@ export default function ReleaseNotesProvider({ children }: { children: React.Rea
                   <Text style={styles.modalCloseText}>X</Text>
                 </TouchableOpacity>
               </View>
-              <ScrollView contentContainerStyle={styles.modalBody} showsVerticalScrollIndicator={false}>
+              <ScrollView
+                contentContainerStyle={styles.modalBody}
+                showsVerticalScrollIndicator={false}
+              >
                 {RELEASE_NOTES.map((release) => (
                   <View key={release.version} style={styles.releaseCard}>
                     <View style={styles.releaseHeader}>

@@ -63,7 +63,8 @@ test.describe('Tabs Navigation', () => {
     await stubSignedInAuth(page);
     await page.goto('/');
 
-    await expect(page.getByLabel('Close scanner')).toBeVisible();
+    await page.getByRole('tab', { name: 'Scan' }).click();
+    await expect(page.getByRole('button', { name: 'Close scanner' })).toBeVisible();
 
     await page.getByRole('tab', { name: 'History' }).click();
     await expect(page.getByText('History')).toBeVisible();

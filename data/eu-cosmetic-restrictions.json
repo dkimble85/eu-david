@@ -1,7 +1,7 @@
 {
   "_meta": {
     "source": "EU Cosmetics Regulation 1223/2009, Annexes II–VI",
-    "lastUpdated": "2026-04-06",
+    "lastUpdated": "2026-04-15",
     "notes": "Annex II = prohibited substances, Annex III = restricted (concentration limits), Annex IV = permitted colorants, Annex V = permitted preservatives, Annex VI = permitted UV filters. Positive-list system for IV/V/VI means unlisted substances are de facto banned in those categories."
   },
   "ingredients": {
@@ -11,7 +11,14 @@
       "category": "preservative",
       "annex": "II",
       "notes": "Prohibited in cosmetics (Annex II entry 1577). Commonly found illegally in some hair-straightening/keratin treatments.",
-      "searchTerms": ["formaldehyde", "formalin", "methanal", "methylene glycol", "paraformaldehyde", "methanol, oxybis-"]
+      "searchTerms": [
+        "formaldehyde",
+        "formalin",
+        "methanal",
+        "methylene glycol",
+        "paraformaldehyde",
+        "methanol, oxybis-"
+      ]
     },
     "mercury-compounds": {
       "name": "Mercury Compounds",
@@ -19,7 +26,16 @@
       "category": "heavy-metal",
       "annex": "II",
       "notes": "All mercury compounds prohibited. Historically found in skin-lightening creams and eye makeup from non-EU markets.",
-      "searchTerms": ["mercury", "mercuric", "mercurous", "thimerosal", "thiomersal", "ammoniated mercury", "mercuric chloride", "phenylmercury"]
+      "searchTerms": [
+        "mercury",
+        "mercuric",
+        "mercurous",
+        "thimerosal",
+        "thiomersal",
+        "ammoniated mercury",
+        "mercuric chloride",
+        "phenylmercury"
+      ]
     },
     "lead-compounds": {
       "name": "Lead Compounds",
@@ -27,7 +43,14 @@
       "category": "heavy-metal",
       "annex": "II",
       "notes": "Lead acetate and all lead compounds prohibited. Was historically used in hair dyes.",
-      "searchTerms": ["lead acetate", "lead sulphate", "lead sulfate", "plumbous acetate", "lead carbonate", "basic lead carbonate"]
+      "searchTerms": [
+        "lead acetate",
+        "lead sulphate",
+        "lead sulfate",
+        "plumbous acetate",
+        "lead carbonate",
+        "basic lead carbonate"
+      ]
     },
     "hydroquinone": {
       "name": "Hydroquinone",
@@ -35,7 +58,13 @@
       "category": "skin-lightener",
       "annex": "II",
       "notes": "Prohibited as a general cosmetic ingredient. Permitted only in nail products up to 0.02% as antioxidant (oxidative hair dye use only under Annex III).",
-      "searchTerms": ["hydroquinone", "benzene-1,4-diol", "quinol", "1,4-dihydroxybenzene", "p-dihydroxybenzene"]
+      "searchTerms": [
+        "hydroquinone",
+        "benzene-1,4-diol",
+        "quinol",
+        "1,4-dihydroxybenzene",
+        "p-dihydroxybenzene"
+      ]
     },
     "dibutyl-phthalate": {
       "name": "Dibutyl Phthalate (DBP)",
@@ -43,7 +72,13 @@
       "category": "plasticiser",
       "annex": "II",
       "notes": "Prohibited since 2004. Was common in nail polishes. Reproductive toxicant (Repr. Cat. 1B).",
-      "searchTerms": ["dibutyl phthalate", "dbp", "di-n-butyl phthalate", "n-butyl phthalate", "phthalic acid dibutyl ester"]
+      "searchTerms": [
+        "dibutyl phthalate",
+        "dbp",
+        "di-n-butyl phthalate",
+        "n-butyl phthalate",
+        "phthalic acid dibutyl ester"
+      ]
     },
     "dehp": {
       "name": "Di(2-ethylhexyl) Phthalate (DEHP)",
@@ -51,7 +86,13 @@
       "category": "plasticiser",
       "annex": "II",
       "notes": "Prohibited. Reproductive toxicant.",
-      "searchTerms": ["dehp", "di(2-ethylhexyl) phthalate", "dioctyl phthalate", "bis(2-ethylhexyl) phthalate", "dop"]
+      "searchTerms": [
+        "dehp",
+        "di(2-ethylhexyl) phthalate",
+        "dioctyl phthalate",
+        "bis(2-ethylhexyl) phthalate",
+        "dop"
+      ]
     },
     "bisphenol-a": {
       "name": "Bisphenol A (BPA)",
@@ -59,7 +100,13 @@
       "category": "endocrine-disruptor",
       "annex": "II",
       "notes": "Prohibited in all cosmetic products under EU Regulation 2020/1119. Endocrine disruptor.",
-      "searchTerms": ["bisphenol a", "bpa", "4,4'-isopropylidenediphenol", "diphenylolpropane", "2,2-bis(4-hydroxyphenyl)propane"]
+      "searchTerms": [
+        "bisphenol a",
+        "bpa",
+        "4,4'-isopropylidenediphenol",
+        "diphenylolpropane",
+        "2,2-bis(4-hydroxyphenyl)propane"
+      ]
     },
     "lilial": {
       "name": "Lilial (Butylphenyl Methylpropional)",
@@ -67,7 +114,13 @@
       "category": "fragrance",
       "annex": "II",
       "notes": "Prohibited from March 2022 (EU Regulation 2021/1902). Reprotoxic. Was previously common in fragrances, fabric softeners, and leave-on cosmetics.",
-      "searchTerms": ["lilial", "butylphenyl methylpropional", "bmhca", "p-tert-butyl-alpha-methylhydrocinnamic aldehyde", "2-(4-tert-butylbenzyl)propionaldehyde"]
+      "searchTerms": [
+        "lilial",
+        "butylphenyl methylpropional",
+        "bmhca",
+        "p-tert-butyl-alpha-methylhydrocinnamic aldehyde",
+        "2-(4-tert-butylbenzyl)propionaldehyde"
+      ]
     },
     "coal-tar": {
       "name": "Coal Tar",
@@ -91,7 +144,14 @@
       "category": "preservative",
       "annex": "II",
       "notes": "Prohibited since 2014 (Commission Regulation 358/2014). Endocrine disruption concerns in leave-on cosmetics applied to child skin.",
-      "searchTerms": ["isopropylparaben", "isobutylparaben", "isopropyl paraben", "isobutyl paraben", "isopropyl 4-hydroxybenzoate", "isobutyl 4-hydroxybenzoate"]
+      "searchTerms": [
+        "isopropylparaben",
+        "isobutylparaben",
+        "isopropyl paraben",
+        "isobutyl paraben",
+        "isopropyl 4-hydroxybenzoate",
+        "isobutyl 4-hydroxybenzoate"
+      ]
     },
     "pcmc": {
       "name": "p-Chloro-m-Cresol (PCMC)",
@@ -99,7 +159,13 @@
       "category": "preservative",
       "annex": "II",
       "notes": "Prohibited preservative.",
-      "searchTerms": ["pcmc", "p-chloro-m-cresol", "4-chloro-3-methylphenol", "chlorocresol", "p-chlorocresol"]
+      "searchTerms": [
+        "pcmc",
+        "p-chloro-m-cresol",
+        "4-chloro-3-methylphenol",
+        "chlorocresol",
+        "p-chlorocresol"
+      ]
     },
     "mineral-oil-unrefined": {
       "name": "Unrefined/Mildly Refined Mineral Oil",
@@ -107,7 +173,11 @@
       "category": "mineral-oil",
       "annex": "II",
       "notes": "Carcinogenic-grade mineral oils (untreated or mildly treated) prohibited. Highly refined cosmetic-grade mineral oil is permitted.",
-      "searchTerms": ["mineral oil (unrefined)", "untreated mineral oil", "mildly treated mineral oil"]
+      "searchTerms": [
+        "mineral oil (unrefined)",
+        "untreated mineral oil",
+        "mildly treated mineral oil"
+      ]
     },
     "nitrosamines": {
       "name": "Nitrosamines / Nitrosating Agents",
@@ -115,7 +185,13 @@
       "category": "contaminant-precursor",
       "annex": "II",
       "notes": "Substances that release nitrosamines above detection limits are prohibited. Can occur in products with secondary amines and nitrosating preservatives.",
-      "searchTerms": ["nitrosamine", "dimethylnitrosamine", "n-nitrosodiethanolamine", "ndela", "diethanolamine nitrite"]
+      "searchTerms": [
+        "nitrosamine",
+        "dimethylnitrosamine",
+        "n-nitrosodiethanolamine",
+        "ndela",
+        "diethanolamine nitrite"
+      ]
     },
     "triclosan": {
       "name": "Triclosan",
@@ -131,7 +207,16 @@
       "category": "preservative",
       "annex": "III",
       "notes": "Max 0.14% for each individual ester, 0.19% combined. Prohibited in leave-on products for children under 3 (nappy area). Endocrine disruption concerns.",
-      "searchTerms": ["propylparaben", "butylparaben", "propyl paraben", "butyl paraben", "propyl 4-hydroxybenzoate", "butyl 4-hydroxybenzoate", "propyl hydroxybenzoate", "butyl hydroxybenzoate"]
+      "searchTerms": [
+        "propylparaben",
+        "butylparaben",
+        "propyl paraben",
+        "butyl paraben",
+        "propyl 4-hydroxybenzoate",
+        "butyl 4-hydroxybenzoate",
+        "propyl hydroxybenzoate",
+        "butyl hydroxybenzoate"
+      ]
     },
     "resorcinol": {
       "name": "Resorcinol",
@@ -139,7 +224,13 @@
       "category": "hair-dye",
       "annex": "III",
       "notes": "Max 0.5% in rinse-off hair dye products only. Must not be used on skin or in leave-on products. Mandatory on-pack warning required.",
-      "searchTerms": ["resorcinol", "resorcin", "1,3-benzenediol", "m-dihydroxybenzene", "1,3-dihydroxybenzene"]
+      "searchTerms": [
+        "resorcinol",
+        "resorcin",
+        "1,3-benzenediol",
+        "m-dihydroxybenzene",
+        "1,3-dihydroxybenzene"
+      ]
     },
     "benzophenone-3": {
       "name": "Benzophenone-3 (Oxybenzone)",
@@ -147,7 +238,13 @@
       "category": "uv-filter",
       "annex": "VI",
       "notes": "Max 6% in sunscreens, 0.5% in other products. Label must declare 'contains oxybenzone'. Potential endocrine disruptor; SCCS raised concerns.",
-      "searchTerms": ["benzophenone-3", "oxybenzone", "2-hydroxy-4-methoxybenzophenone", "eusolex 4360", "uvinul m40"]
+      "searchTerms": [
+        "benzophenone-3",
+        "oxybenzone",
+        "2-hydroxy-4-methoxybenzophenone",
+        "eusolex 4360",
+        "uvinul m40"
+      ]
     },
     "octinoxate": {
       "name": "Octinoxate (Ethylhexyl Methoxycinnamate)",
@@ -155,7 +252,13 @@
       "category": "uv-filter",
       "annex": "VI",
       "notes": "Max 10% as UV filter. Under ongoing SCCS review for potential endocrine activity.",
-      "searchTerms": ["octinoxate", "ethylhexyl methoxycinnamate", "uvinul mc80", "parsol mcx", "2-ethylhexyl 4-methoxycinnamate"]
+      "searchTerms": [
+        "octinoxate",
+        "ethylhexyl methoxycinnamate",
+        "uvinul mc80",
+        "parsol mcx",
+        "2-ethylhexyl 4-methoxycinnamate"
+      ]
     },
     "aluminum-salts": {
       "name": "Aluminum Salts (Antiperspirant)",
@@ -163,7 +266,14 @@
       "category": "antiperspirant",
       "annex": "III",
       "notes": "Max 10.6% aluminum hydroxychloride (as anhydrous aluminum chlorohydrate) in underarm antiperspirants. Spray products must warn against inhalation.",
-      "searchTerms": ["aluminum chlorohydrate", "aluminium chlorohydrate", "alum", "aluminum zirconium", "aluminium zirconium", "aluminumchlorohydrate"]
+      "searchTerms": [
+        "aluminum chlorohydrate",
+        "aluminium chlorohydrate",
+        "alum",
+        "aluminum zirconium",
+        "aluminium zirconium",
+        "aluminumchlorohydrate"
+      ]
     },
     "methyl-ethylparaben": {
       "name": "Methyl & Ethylparaben",
@@ -171,7 +281,16 @@
       "category": "preservative",
       "annex": "III",
       "notes": "Permitted up to 0.4% each or 0.8% combined. Broadly considered safe by SCCS but flagged by consumer advocacy groups. Common sensitizers in some individuals.",
-      "searchTerms": ["methylparaben", "ethylparaben", "methyl paraben", "ethyl paraben", "methyl 4-hydroxybenzoate", "ethyl 4-hydroxybenzoate", "methyl hydroxybenzoate", "ethyl hydroxybenzoate"]
+      "searchTerms": [
+        "methylparaben",
+        "ethylparaben",
+        "methyl paraben",
+        "ethyl paraben",
+        "methyl 4-hydroxybenzoate",
+        "ethyl 4-hydroxybenzoate",
+        "methyl hydroxybenzoate",
+        "ethyl hydroxybenzoate"
+      ]
     },
     "bht": {
       "name": "BHT (Butylated Hydroxytoluene)",
@@ -179,7 +298,12 @@
       "category": "antioxidant",
       "annex": "III",
       "notes": "Permitted as antioxidant at max 0.8%. Some studies associate it with endocrine disruption at higher exposures; SCCS opinion pending full review.",
-      "searchTerms": ["bht", "butylated hydroxytoluene", "2,6-di-tert-butyl-p-cresol", "2,6-bis(1,1-dimethylethyl)-4-methylphenol"]
+      "searchTerms": [
+        "bht",
+        "butylated hydroxytoluene",
+        "2,6-di-tert-butyl-p-cresol",
+        "2,6-bis(1,1-dimethylethyl)-4-methylphenol"
+      ]
     },
     "sodium-lauryl-sulfate": {
       "name": "Sodium Lauryl Sulfate (SLS)",
@@ -187,7 +311,13 @@
       "category": "surfactant",
       "annex": null,
       "notes": "Not prohibited, but associated with skin and mucous membrane irritation. No restriction in Annex III, but flagged as a contact sensitizer at high concentrations or with frequent exposure.",
-      "searchTerms": ["sodium lauryl sulfate", "sodium lauryl sulphate", "sodium dodecyl sulfate", "sls", "sodium laurilsulfate"]
+      "searchTerms": [
+        "sodium lauryl sulfate",
+        "sodium lauryl sulphate",
+        "sodium dodecyl sulfate",
+        "sls",
+        "sodium laurilsulfate"
+      ]
     },
     "dihydroxyacetone": {
       "name": "Dihydroxyacetone (DHA)",
@@ -195,7 +325,13 @@
       "category": "self-tanning",
       "annex": "III",
       "notes": "Permitted in self-tanners up to 10%. Inhalation risk when used in spray form. Spray products must display mandatory warning about inhalation.",
-      "searchTerms": ["dihydroxyacetone", "dha", "1,3-dihydroxyacetone", "glycerone", "1,3-dihydroxy-2-propanone"]
+      "searchTerms": [
+        "dihydroxyacetone",
+        "dha",
+        "1,3-dihydroxyacetone",
+        "glycerone",
+        "1,3-dihydroxy-2-propanone"
+      ]
     },
     "styrene": {
       "name": "Styrene",
@@ -204,6 +340,111 @@
       "annex": "II",
       "notes": "Prohibited monomer. Classified as possible carcinogen (IARC Group 2A). May be present as a contaminant in certain polymer-based cosmetic ingredients.",
       "searchTerms": ["styrene", "vinylbenzene", "ethenylbenzene", "styrol", "phenylethylene"]
+    },
+    "sodium-perborate": {
+      "name": "Sodium Perborate / Perboric Acid Compounds",
+      "status": "banned",
+      "category": "oxidiser",
+      "annex": "II",
+      "notes": "Banned from May 1, 2026 (Regulation EU 2026/78, Omnibus Act VIII). Covers all forms: sodium perborate (CAS 15120-21-5), sodium peroxoborate (CAS 7632-04-4), perboric acid monosodium salt trihydrate (CAS 13517-20-9), and related hydrates. Previously used as a bleaching/oxidising agent in hair and tooth-whitening products.",
+      "searchTerms": [
+        "sodium perborate",
+        "perboric acid",
+        "sodium peroxoborate",
+        "sodium peroxometaborate",
+        "peroxoborate",
+        "sodium perborate monohydrate",
+        "sodium perborate tetrahydrate"
+      ]
+    },
+    "silver-nano": {
+      "name": "Silver (Nano & Massive Forms)",
+      "status": "banned",
+      "category": "antimicrobial",
+      "annex": "II",
+      "notes": "Banned from May 1, 2026 (Regulation EU 2026/78, Omnibus Act VIII). Silver nanoparticles (1 nm < diameter ≤ 100 nm, CAS 7440-22-4) and massive silver (diameter ≥ 1 mm) are now prohibited. Silver powder (100 nm < diameter < 1 mm) remains restricted — see silver-powder entry.",
+      "searchTerms": [
+        "silver nano",
+        "silver nanoparticles",
+        "nano silver",
+        "colloidal silver",
+        "silver (nano)",
+        "silver massive"
+      ]
+    },
+    "silver-powder": {
+      "name": "Silver Powder",
+      "status": "restricted",
+      "category": "antimicrobial",
+      "annex": "III",
+      "notes": "Restricted from May 1, 2026 (Regulation EU 2026/78, Omnibus Act VIII). Silver powder (100 nm < diameter < 1 mm, CAS 7440-22-4): max 0.05% in toothpaste and mouthwash only. Also permitted as a colorant (Annex IV) at max 0.2% in lip products and eye shadow.",
+      "searchTerms": ["silver powder", "silver", "ag powder", "silver (powder)"]
+    },
+    "hexyl-salicylate": {
+      "name": "Hexyl Salicylate",
+      "status": "restricted",
+      "category": "fragrance",
+      "annex": "III",
+      "notes": "Restricted from May 1, 2026 (Regulation EU 2026/78, Omnibus Act VIII). Hexyl 2-hydroxybenzoate (CAS 6259-76-3). Concentration limits: hydroalcoholic fragrances max 2%; rinse-off products max 0.5%; leave-on products max 0.3%; toothpaste and mouthwash max 0.001%; products for children under 3 years max 0.1%. Widely used fragrance compound.",
+      "searchTerms": [
+        "hexyl salicylate",
+        "hexyl 2-hydroxybenzoate",
+        "hexyl salicylate",
+        "salicylic acid hexyl ester",
+        "n-hexyl salicylate"
+      ]
+    },
+    "multi-walled-carbon-nanotubes": {
+      "name": "Multi-Walled Carbon Nanotubes",
+      "status": "banned",
+      "category": "nanomaterial",
+      "annex": "II",
+      "notes": "Banned from May 1, 2026 (Regulation EU 2026/78, Omnibus Act VIII). Covers nanotubes with diameter ≥ 30 nm to < 3 µm and length ≥ 5 µm. Linked to respiratory risks similar to asbestos fibres.",
+      "searchTerms": [
+        "multi-walled carbon nanotubes",
+        "mwcnt",
+        "mwnt",
+        "carbon nanotubes",
+        "multiwalled carbon nanotubes"
+      ]
+    },
+    "acetone-oxime": {
+      "name": "Acetone Oxime",
+      "status": "banned",
+      "category": "industrial-chemical",
+      "annex": "II",
+      "notes": "Banned from May 1, 2026 (Regulation EU 2026/78, Omnibus Act VIII). CAS 127-06-0. Newly classified as CMR (carcinogenic/mutagenic/reprotoxic). Previously used in some fragrance and industrial cosmetic formulations.",
+      "searchTerms": ["acetone oxime", "2-propanone oxime", "acetoxime", "dimethyl ketoxime"]
+    },
+    "biphenyl-2-ol": {
+      "name": "Biphenyl-2-ol / 2-Phenylphenol",
+      "status": "restricted",
+      "category": "preservative",
+      "annex": "V",
+      "notes": "Restricted from May 1, 2026 (Regulation EU 2026/78, Omnibus Act VIII). Biphenyl-2-ol (CAS 90-43-7) and sodium 2-biphenylolate (CAS 132-27-4): max 0.2% (as phenol) in rinse-off products; max 0.15% (as phenol) in leave-on products. Not permitted in eye-area, oral, or inhalation-exposure products.",
+      "searchTerms": [
+        "biphenyl-2-ol",
+        "2-phenylphenol",
+        "o-phenylphenol",
+        "2-hydroxybiphenyl",
+        "sodium o-phenylphenate",
+        "sodium 2-biphenylolate",
+        "dowicide 1"
+      ]
+    },
+    "trimethyl-benzoyl-diphenylphosphine-oxide": {
+      "name": "Trimethylbenzoyl Diphenylphosphine Oxide (TPO)",
+      "status": "banned",
+      "category": "photoinitiator",
+      "annex": "II",
+      "notes": "Banned from September 1, 2025 (Regulation EU 2025/877, Omnibus Act VII). Reclassified as CMR Category 1B (reproductive toxin); moved from Annex III (restricted) to Annex II (prohibited). Was previously permitted at limited concentrations in nail gel products.",
+      "searchTerms": [
+        "tpo",
+        "trimethylbenzoyl diphenylphosphine oxide",
+        "diphenyl(2,4,6-trimethylbenzoyl)phosphine oxide",
+        "lucirin tpo",
+        "darocur tpo"
+      ]
     }
   }
 }
