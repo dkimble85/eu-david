@@ -1,9 +1,9 @@
 {
-  "latestVersion": "1.0.14",
+  "latestVersion": "1.0.15",
   "releasedAt": "2026-04-15",
   "summary": [
-    "Expanded regulated ingredients datasets and improved ingredient risk checks across food and cosmetic flows.",
-    "Refined auth, history, search, and product detail screens plus scanner components for better UX and reliability.",
-    "Stabilized Playwright navigation and camera lifecycle coverage and shipped with lint/format/test validation."
+    "Fixed Settings screen scroll spacing so the Sign Out action is fully reachable above the bottom tab menu.",
+    "Simplified the Settings version card to show only App Version (build number removed from UI).",
+    "Validated release readiness with formatting, linting, and passing Playwright suite."
   ]
 }

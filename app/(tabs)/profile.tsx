@@ -2,6 +2,7 @@ import React from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, Image, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
+import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
 import Constants from 'expo-constants';
 import { colors, radius, spacing, typography } from '@/constants/theme';
 import { useAuth } from '@/hooks/useAuth';
@@ -10,13 +11,8 @@ import { useReleaseNotes } from '@/components/ReleaseNotesProvider';
 export default function ProfileScreen() {
   const { user, signOut } = useAuth();
   const { openChangelog } = useReleaseNotes();
+  const tabBarHeight = useBottomTabBarHeight();
   const releaseVersion = Constants.expoConfig?.version ?? '1.0.0';
-  const iosBuild = Constants.expoConfig?.ios?.buildNumber ?? null;
-  const androidBuild =
-    typeof Constants.expoConfig?.android?.versionCode === 'number'
-      ? String(Constants.expoConfig.android.versionCode)
-      : null;
-  const buildVersion = iosBuild ?? androidBuild;
 
   if (!user) {
     return (
@@ -34,7 +30,10 @@ export default function ProfileScreen() {
 
   return (
     <SafeAreaView style={styles.safe}>
-      <ScrollView contentContainerStyle={styles.container} showsVerticalScrollIndicator={false}>
+      <ScrollView
+        contentContainerStyle={[styles.container, { paddingBottom: tabBarHeight + spacing.lg }]}
+        showsVerticalScrollIndicator={false}
+      >
         <View style={styles.header}>
           <Text style={styles.pageTitle}>Settings</Text>
         </View>
@@ -65,12 +64,6 @@ export default function ProfileScreen() {
               <Text style={styles.versionLabel}>App Version</Text>
               <Text style={styles.versionValue}>v{releaseVersion}</Text>
             </View>
-            {buildVersion && (
-              <View style={styles.versionRow}>
-                <Text style={styles.versionLabel}>Build</Text>
-                <Text style={styles.versionValue}>{buildVersion}</Text>
-              </View>
-            )}
           </View>
         </View>
 
@@ -116,7 +109,7 @@ export default function ProfileScreen() {
 
 const styles = StyleSheet.create({
   safe: { flex: 1, backgroundColor: colors.background },
-  container: { padding: spacing.lg, gap: spacing.lg, paddingBottom: spacing.xxl },
+  container: { padding: spacing.lg, gap: spacing.lg },
   header: { marginBottom: spacing.sm },
   pageTitle: { ...typography.title2, color: colors.textPrimary },
   centered: {
