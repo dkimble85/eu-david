@@ -10,7 +10,8 @@ import {
   ActivityIndicator,
   ScrollView,
   Keyboard,
-  TouchableWithoutFeedback,
+  InputAccessoryView,
+  Platform,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
@@ -57,6 +58,8 @@ const SEARCH_FILTERS: Array<{ key: SearchFilter; label: string }> = [
   { key: 'beauty', label: 'Beauty' },
   { key: 'household', label: 'Household' },
 ];
+
+const SEARCH_KEYBOARD_ACCESSORY_ID = 'search-keyboard-accessory';
 
 const SEARCH_FILTER_ICONS: Record<
   SearchFilter,
@@ -296,171 +299,188 @@ export default function SearchScreen() {
           </TouchableOpacity>
         </View>
       ) : (
-        <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-          <View style={styles.authedContent}>
-            <View style={styles.controlsSection}>
-              {/* Search bar */}
-              <View style={styles.searchRow}>
-                <TextInput
-                  style={styles.searchInput}
-                  value={searchQuery}
-                  onChangeText={setSearchQuery}
-                  onSubmitEditing={handleSearch}
-                  blurOnSubmit
-                  placeholder="Search by product name..."
-                  placeholderTextColor={colors.textMuted}
-                  returnKeyType="search"
-                  autoCapitalize="none"
-                  autoCorrect={false}
-                />
-                <TouchableOpacity style={styles.searchButton} onPress={handleSearch}>
-                  <SearchIcon size={20} color="#fff" />
-                </TouchableOpacity>
-              </View>
-
-              {/* Barcode quick-entry toggle */}
-              <View style={styles.barcodeRow}>
-                <TouchableOpacity
-                  style={styles.barcodeToggle}
-                  onPress={() => {
-                    Keyboard.dismiss();
-                    setShowBarcodeInput(!showBarcodeInput);
-                  }}
-                >
-                  <ScanBarcode size={16} color={colors.euGold} />
-                  <Text style={styles.barcodeToggleText}>Enter barcode manually</Text>
-                </TouchableOpacity>
-              </View>
-
-              {showBarcodeInput && (
-                <View style={styles.barcodeInputRow}>
-                  <TextInput
-                    style={styles.barcodeInput}
-                    value={barcodeInput}
-                    onChangeText={setBarcodeInput}
-                    onSubmitEditing={handleBarcodeSubmit}
-                    blurOnSubmit
-                    placeholder="Enter barcode number..."
-                    placeholderTextColor={colors.textMuted}
-                    keyboardType="number-pad"
-                    returnKeyType="go"
-                    autoCapitalize="none"
-                  />
-                  <TouchableOpacity style={styles.searchButton} onPress={handleBarcodeSubmit}>
-                    <Text style={styles.searchButtonText}>Go</Text>
-                  </TouchableOpacity>
-                </View>
-              )}
-
-              <ScrollView
-                horizontal
-                showsHorizontalScrollIndicator={false}
-                style={styles.filtersScroll}
-                contentContainerStyle={styles.filterRow}
-                keyboardShouldPersistTaps="handled"
-              >
-                {SEARCH_FILTERS.map((filter) => {
-                  const active = selectedFilter === filter.key;
-                  const Icon = SEARCH_FILTER_ICONS[filter.key];
-                  return (
-                    <TouchableOpacity
-                      key={filter.key}
-                      style={[styles.filterChip, active && styles.filterChipActive]}
-                      onPress={() => setSelectedFilter(filter.key)}
-                      activeOpacity={0.8}
-                    >
-                      <Icon size={14} color={active ? '#fff' : colors.textSecondary} />
-                      <Text style={[styles.filterChipText, active && styles.filterChipTextActive]}>
-                        {filter.label}
-                      </Text>
-                    </TouchableOpacity>
-                  );
-                })}
-              </ScrollView>
-              <View style={styles.sectionDivider} />
+        <View style={styles.authedContent}>
+          <View style={styles.controlsSection}>
+            {/* Search bar */}
+            <View style={styles.searchRow}>
+              <TextInput
+                style={styles.searchInput}
+                value={searchQuery}
+                onChangeText={setSearchQuery}
+                onSubmitEditing={handleSearch}
+                blurOnSubmit
+                placeholder="Search by product name..."
+                placeholderTextColor={colors.textMuted}
+                inputAccessoryViewID={SEARCH_KEYBOARD_ACCESSORY_ID}
+                returnKeyType="search"
+                autoCapitalize="none"
+                autoCorrect={false}
+              />
+              <TouchableOpacity style={styles.searchButton} onPress={handleSearch}>
+                <SearchIcon size={20} color="#fff" />
+              </TouchableOpacity>
             </View>
 
-            {/* Results */}
-            {!hasQuery ? (
-              <View style={styles.empty}>
-                <SearchIcon size={48} color={colors.textMuted} />
-                <Text style={styles.emptyTitle}>Search for products</Text>
-                <Text style={styles.emptyBody}>
-                  Enter a product name to search food, beauty, and household products.
-                </Text>
-              </View>
-            ) : isLoading ? (
-              <View style={styles.empty}>
-                <ActivityIndicator size="large" color={colors.euGold} />
-                <Text style={styles.emptyBody}>Searching...</Text>
-              </View>
-            ) : isError ? (
-              <View style={styles.empty}>
-                <Text style={styles.emptyEmoji}>⚠️</Text>
-                <Text style={styles.emptyTitle}>Something went wrong</Text>
-                <Text style={styles.emptyBody}>Check your connection and try again.</Text>
-                <TouchableOpacity style={styles.retryButton} onPress={() => refetch()}>
-                  <Text style={styles.retryText}>Retry</Text>
+            {/* Barcode quick-entry toggle */}
+            <View style={styles.barcodeRow}>
+              <TouchableOpacity
+                style={styles.barcodeToggle}
+                onPress={() => {
+                  Keyboard.dismiss();
+                  setShowBarcodeInput(!showBarcodeInput);
+                }}
+              >
+                <ScanBarcode size={16} color={colors.euGold} />
+                <Text style={styles.barcodeToggleText}>Enter barcode manually</Text>
+              </TouchableOpacity>
+            </View>
+
+            {showBarcodeInput && (
+              <View style={styles.barcodeInputRow}>
+                <TextInput
+                  style={styles.barcodeInput}
+                  value={barcodeInput}
+                  onChangeText={setBarcodeInput}
+                  onSubmitEditing={handleBarcodeSubmit}
+                  blurOnSubmit
+                  placeholder="Enter barcode number..."
+                  placeholderTextColor={colors.textMuted}
+                  inputAccessoryViewID={SEARCH_KEYBOARD_ACCESSORY_ID}
+                  keyboardType="number-pad"
+                  returnKeyType="go"
+                  autoCapitalize="none"
+                />
+                <TouchableOpacity style={styles.searchButton} onPress={handleBarcodeSubmit}>
+                  <Text style={styles.searchButtonText}>Go</Text>
                 </TouchableOpacity>
               </View>
-            ) : !data || data.length === 0 ? (
-              <View style={styles.empty}>
-                <Text style={styles.emptyEmoji}>🔍</Text>
-                <Text style={styles.emptyTitle}>No products found</Text>
-                <Text style={styles.emptyBody}>Try a different search term.</Text>
-              </View>
-            ) : !filteredData || filteredData.length === 0 ? (
-              <View style={styles.empty}>
-                <Text style={styles.emptyEmoji}>🧭</Text>
-                <Text style={styles.emptyTitle}>No {selectedFilter} matches</Text>
-                <Text style={styles.emptyBody}>
-                  Try switching filters to view the other results from this search.
-                </Text>
-              </View>
-            ) : (
-              <FlatList
-                data={filteredData}
-                keyExtractor={(item, i) => item.product.barcode ?? `${i}`}
-                contentContainerStyle={styles.list}
-                showsVerticalScrollIndicator={false}
-                keyboardDismissMode="on-drag"
-                keyboardShouldPersistTaps="handled"
-                renderItem={({ item }) => (
-                  <ProductRow
-                    item={item}
-                    missingIngredientsReportCount={
-                      item.product.barcode
-                        ? (missingIngredientsCounts[item.product.barcode] ?? 0)
-                        : 0
-                    }
-                    isFavorite={
-                      item.product.barcode ? favoriteBarcodes.has(item.product.barcode) : false
-                    }
-                    onReport={(payload) => {
-                      setReportStatus(null);
-                      setReportTarget(payload);
-                    }}
-                    onToggleFavorite={handleToggleFavorite}
-                  />
-                )}
-              />
             )}
-            <ReportIssueModal
-              visible={Boolean(reportTarget)}
-              productName={reportTarget?.name ?? ''}
-              submitting={reportSubmitting}
-              statusMessage={reportStatus}
-              onClose={() => {
-                if (reportSubmitting) return;
-                setReportTarget(null);
-                setReportStatus(null);
-              }}
-              onSubmit={handleSubmitReport}
-            />
+
+            <ScrollView
+              horizontal
+              showsHorizontalScrollIndicator={false}
+              style={styles.filtersScroll}
+              contentContainerStyle={styles.filterRow}
+              keyboardShouldPersistTaps="handled"
+            >
+              {SEARCH_FILTERS.map((filter) => {
+                const active = selectedFilter === filter.key;
+                const Icon = SEARCH_FILTER_ICONS[filter.key];
+                return (
+                  <TouchableOpacity
+                    key={filter.key}
+                    style={[styles.filterChip, active && styles.filterChipActive]}
+                    onPress={() => setSelectedFilter(filter.key)}
+                    activeOpacity={0.8}
+                  >
+                    <Icon size={14} color={active ? '#fff' : colors.textSecondary} />
+                    <Text style={[styles.filterChipText, active && styles.filterChipTextActive]}>
+                      {filter.label}
+                    </Text>
+                  </TouchableOpacity>
+                );
+              })}
+            </ScrollView>
+            <View style={styles.sectionDivider} />
           </View>
-        </TouchableWithoutFeedback>
+
+          {/* Results */}
+          {!hasQuery ? (
+            <View style={styles.empty}>
+              <SearchIcon size={48} color={colors.textMuted} />
+              <Text style={styles.emptyTitle}>Search for products</Text>
+              <Text style={styles.emptyBody}>
+                Enter a product name to search food, beauty, and household products.
+              </Text>
+            </View>
+          ) : isLoading ? (
+            <View style={styles.empty}>
+              <ActivityIndicator size="large" color={colors.euGold} />
+              <Text style={styles.emptyBody}>Searching...</Text>
+            </View>
+          ) : isError ? (
+            <View style={styles.empty}>
+              <Text style={styles.emptyEmoji}>⚠️</Text>
+              <Text style={styles.emptyTitle}>Something went wrong</Text>
+              <Text style={styles.emptyBody}>Check your connection and try again.</Text>
+              <TouchableOpacity style={styles.retryButton} onPress={() => refetch()}>
+                <Text style={styles.retryText}>Retry</Text>
+              </TouchableOpacity>
+            </View>
+          ) : !data || data.length === 0 ? (
+            <View style={styles.empty}>
+              <Text style={styles.emptyEmoji}>🔍</Text>
+              <Text style={styles.emptyTitle}>No products found</Text>
+              <Text style={styles.emptyBody}>Try a different search term.</Text>
+            </View>
+          ) : !filteredData || filteredData.length === 0 ? (
+            <View style={styles.empty}>
+              <Text style={styles.emptyEmoji}>🧭</Text>
+              <Text style={styles.emptyTitle}>No {selectedFilter} matches</Text>
+              <Text style={styles.emptyBody}>
+                Try switching filters to view the other results from this search.
+              </Text>
+            </View>
+          ) : (
+            <FlatList
+              data={filteredData}
+              keyExtractor={(item, i) => item.product.barcode ?? `${i}`}
+              contentContainerStyle={styles.list}
+              showsVerticalScrollIndicator={false}
+              keyboardDismissMode="on-drag"
+              keyboardShouldPersistTaps="handled"
+              renderItem={({ item }) => (
+                <ProductRow
+                  item={item}
+                  missingIngredientsReportCount={
+                    item.product.barcode ? (missingIngredientsCounts[item.product.barcode] ?? 0) : 0
+                  }
+                  isFavorite={
+                    item.product.barcode ? favoriteBarcodes.has(item.product.barcode) : false
+                  }
+                  onReport={(payload) => {
+                    setReportStatus(null);
+                    setReportTarget(payload);
+                  }}
+                  onToggleFavorite={handleToggleFavorite}
+                />
+              )}
+            />
+          )}
+          <ReportIssueModal
+            visible={Boolean(reportTarget)}
+            productName={reportTarget?.name ?? ''}
+            submitting={reportSubmitting}
+            statusMessage={reportStatus}
+            onClose={() => {
+              if (reportSubmitting) return;
+              setReportTarget(null);
+              setReportStatus(null);
+            }}
+            onSubmit={handleSubmitReport}
+          />
+          <KeyboardAccessory />
+        </View>
       )}
     </SafeAreaView>
+  );
+}
+
+function KeyboardAccessory() {
+  if (Platform.OS !== 'ios') return null;
+
+  return (
+    <InputAccessoryView nativeID={SEARCH_KEYBOARD_ACCESSORY_ID}>
+      <View style={styles.keyboardAccessory}>
+        <TouchableOpacity
+          style={styles.keyboardDoneButton}
+          onPress={Keyboard.dismiss}
+          activeOpacity={0.75}
+        >
+          <Text style={styles.keyboardDoneText}>Done</Text>
+        </TouchableOpacity>
+      </View>
+    </InputAccessoryView>
   );
 }
 
@@ -1050,6 +1070,23 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   searchButtonText: { ...typography.callout, color: '#fff', fontWeight: '600' },
+  keyboardAccessory: {
+    backgroundColor: colors.surface,
+    borderTopWidth: 1,
+    borderTopColor: colors.border,
+    paddingHorizontal: spacing.md,
+    paddingVertical: spacing.xs,
+    alignItems: 'flex-end',
+  },
+  keyboardDoneButton: {
+    paddingHorizontal: spacing.md,
+    paddingVertical: spacing.xs,
+  },
+  keyboardDoneText: {
+    ...typography.callout,
+    color: colors.euGold,
+    fontWeight: '700',
+  },
   filtersScroll: {
     flexGrow: 0,
   },
