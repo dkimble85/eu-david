@@ -1,9 +1,9 @@
 {
-  "latestVersion": "1.0.15",
+  "latestVersion": "1.0.16",
   "releasedAt": "2026-04-15",
   "summary": [
-    "Fixed Settings screen scroll spacing so the Sign Out action is fully reachable above the bottom tab menu.",
-    "Simplified the Settings version card to show only App Version (build number removed from UI).",
-    "Validated release readiness with formatting, linting, and passing Playwright suite."
+    "Improved Search keyboard behavior so product-name and barcode inputs can be dismissed without leaving the page.",
+    "Added tap-outside, submit, and drag-to-dismiss keyboard interactions across Search controls and results.",
+    "Validated deployment readiness with formatting, linting, and a passing Playwright suite."
   ]
 }
