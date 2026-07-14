@@ -1,18 +1,30 @@
 {
   "_meta": {
     "source": "EC Regulation No 1333/2008 on Food Additives",
-    "lastUpdated": "2026-04-15",
+    "lastUpdated": "2026-07-13",
     "notes": "Positive list system: additives NOT in this list are banned by default in EU food"
   },
   "additives": {
-    "e100": { "name": "Curcumin", "status": "approved", "category": "colour" },
-    "e101": { "name": "Riboflavin (Vitamin B2)", "status": "approved", "category": "colour" },
+    "e100": {
+      "name": "Curcumin",
+      "status": "approved",
+      "category": "colour"
+    },
+    "e101": {
+      "name": "Riboflavin (Vitamin B2)",
+      "status": "approved",
+      "category": "colour"
+    },
     "e102": {
       "name": "Tartrazine (Yellow 5)",
       "status": "warning",
       "category": "colour",
       "notes": "Must carry label: 'may have an adverse effect on activity and attention in children'",
-      "commonNames": ["yellow 5", "tartrazine", "fd&c yellow no. 5"]
+      "commonNames": [
+        "yellow 5",
+        "tartrazine",
+        "fd&c yellow no. 5"
+      ]
     },
     "e104": {
       "name": "Quinoline Yellow",
@@ -25,7 +37,11 @@
       "status": "warning",
       "category": "colour",
       "notes": "Must carry label: 'may have an adverse effect on activity and attention in children'",
-      "commonNames": ["yellow 6", "sunset yellow", "fd&c yellow no. 6"]
+      "commonNames": [
+        "yellow 6",
+        "sunset yellow",
+        "fd&c yellow no. 6"
+      ]
     },
     "e120": {
       "name": "Cochineal / Carminic Acid",
@@ -50,7 +66,10 @@
       "status": "warning",
       "category": "colour",
       "notes": "Must carry label: 'may have an adverse effect on activity and attention in children'",
-      "commonNames": ["red 4", "ponceau 4r"]
+      "commonNames": [
+        "red 4",
+        "ponceau 4r"
+      ]
     },
     "e127": {
       "name": "Erythrosine (Red 3)",
@@ -63,20 +82,34 @@
       "status": "warning",
       "category": "colour",
       "notes": "Must carry label: 'may have an adverse effect on activity and attention in children'",
-      "commonNames": ["red 40", "allura red", "fd&c red no. 40"]
+      "commonNames": [
+        "red 40",
+        "allura red",
+        "fd&c red no. 40"
+      ]
     },
-    "e131": { "name": "Patent Blue V", "status": "approved", "category": "colour" },
+    "e131": {
+      "name": "Patent Blue V",
+      "status": "approved",
+      "category": "colour"
+    },
     "e132": {
       "name": "Indigotine / Indigo Carmine (Blue 2)",
       "status": "approved",
       "category": "colour",
-      "commonNames": ["blue 2", "fd&c blue no. 2"]
+      "commonNames": [
+        "blue 2",
+        "fd&c blue no. 2"
+      ]
     },
     "e133": {
       "name": "Brilliant Blue FCF (Blue 1)",
       "status": "approved",
       "category": "colour",
-      "commonNames": ["blue 1", "fd&c blue no. 1"]
+      "commonNames": [
+        "blue 1",
+        "fd&c blue no. 1"
+      ]
     },
     "e140": {
       "name": "Chlorophylls and Chlorophyllins",
@@ -88,48 +121,143 @@
       "status": "approved",
       "category": "colour"
     },
-    "e150a": { "name": "Plain Caramel", "status": "approved", "category": "colour" },
-    "e150b": { "name": "Caustic Sulphite Caramel", "status": "approved", "category": "colour" },
-    "e150c": { "name": "Ammonia Caramel", "status": "approved", "category": "colour" },
-    "e150d": { "name": "Sulphite Ammonia Caramel", "status": "approved", "category": "colour" },
-    "e151": { "name": "Brilliant Black BN", "status": "approved", "category": "colour" },
-    "e153": { "name": "Vegetable Carbon", "status": "restricted", "category": "colour" },
-    "e160a": { "name": "Beta-carotene", "status": "approved", "category": "colour" },
-    "e160b": { "name": "Annatto / Bixin / Norbixin", "status": "approved", "category": "colour" },
-    "e160c": { "name": "Paprika extract", "status": "approved", "category": "colour" },
-    "e160d": { "name": "Lycopene", "status": "approved", "category": "colour" },
-    "e161b": { "name": "Lutein", "status": "approved", "category": "colour" },
-    "e162": { "name": "Beetroot Red / Betanin", "status": "approved", "category": "colour" },
-    "e163": { "name": "Anthocyanins", "status": "approved", "category": "colour" },
-    "e170": { "name": "Calcium carbonate", "status": "approved", "category": "colour" },
+    "e150a": {
+      "name": "Plain Caramel",
+      "status": "approved",
+      "category": "colour"
+    },
+    "e150b": {
+      "name": "Caustic Sulphite Caramel",
+      "status": "approved",
+      "category": "colour"
+    },
+    "e150c": {
+      "name": "Ammonia Caramel",
+      "status": "approved",
+      "category": "colour"
+    },
+    "e150d": {
+      "name": "Sulphite Ammonia Caramel",
+      "status": "approved",
+      "category": "colour"
+    },
+    "e151": {
+      "name": "Brilliant Black BN",
+      "status": "approved",
+      "category": "colour"
+    },
+    "e153": {
+      "name": "Vegetable Carbon",
+      "status": "restricted",
+      "category": "colour"
+    },
+    "e160a": {
+      "name": "Beta-carotene",
+      "status": "approved",
+      "category": "colour"
+    },
+    "e160b": {
+      "name": "Annatto / Bixin / Norbixin",
+      "status": "approved",
+      "category": "colour"
+    },
+    "e160c": {
+      "name": "Paprika extract",
+      "status": "approved",
+      "category": "colour"
+    },
+    "e160d": {
+      "name": "Lycopene",
+      "status": "approved",
+      "category": "colour"
+    },
+    "e161b": {
+      "name": "Lutein",
+      "status": "approved",
+      "category": "colour"
+    },
+    "e162": {
+      "name": "Beetroot Red / Betanin",
+      "status": "approved",
+      "category": "colour"
+    },
+    "e163": {
+      "name": "Anthocyanins",
+      "status": "approved",
+      "category": "colour"
+    },
+    "e170": {
+      "name": "Calcium carbonate",
+      "status": "approved",
+      "category": "colour"
+    },
     "e171": {
       "name": "Titanium Dioxide",
       "status": "banned",
       "category": "colour",
       "bannedSince": "2022-08-07",
       "notes": "Banned in EU food since August 7, 2022 (genotoxic concerns). Still used in US food products.",
-      "commonNames": ["titanium dioxide", "ci 77891"]
+      "commonNames": [
+        "titanium dioxide",
+        "ci 77891"
+      ]
     },
-    "e172": { "name": "Iron oxides and hydroxides", "status": "approved", "category": "colour" },
+    "e172": {
+      "name": "Iron oxides and hydroxides",
+      "status": "approved",
+      "category": "colour"
+    },
     "e173": {
       "name": "Aluminium",
       "status": "restricted",
       "category": "colour",
       "notes": "Only for surface decoration of sugar-coated products"
     },
-    "e174": { "name": "Silver", "status": "restricted", "category": "colour" },
-    "e175": { "name": "Gold", "status": "restricted", "category": "colour" },
-    "e200": { "name": "Sorbic acid", "status": "approved", "category": "preservative" },
-    "e202": { "name": "Potassium sorbate", "status": "approved", "category": "preservative" },
-    "e210": { "name": "Benzoic acid", "status": "approved", "category": "preservative" },
+    "e174": {
+      "name": "Silver",
+      "status": "restricted",
+      "category": "colour"
+    },
+    "e175": {
+      "name": "Gold",
+      "status": "restricted",
+      "category": "colour"
+    },
+    "e200": {
+      "name": "Sorbic acid",
+      "status": "approved",
+      "category": "preservative"
+    },
+    "e202": {
+      "name": "Potassium sorbate",
+      "status": "approved",
+      "category": "preservative"
+    },
+    "e210": {
+      "name": "Benzoic acid",
+      "status": "approved",
+      "category": "preservative"
+    },
     "e211": {
       "name": "Sodium benzoate",
       "status": "approved",
       "category": "preservative",
-      "commonNames": ["sodium benzoate", "benzoate", "benzoic acid salt"]
+      "commonNames": [
+        "sodium benzoate",
+        "benzoate",
+        "benzoic acid salt"
+      ]
     },
-    "e212": { "name": "Potassium benzoate", "status": "approved", "category": "preservative" },
-    "e213": { "name": "Calcium benzoate", "status": "approved", "category": "preservative" },
+    "e212": {
+      "name": "Potassium benzoate",
+      "status": "approved",
+      "category": "preservative"
+    },
+    "e213": {
+      "name": "Calcium benzoate",
+      "status": "approved",
+      "category": "preservative"
+    },
     "e214": {
       "name": "Ethyl para-hydroxybenzoate",
       "status": "approved",
@@ -146,7 +274,11 @@
       "category": "preservative",
       "bannedSince": "2015-06-30",
       "notes": "Banned in EU food since 2015 (endocrine disruption concerns). Still used in some US products.",
-      "commonNames": ["propylparaben", "propyl paraben", "e216"]
+      "commonNames": [
+        "propylparaben",
+        "propyl paraben",
+        "e216"
+      ]
     },
     "e217": {
       "name": "Sodium propyl para-hydroxybenzoate",
@@ -165,20 +297,36 @@
       "status": "approved",
       "category": "preservative"
     },
-    "e220": { "name": "Sulphur dioxide", "status": "approved", "category": "preservative" },
-    "e221": { "name": "Sodium sulphite", "status": "approved", "category": "preservative" },
+    "e220": {
+      "name": "Sulphur dioxide",
+      "status": "approved",
+      "category": "preservative"
+    },
+    "e221": {
+      "name": "Sodium sulphite",
+      "status": "approved",
+      "category": "preservative"
+    },
     "e222": {
       "name": "Sodium hydrogen sulphite",
       "status": "approved",
       "category": "preservative"
     },
-    "e223": { "name": "Sodium metabisulphite", "status": "approved", "category": "preservative" },
+    "e223": {
+      "name": "Sodium metabisulphite",
+      "status": "approved",
+      "category": "preservative"
+    },
     "e224": {
       "name": "Potassium metabisulphite",
       "status": "approved",
       "category": "preservative"
     },
-    "e226": { "name": "Calcium sulphite", "status": "approved", "category": "preservative" },
+    "e226": {
+      "name": "Calcium sulphite",
+      "status": "approved",
+      "category": "preservative"
+    },
     "e227": {
       "name": "Calcium hydrogen sulphite",
       "status": "approved",
@@ -189,27 +337,87 @@
       "status": "approved",
       "category": "preservative"
     },
-    "e234": { "name": "Nisin", "status": "approved", "category": "preservative" },
-    "e235": { "name": "Natamycin (Pimaricin)", "status": "restricted", "category": "preservative" },
+    "e234": {
+      "name": "Nisin",
+      "status": "approved",
+      "category": "preservative"
+    },
+    "e235": {
+      "name": "Natamycin (Pimaricin)",
+      "status": "restricted",
+      "category": "preservative"
+    },
     "e239": {
       "name": "Hexamethylene tetramine",
       "status": "banned",
       "category": "preservative",
       "notes": "Banned in EU food. Only approved for Provolone cheese in some EU countries historically."
     },
-    "e249": { "name": "Potassium nitrite", "status": "restricted", "category": "preservative" },
-    "e250": { "name": "Sodium nitrite", "status": "restricted", "category": "preservative" },
-    "e251": { "name": "Sodium nitrate", "status": "restricted", "category": "preservative" },
-    "e252": { "name": "Potassium nitrate", "status": "restricted", "category": "preservative" },
-    "e260": { "name": "Acetic acid", "status": "approved", "category": "preservative" },
-    "e261": { "name": "Potassium acetate", "status": "approved", "category": "preservative" },
-    "e262": { "name": "Sodium acetates", "status": "approved", "category": "preservative" },
-    "e263": { "name": "Calcium acetate", "status": "approved", "category": "preservative" },
-    "e270": { "name": "Lactic acid", "status": "approved", "category": "preservative" },
-    "e280": { "name": "Propionic acid", "status": "approved", "category": "preservative" },
-    "e281": { "name": "Sodium propionate", "status": "approved", "category": "preservative" },
-    "e282": { "name": "Calcium propionate", "status": "approved", "category": "preservative" },
-    "e283": { "name": "Potassium propionate", "status": "approved", "category": "preservative" },
+    "e249": {
+      "name": "Potassium nitrite",
+      "status": "restricted",
+      "category": "preservative"
+    },
+    "e250": {
+      "name": "Sodium nitrite",
+      "status": "restricted",
+      "category": "preservative"
+    },
+    "e251": {
+      "name": "Sodium nitrate",
+      "status": "restricted",
+      "category": "preservative"
+    },
+    "e252": {
+      "name": "Potassium nitrate",
+      "status": "restricted",
+      "category": "preservative"
+    },
+    "e260": {
+      "name": "Acetic acid",
+      "status": "approved",
+      "category": "preservative"
+    },
+    "e261": {
+      "name": "Potassium acetate",
+      "status": "approved",
+      "category": "preservative"
+    },
+    "e262": {
+      "name": "Sodium acetates",
+      "status": "approved",
+      "category": "preservative"
+    },
+    "e263": {
+      "name": "Calcium acetate",
+      "status": "approved",
+      "category": "preservative"
+    },
+    "e270": {
+      "name": "Lactic acid",
+      "status": "approved",
+      "category": "preservative"
+    },
+    "e280": {
+      "name": "Propionic acid",
+      "status": "approved",
+      "category": "preservative"
+    },
+    "e281": {
+      "name": "Sodium propionate",
+      "status": "approved",
+      "category": "preservative"
+    },
+    "e282": {
+      "name": "Calcium propionate",
+      "status": "approved",
+      "category": "preservative"
+    },
+    "e283": {
+      "name": "Potassium propionate",
+      "status": "approved",
+      "category": "preservative"
+    },
     "e284": {
       "name": "Boric acid",
       "status": "banned",
@@ -221,11 +429,26 @@
       "status": "banned",
       "category": "preservative",
       "notes": "Not authorized in EU food",
-      "commonNames": ["borax", "sodium borate"]
+      "commonNames": [
+        "borax",
+        "sodium borate"
+      ]
     },
-    "e290": { "name": "Carbon dioxide", "status": "approved", "category": "preservative" },
-    "e296": { "name": "Malic acid", "status": "approved", "category": "acidity-regulator" },
-    "e297": { "name": "Fumaric acid", "status": "approved", "category": "acidity-regulator" },
+    "e290": {
+      "name": "Carbon dioxide",
+      "status": "approved",
+      "category": "preservative"
+    },
+    "e296": {
+      "name": "Malic acid",
+      "status": "approved",
+      "category": "acidity-regulator"
+    },
+    "e297": {
+      "name": "Fumaric acid",
+      "status": "approved",
+      "category": "acidity-regulator"
+    },
     "e300": {
       "name": "Ascorbic acid (Vitamin C)",
       "status": "approved",
@@ -237,58 +460,128 @@
       "category": "antioxidant",
       "notes": "Extended June 2025 (Regulation EU 2025/1150): now authorized as antioxidant in microencapsulated vitamin A preparations for infant formula and follow-on formula."
     },
-    "e302": { "name": "Calcium ascorbate", "status": "approved", "category": "antioxidant" },
+    "e302": {
+      "name": "Calcium ascorbate",
+      "status": "approved",
+      "category": "antioxidant"
+    },
     "e304": {
       "name": "Fatty acid esters of ascorbic acid",
       "status": "approved",
       "category": "antioxidant"
     },
-    "e306": { "name": "Tocopherol-rich extract", "status": "approved", "category": "antioxidant" },
+    "e306": {
+      "name": "Tocopherol-rich extract",
+      "status": "approved",
+      "category": "antioxidant"
+    },
     "e307": {
       "name": "Alpha-tocopherol (Vitamin E)",
       "status": "approved",
       "category": "antioxidant"
     },
-    "e308": { "name": "Gamma-tocopherol", "status": "approved", "category": "antioxidant" },
-    "e309": { "name": "Delta-tocopherol", "status": "approved", "category": "antioxidant" },
+    "e308": {
+      "name": "Gamma-tocopherol",
+      "status": "approved",
+      "category": "antioxidant"
+    },
+    "e309": {
+      "name": "Delta-tocopherol",
+      "status": "approved",
+      "category": "antioxidant"
+    },
     "e310": {
       "name": "Propyl gallate",
       "status": "restricted",
       "category": "antioxidant",
       "notes": "Limited to fats, oils and chewing gum only in EU; broader use in US"
     },
-    "e311": { "name": "Octyl gallate", "status": "restricted", "category": "antioxidant" },
-    "e312": { "name": "Dodecyl gallate", "status": "restricted", "category": "antioxidant" },
-    "e315": { "name": "Erythorbic acid", "status": "approved", "category": "antioxidant" },
-    "e316": { "name": "Sodium erythorbate", "status": "approved", "category": "antioxidant" },
+    "e311": {
+      "name": "Octyl gallate",
+      "status": "restricted",
+      "category": "antioxidant"
+    },
+    "e312": {
+      "name": "Dodecyl gallate",
+      "status": "restricted",
+      "category": "antioxidant"
+    },
+    "e315": {
+      "name": "Erythorbic acid",
+      "status": "approved",
+      "category": "antioxidant"
+    },
+    "e316": {
+      "name": "Sodium erythorbate",
+      "status": "approved",
+      "category": "antioxidant"
+    },
     "e319": {
       "name": "tert-Butylhydroquinone (TBHQ)",
       "status": "banned",
       "category": "antioxidant",
       "notes": "Not authorized in EU food. Commonly used in US processed foods and fast food oils.",
-      "commonNames": ["tbhq", "tert-butylhydroquinone", "tertiary butylhydroquinone"]
+      "commonNames": [
+        "tbhq",
+        "tert-butylhydroquinone",
+        "tertiary butylhydroquinone"
+      ]
     },
     "e320": {
       "name": "Butylated Hydroxyanisole (BHA)",
       "status": "restricted",
       "category": "antioxidant",
       "notes": "Limited to specific food categories and max levels in EU. Under review. Broadly used in US.",
-      "commonNames": ["bha", "butylated hydroxyanisole"]
+      "commonNames": [
+        "bha",
+        "butylated hydroxyanisole"
+      ]
     },
     "e321": {
       "name": "Butylated Hydroxytoluene (BHT)",
       "status": "restricted",
       "category": "antioxidant",
       "notes": "Limited to specific food categories in EU. Broadly used in US cereals and packaging.",
-      "commonNames": ["bht", "butylated hydroxytoluene"]
+      "commonNames": [
+        "bht",
+        "butylated hydroxytoluene"
+      ]
     },
-    "e322": { "name": "Lecithins", "status": "approved", "category": "emulsifier" },
-    "e330": { "name": "Citric acid", "status": "approved", "category": "acidity-regulator" },
-    "e331": { "name": "Sodium citrates", "status": "approved", "category": "acidity-regulator" },
-    "e332": { "name": "Potassium citrates", "status": "approved", "category": "acidity-regulator" },
-    "e333": { "name": "Calcium citrates", "status": "approved", "category": "acidity-regulator" },
-    "e334": { "name": "Tartaric acid", "status": "approved", "category": "acidity-regulator" },
-    "e335": { "name": "Sodium tartrates", "status": "approved", "category": "acidity-regulator" },
+    "e322": {
+      "name": "Lecithins",
+      "status": "approved",
+      "category": "emulsifier"
+    },
+    "e330": {
+      "name": "Citric acid",
+      "status": "approved",
+      "category": "acidity-regulator"
+    },
+    "e331": {
+      "name": "Sodium citrates",
+      "status": "approved",
+      "category": "acidity-regulator"
+    },
+    "e332": {
+      "name": "Potassium citrates",
+      "status": "approved",
+      "category": "acidity-regulator"
+    },
+    "e333": {
+      "name": "Calcium citrates",
+      "status": "approved",
+      "category": "acidity-regulator"
+    },
+    "e334": {
+      "name": "Tartaric acid",
+      "status": "approved",
+      "category": "acidity-regulator"
+    },
+    "e335": {
+      "name": "Sodium tartrates",
+      "status": "approved",
+      "category": "acidity-regulator"
+    },
     "e336": {
       "name": "Potassium tartrates",
       "status": "approved",
@@ -299,14 +592,26 @@
       "status": "approved",
       "category": "acidity-regulator"
     },
-    "e338": { "name": "Phosphoric acid", "status": "approved", "category": "acidity-regulator" },
-    "e339": { "name": "Sodium phosphates", "status": "approved", "category": "acidity-regulator" },
+    "e338": {
+      "name": "Phosphoric acid",
+      "status": "approved",
+      "category": "acidity-regulator"
+    },
+    "e339": {
+      "name": "Sodium phosphates",
+      "status": "approved",
+      "category": "acidity-regulator"
+    },
     "e340": {
       "name": "Potassium phosphates",
       "status": "approved",
       "category": "acidity-regulator"
     },
-    "e341": { "name": "Calcium phosphates", "status": "approved", "category": "raising-agent" },
+    "e341": {
+      "name": "Calcium phosphates",
+      "status": "approved",
+      "category": "raising-agent"
+    },
     "e341i": {
       "name": "Monocalcium phosphate",
       "status": "approved",
@@ -316,16 +621,48 @@
         "calcium dihydrogen phosphate",
         "calcium biphosphate"
       ],
-      "notes": "Used as a leavening acid in baking powder and self-raising flour. Reacts with sodium bicarbonate (E500) to produce CO₂. Also acts as an acidity regulator and mineral supplement. Permitted in the EU under Regulation (EC) No 1333/2008."
+      "notes": "Used as a leavening acid in baking powder and self-raising flour. Reacts with sodium bicarbonate (E500) to produce CO\u2082. Also acts as an acidity regulator and mineral supplement. Permitted in the EU under Regulation (EC) No 1333/2008."
     },
-    "e350": { "name": "Sodium malates", "status": "approved", "category": "acidity-regulator" },
-    "e351": { "name": "Potassium malate", "status": "approved", "category": "acidity-regulator" },
-    "e352": { "name": "Calcium malates", "status": "approved", "category": "acidity-regulator" },
-    "e400": { "name": "Alginic acid", "status": "approved", "category": "thickener" },
-    "e401": { "name": "Sodium alginate", "status": "approved", "category": "thickener" },
-    "e402": { "name": "Potassium alginate", "status": "approved", "category": "thickener" },
-    "e404": { "name": "Calcium alginate", "status": "approved", "category": "thickener" },
-    "e406": { "name": "Agar", "status": "approved", "category": "thickener" },
+    "e350": {
+      "name": "Sodium malates",
+      "status": "approved",
+      "category": "acidity-regulator"
+    },
+    "e351": {
+      "name": "Potassium malate",
+      "status": "approved",
+      "category": "acidity-regulator"
+    },
+    "e352": {
+      "name": "Calcium malates",
+      "status": "approved",
+      "category": "acidity-regulator"
+    },
+    "e400": {
+      "name": "Alginic acid",
+      "status": "approved",
+      "category": "thickener"
+    },
+    "e401": {
+      "name": "Sodium alginate",
+      "status": "approved",
+      "category": "thickener"
+    },
+    "e402": {
+      "name": "Potassium alginate",
+      "status": "approved",
+      "category": "thickener"
+    },
+    "e404": {
+      "name": "Calcium alginate",
+      "status": "approved",
+      "category": "thickener"
+    },
+    "e406": {
+      "name": "Agar",
+      "status": "approved",
+      "category": "thickener"
+    },
     "e407": {
       "name": "Carrageenan",
       "status": "approved",
@@ -342,49 +679,128 @@
       "name": "Guar gum",
       "status": "approved",
       "category": "thickener",
-      "notes": "Generally approved. Feb 2026 (Regulation EU 2026/196): authorization REVOKED in infant formulae (category 13.1.1) and dietary foods for infants for special medical purposes (category 1.5.1) — production/import must cease by August 18, 2026. Still permitted at 10,000 mg/kg in category 13.1.5.2 (dietary foods for infants 4+ months for special medical purposes) until April 27, 2027."
+      "notes": "Generally approved. Feb 2026 (Regulation EU 2026/196): authorization REVOKED in infant formulae (category 13.1.1) and dietary foods for infants for special medical purposes (category 1.5.1) \u2014 production/import must cease by August 18, 2026. Still permitted at 10,000 mg/kg in category 13.1.5.2 (dietary foods for infants 4+ months for special medical purposes) until April 27, 2027."
     },
-    "e414": { "name": "Acacia gum (Gum Arabic)", "status": "approved", "category": "thickener" },
-    "e415": { "name": "Xanthan gum", "status": "approved", "category": "thickener" },
-    "e416": { "name": "Karaya gum", "status": "approved", "category": "thickener" },
-    "e417": { "name": "Tara gum", "status": "approved", "category": "thickener" },
-    "e418": { "name": "Gellan gum", "status": "approved", "category": "thickener" },
-    "e420": { "name": "Sorbitol", "status": "approved", "category": "sweetener" },
-    "e421": { "name": "Mannitol", "status": "approved", "category": "sweetener" },
-    "e422": { "name": "Glycerol", "status": "approved", "category": "humectant" },
-    "e425": { "name": "Konjac", "status": "approved", "category": "thickener" },
-    "e431": { "name": "Polyoxyethylene stearate", "status": "approved", "category": "emulsifier" },
+    "e414": {
+      "name": "Acacia gum (Gum Arabic)",
+      "status": "approved",
+      "category": "thickener"
+    },
+    "e415": {
+      "name": "Xanthan gum",
+      "status": "approved",
+      "category": "thickener"
+    },
+    "e416": {
+      "name": "Karaya gum",
+      "status": "approved",
+      "category": "thickener"
+    },
+    "e417": {
+      "name": "Tara gum",
+      "status": "approved",
+      "category": "thickener"
+    },
+    "e418": {
+      "name": "Gellan gum",
+      "status": "approved",
+      "category": "thickener"
+    },
+    "e420": {
+      "name": "Sorbitol",
+      "status": "approved",
+      "category": "sweetener"
+    },
+    "e421": {
+      "name": "Mannitol",
+      "status": "approved",
+      "category": "sweetener"
+    },
+    "e422": {
+      "name": "Glycerol",
+      "status": "approved",
+      "category": "humectant"
+    },
+    "e425": {
+      "name": "Konjac",
+      "status": "approved",
+      "category": "thickener"
+    },
+    "e431": {
+      "name": "Polyoxyethylene stearate",
+      "status": "approved",
+      "category": "emulsifier"
+    },
     "e432": {
       "name": "Polyoxyethylene sorbitan monolaurate (Polysorbate 20)",
       "status": "approved",
       "category": "emulsifier"
     },
-    "e433": { "name": "Polysorbate 80", "status": "approved", "category": "emulsifier" },
+    "e433": {
+      "name": "Polysorbate 80",
+      "status": "approved",
+      "category": "emulsifier"
+    },
     "e440": {
       "name": "Pectins",
       "status": "approved",
       "category": "thickener",
       "notes": "Generally approved. Feb 2026 (Regulation EU 2026/196): maximum level reduced to 4,000 mg/kg in dietary foods for infants and young children for special medical purposes (categories 13.1.5.1 and 13.1.5.2)."
     },
-    "e450": { "name": "Diphosphates", "status": "approved", "category": "raising-agent" },
-    "e451": { "name": "Triphosphates", "status": "approved", "category": "raising-agent" },
-    "e452": { "name": "Polyphosphates", "status": "approved", "category": "raising-agent" },
+    "e450": {
+      "name": "Diphosphates",
+      "status": "approved",
+      "category": "raising-agent"
+    },
+    "e451": {
+      "name": "Triphosphates",
+      "status": "approved",
+      "category": "raising-agent"
+    },
+    "e452": {
+      "name": "Polyphosphates",
+      "status": "approved",
+      "category": "raising-agent"
+    },
     "e452i": {
       "name": "Sodium polyphosphate",
       "status": "approved",
       "category": "raising-agent",
-      "commonNames": ["sodium polyphosphate", "sodium polyphosphates"]
+      "commonNames": [
+        "sodium polyphosphate",
+        "sodium polyphosphates"
+      ]
     },
-    "e460": { "name": "Cellulose", "status": "approved", "category": "bulking-agent" },
-    "e461": { "name": "Methyl cellulose", "status": "approved", "category": "thickener" },
-    "e462": { "name": "Ethyl cellulose", "status": "approved", "category": "binder" },
-    "e463": { "name": "Hydroxypropyl cellulose", "status": "approved", "category": "thickener" },
+    "e460": {
+      "name": "Cellulose",
+      "status": "approved",
+      "category": "bulking-agent"
+    },
+    "e461": {
+      "name": "Methyl cellulose",
+      "status": "approved",
+      "category": "thickener"
+    },
+    "e462": {
+      "name": "Ethyl cellulose",
+      "status": "approved",
+      "category": "binder"
+    },
+    "e463": {
+      "name": "Hydroxypropyl cellulose",
+      "status": "approved",
+      "category": "thickener"
+    },
     "e464": {
       "name": "Hydroxypropyl methyl cellulose",
       "status": "approved",
       "category": "thickener"
     },
-    "e465": { "name": "Ethyl methyl cellulose", "status": "approved", "category": "thickener" },
+    "e465": {
+      "name": "Ethyl methyl cellulose",
+      "status": "approved",
+      "category": "thickener"
+    },
     "e466": {
       "name": "Carboxy methyl cellulose / Cellulose gum",
       "status": "approved",
@@ -425,7 +841,11 @@
       "status": "approved",
       "category": "emulsifier"
     },
-    "e500": { "name": "Sodium carbonates", "status": "approved", "category": "raising-agent" },
+    "e500": {
+      "name": "Sodium carbonates",
+      "status": "approved",
+      "category": "raising-agent"
+    },
     "e500ii": {
       "name": "Sodium hydrogen carbonate",
       "status": "approved",
@@ -437,66 +857,137 @@
         "bicarbonate of soda",
         "nahcolite"
       ],
-      "notes": "Common baking soda. Releases CO₂ when heated or reacts with acid (e.g. E341i), causing dough to rise. Also used as an acidity regulator and anti-caking agent. Widely regarded as safe; one of the most commonly used food additives worldwide. Permitted in the EU under Regulation (EC) No 1333/2008."
+      "notes": "Common baking soda. Releases CO\u2082 when heated or reacts with acid (e.g. E341i), causing dough to rise. Also used as an acidity regulator and anti-caking agent. Widely regarded as safe; one of the most commonly used food additives worldwide. Permitted in the EU under Regulation (EC) No 1333/2008."
     },
-    "e501": { "name": "Potassium carbonates", "status": "approved", "category": "raising-agent" },
-    "e503": { "name": "Ammonium carbonates", "status": "approved", "category": "raising-agent" },
+    "e501": {
+      "name": "Potassium carbonates",
+      "status": "approved",
+      "category": "raising-agent"
+    },
+    "e503": {
+      "name": "Ammonium carbonates",
+      "status": "approved",
+      "category": "raising-agent"
+    },
     "e504": {
       "name": "Magnesium carbonates",
       "status": "approved",
       "category": "acidity-regulator"
     },
-    "e507": { "name": "Hydrochloric acid", "status": "approved", "category": "acidity-regulator" },
-    "e508": { "name": "Potassium chloride", "status": "approved", "category": "salt-substitute" },
-    "e509": { "name": "Calcium chloride", "status": "approved", "category": "firming-agent" },
-    "e516": { "name": "Calcium sulphate", "status": "approved", "category": "firming-agent" },
-    "e524": { "name": "Sodium hydroxide", "status": "approved", "category": "acidity-regulator" },
+    "e507": {
+      "name": "Hydrochloric acid",
+      "status": "approved",
+      "category": "acidity-regulator"
+    },
+    "e508": {
+      "name": "Potassium chloride",
+      "status": "approved",
+      "category": "salt-substitute"
+    },
+    "e509": {
+      "name": "Calcium chloride",
+      "status": "approved",
+      "category": "firming-agent"
+    },
+    "e516": {
+      "name": "Calcium sulphate",
+      "status": "approved",
+      "category": "firming-agent"
+    },
+    "e524": {
+      "name": "Sodium hydroxide",
+      "status": "approved",
+      "category": "acidity-regulator"
+    },
     "e525": {
       "name": "Potassium hydroxide",
       "status": "approved",
       "category": "acidity-regulator"
     },
-    "e526": { "name": "Calcium hydroxide", "status": "approved", "category": "firming-agent" },
+    "e526": {
+      "name": "Calcium hydroxide",
+      "status": "approved",
+      "category": "firming-agent"
+    },
     "e551": {
       "name": "Silicon dioxide (Silica)",
       "status": "approved",
       "category": "anti-caking-agent"
     },
-    "e552": { "name": "Calcium silicate", "status": "approved", "category": "anti-caking-agent" },
+    "e552": {
+      "name": "Calcium silicate",
+      "status": "approved",
+      "category": "anti-caking-agent"
+    },
     "e553a": {
       "name": "Magnesium silicate",
       "status": "approved",
       "category": "anti-caking-agent"
     },
-    "e553b": { "name": "Talc", "status": "restricted", "category": "anti-caking-agent" },
-    "e570": { "name": "Fatty acids", "status": "approved", "category": "anti-caking-agent" },
+    "e553b": {
+      "name": "Talc",
+      "status": "restricted",
+      "category": "anti-caking-agent"
+    },
+    "e570": {
+      "name": "Fatty acids",
+      "status": "approved",
+      "category": "anti-caking-agent"
+    },
     "e575": {
       "name": "Glucono delta-lactone",
       "status": "approved",
       "category": "acidity-regulator"
     },
-    "e620": { "name": "Glutamic acid", "status": "approved", "category": "flavour-enhancer" },
+    "e620": {
+      "name": "Glutamic acid",
+      "status": "approved",
+      "category": "flavour-enhancer"
+    },
     "e621": {
       "name": "Monosodium glutamate (MSG)",
       "status": "approved",
       "category": "flavour-enhancer",
-      "commonNames": ["msg", "monosodium glutamate"]
+      "commonNames": [
+        "msg",
+        "monosodium glutamate"
+      ]
     },
-    "e627": { "name": "Disodium guanylate", "status": "approved", "category": "flavour-enhancer" },
-    "e631": { "name": "Disodium inosinate", "status": "approved", "category": "flavour-enhancer" },
+    "e627": {
+      "name": "Disodium guanylate",
+      "status": "approved",
+      "category": "flavour-enhancer"
+    },
+    "e631": {
+      "name": "Disodium inosinate",
+      "status": "approved",
+      "category": "flavour-enhancer"
+    },
     "e635": {
       "name": "Disodium ribonucleotides",
       "status": "approved",
       "category": "flavour-enhancer"
     },
-    "e901": { "name": "Beeswax", "status": "approved", "category": "glazing-agent" },
+    "e901": {
+      "name": "Beeswax",
+      "status": "approved",
+      "category": "glazing-agent"
+    },
     "e900": {
       "name": "Dimethylpolysiloxane",
       "status": "approved",
       "category": "anti-foaming-agent",
-      "commonNames": ["dimethylpolysiloxane", "polydimethylsiloxane", "silicone oil"]
+      "commonNames": [
+        "dimethylpolysiloxane",
+        "polydimethylsiloxane",
+        "silicone oil"
+      ]
     },
-    "e903": { "name": "Carnauba wax", "status": "approved", "category": "glazing-agent" },
+    "e903": {
+      "name": "Carnauba wax",
+      "status": "approved",
+      "category": "glazing-agent"
+    },
     "e904": {
       "name": "Shellac",
       "status": "approved",
@@ -508,128 +999,200 @@
       "status": "banned",
       "category": "flour-treatment",
       "notes": "Not authorized in EU food.",
-      "commonNames": ["potassium bromate", "bromate", "e924"]
+      "commonNames": [
+        "potassium bromate",
+        "bromate",
+        "e924"
+      ]
     },
     "e927a": {
       "name": "Azodicarbonamide",
       "status": "banned",
       "category": "flour-treatment",
       "notes": "Not authorized as food additive in EU. Used as dough conditioner in US bread products (including fast food buns). Banned in EU and Australia.",
-      "commonNames": ["azodicarbonamide", "azodiisobutyric acid dinitride", "ado", "ada"]
+      "commonNames": [
+        "azodicarbonamide",
+        "azodiisobutyric acid dinitride",
+        "ado",
+        "ada"
+      ]
     },
     "e928": {
       "name": "Benzoyl peroxide",
       "status": "banned",
       "category": "flour-treatment",
       "notes": "Not authorized in EU flour treatment for food use.",
-      "commonNames": ["benzoyl peroxide", "e928"]
+      "commonNames": [
+        "benzoyl peroxide",
+        "e928"
+      ]
     },
     "e930": {
       "name": "Calcium peroxide",
       "status": "banned",
       "category": "flour-treatment",
       "notes": "Not authorized for flour treatment in EU food.",
-      "commonNames": ["calcium peroxide", "e930"]
+      "commonNames": [
+        "calcium peroxide",
+        "e930"
+      ]
     },
     "e950": {
       "name": "Acesulfame K",
       "status": "approved",
       "category": "sweetener",
-      "commonNames": ["acesulfame k", "acesulfame potassium", "ace-k", "ace k"]
+      "commonNames": [
+        "acesulfame k",
+        "acesulfame potassium",
+        "ace-k",
+        "ace k"
+      ]
     },
     "e951": {
       "name": "Aspartame",
       "status": "approved",
       "category": "sweetener",
       "notes": "Must carry warning for phenylketonurics: 'contains a source of phenylalanine'",
-      "commonNames": ["aspartame", "equal"]
+      "commonNames": [
+        "aspartame",
+        "equal"
+      ]
     },
     "e952": {
       "name": "Cyclamates",
       "status": "approved",
       "category": "sweetener",
       "notes": "Banned in US but approved in EU",
-      "commonNames": ["cyclamate", "cyclamates", "sodium cyclamate", "calcium cyclamate"]
+      "commonNames": [
+        "cyclamate",
+        "cyclamates",
+        "sodium cyclamate",
+        "calcium cyclamate"
+      ]
     },
     "e953": {
       "name": "Isomalt",
       "status": "approved",
       "category": "sweetener",
-      "commonNames": ["isomalt", "palatinit"]
+      "commonNames": [
+        "isomalt",
+        "palatinit"
+      ]
     },
     "e954": {
       "name": "Saccharin",
       "status": "approved",
       "category": "sweetener",
-      "commonNames": ["saccharin", "sodium saccharin", "sweet n low"]
+      "commonNames": [
+        "saccharin",
+        "sodium saccharin",
+        "sweet n low"
+      ]
     },
     "e955": {
       "name": "Sucralose",
       "status": "approved",
       "category": "sweetener",
-      "commonNames": ["sucralose", "splenda"]
+      "commonNames": [
+        "sucralose",
+        "splenda"
+      ]
     },
     "e957": {
       "name": "Thaumatin",
       "status": "approved",
       "category": "sweetener",
-      "commonNames": ["thaumatin", "talin"]
+      "commonNames": [
+        "thaumatin",
+        "talin"
+      ]
     },
     "e959": {
       "name": "Neohesperidine DC",
       "status": "approved",
       "category": "sweetener",
-      "commonNames": ["neohesperidine dc", "neohesperidin dihydrochalcone"]
+      "commonNames": [
+        "neohesperidine dc",
+        "neohesperidin dihydrochalcone"
+      ]
     },
     "e960": {
       "name": "Steviol glycosides (Stevia)",
       "status": "approved",
       "category": "sweetener",
-      "commonNames": ["stevia", "steviol glycosides", "reb a", "rebaudioside a"]
+      "commonNames": [
+        "stevia",
+        "steviol glycosides",
+        "reb a",
+        "rebaudioside a"
+      ]
     },
     "e961": {
       "name": "Neotame",
       "status": "approved",
       "category": "sweetener",
-      "commonNames": ["neotame"]
+      "commonNames": [
+        "neotame"
+      ]
     },
     "e962": {
       "name": "Aspartame-acesulfame salt",
       "status": "approved",
       "category": "sweetener",
-      "commonNames": ["aspartame acesulfame salt"]
+      "commonNames": [
+        "aspartame acesulfame salt"
+      ]
     },
     "e965": {
       "name": "Maltitol",
       "status": "approved",
       "category": "sweetener",
-      "commonNames": ["maltitol", "maltitol syrup"]
+      "commonNames": [
+        "maltitol",
+        "maltitol syrup"
+      ]
     },
-    "e966": { "name": "Lactitol", "status": "approved", "category": "sweetener" },
+    "e966": {
+      "name": "Lactitol",
+      "status": "approved",
+      "category": "sweetener"
+    },
     "e967": {
       "name": "Xylitol",
       "status": "approved",
       "category": "sweetener",
-      "commonNames": ["xylitol", "birch sugar"]
+      "commonNames": [
+        "xylitol",
+        "birch sugar"
+      ]
     },
     "e968": {
       "name": "Erythritol",
       "status": "approved",
       "category": "sweetener",
-      "commonNames": ["erythritol"]
+      "commonNames": [
+        "erythritol"
+      ]
     },
     "e969": {
       "name": "Advantame",
       "status": "approved",
       "category": "sweetener",
-      "commonNames": ["advantame"]
+      "commonNames": [
+        "advantame"
+      ]
     },
     "e999": {
       "name": "Quillaia extract",
       "status": "approved",
       "category": "foaming-agent",
       "notes": "Oct 2025 (Regulation EU 2025/2084): updated authorized uses and compositional specifications. Effective July 1, 2026. Used as a foaming agent in soft drinks.",
-      "commonNames": ["quillaia extract", "quillaja extract", "soapbark extract", "quillaia"]
+      "commonNames": [
+        "quillaia extract",
+        "quillaja extract",
+        "soapbark extract",
+        "quillaia"
+      ]
     },
     "e1450": {
       "name": "Starch sodium octenyl succinate (OSA starch)",
@@ -641,6 +1204,1892 @@
         "starch sodium octenyl succinate",
         "octenyl succinic acid starch"
       ]
+    },
+    "e103": {
+      "name": "Alkannin",
+      "status": "banned",
+      "category": "colour",
+      "notes": "Not present in Annex II Part B (Union list of authorised colours) of Regulation (EC) No 1333/2008 \u2014 not an EU-authorised food colour."
+    },
+    "e105": {
+      "name": "Fast Yellow AB",
+      "status": "banned",
+      "category": "colour",
+      "notes": "Not present in Annex II Part B of Regulation (EC) No 1333/2008 \u2014 not an EU-authorised food colour."
+    },
+    "e106": {
+      "name": "Riboflavin-5-sodium phosphate",
+      "status": "banned",
+      "category": "colour",
+      "notes": "Not present in Annex II Part B of Regulation (EC) No 1333/2008. The EU-authorised riboflavin phosphate form is listed separately as E 101(ii) Riboflavin-5'-phosphate sodium; E106 as a distinct number is not on the EU Union list."
+    },
+    "e107": {
+      "name": "Yellow 2G",
+      "status": "banned",
+      "category": "colour",
+      "notes": "Not present in Annex II Part B of Regulation (EC) No 1333/2008 \u2014 not an EU-authorised food colour (also banned in several other countries)."
+    },
+    "e111": {
+      "name": "Orange GGN",
+      "status": "banned",
+      "category": "colour",
+      "notes": "Not present in Annex II Part B of Regulation (EC) No 1333/2008 \u2014 not an EU-authorised food colour."
+    },
+    "e121": {
+      "name": "Citrus Red 2",
+      "status": "banned",
+      "category": "colour",
+      "notes": "Not present in Annex II Part B of Regulation (EC) No 1333/2008 \u2014 not an EU-authorised food colour."
+    },
+    "e125": {
+      "name": "Scarlet GN",
+      "status": "banned",
+      "category": "colour",
+      "notes": "Not present in Annex II Part B of Regulation (EC) No 1333/2008 \u2014 not an EU-authorised food colour."
+    },
+    "e126": {
+      "name": "Ponceau 6R",
+      "status": "banned",
+      "category": "colour",
+      "notes": "Not present in Annex II Part B of Regulation (EC) No 1333/2008 \u2014 not an EU-authorised food colour."
+    },
+    "e128": {
+      "name": "Red 2G",
+      "status": "banned",
+      "category": "colour",
+      "notes": "Suspended/removed from the EU Union list of authorised colours after an EFSA opinion (5 July 2007) found it is metabolised to aniline, a suspected genotoxic carcinogen. Formally withdrawn by Commission Regulation (EC) No 884/2007.",
+      "bannedSince": "2007-07-26"
+    },
+    "e130": {
+      "name": "Indanthrene Blue RS",
+      "status": "banned",
+      "category": "colour",
+      "notes": "Not present in Annex II Part B of Regulation (EC) No 1333/2008 \u2014 not an EU-authorised food colour."
+    },
+    "e142": {
+      "name": "Green S",
+      "status": "restricted",
+      "category": "colour",
+      "notes": "Authorised in the EU (Annex II Part B) but only for a limited list of food categories with maximum levels (e.g. certain desserts, sauces, tinned/preserved peas ('mushy peas'), confectionery, edible ices) \u2014 not permitted for general/unrestricted use."
+    },
+    "e143": {
+      "name": "Fast Green FCF",
+      "status": "banned",
+      "category": "colour",
+      "notes": "Not present in Annex II Part B of Regulation (EC) No 1333/2008 \u2014 not authorised as a food colour in the EU (it is FDA-approved in the US but was never carried onto the EU Union list)."
+    },
+    "e150": {
+      "name": "Caramel",
+      "status": "approved",
+      "category": "colour",
+      "notes": "Umbrella term covering the four EU-authorised caramel colour subtypes: E150a Plain caramel, E150b Caustic sulphite caramel, E150c Ammonia caramel, E150d Sulphite ammonia caramel \u2014 all listed in Annex II Part B, each with its own permitted food categories/maximum levels (some quantum satis, some capped, especially E150c/d)."
+    },
+    "e152": {
+      "name": "Black 7984",
+      "status": "banned",
+      "category": "colour",
+      "notes": "Not present in Annex II Part B of Regulation (EC) No 1333/2008 \u2014 not an EU-authorised food colour (historical colour dropped during the 1994 EU colour harmonisation)."
+    },
+    "e154": {
+      "name": "Brown FK",
+      "status": "banned",
+      "category": "colour",
+      "notes": "Removed from the EU-wide Union list; its only historical use (colouring smoked/cured herring, i.e. 'kippers') was a domestic UK derogation, not an EU-wide authorisation, and is not part of the current EU Annex II colours list."
+    },
+    "e155": {
+      "name": "Brown HT",
+      "status": "restricted",
+      "category": "colour",
+      "notes": "Authorised in the EU (Annex II Part B) but only for a narrow set of food categories with maximum levels (notably chocolate/cocoa cakes and some other specific categories) \u2014 not for general use. Not one of the six 'Southampton' azo dyes that trigger the mandatory child-attention warning label."
+    },
+    "e160e": {
+      "name": "Beta-apo-8'-carotenal (C30)",
+      "status": "approved",
+      "category": "colour",
+      "notes": "Listed in Annex II Part B of Regulation (EC) No 1333/2008 with permitted food categories and maximum levels."
+    },
+    "e160f": {
+      "name": "Ethyl ester of beta-apo-8'-carotenic acid (C30)",
+      "status": "banned",
+      "category": "colour",
+      "notes": "Not carried onto the Union list of food additives when it was established \u2014 Commission Regulation (EU) No 1129/2011 (11 Nov 2011) excluded it because no business operator supported its re-evaluation/continued manufacture; it is not currently EU-authorised for food use.",
+      "bannedSince": "2011-11-11"
+    },
+    "e161i": {
+      "name": "Citranaxanthin",
+      "status": "banned",
+      "category": "colour",
+      "notes": "Not present in Annex II Part B \u2014 not authorised as an EU food colour (used only as a poultry-feed pigmenter under separate feed-additive rules, not as a food additive)."
+    },
+    "e161j": {
+      "name": "Astaxanthin",
+      "status": "banned",
+      "category": "colour",
+      "notes": "Not present in Annex II Part B \u2014 not authorised as an EU food colour additive. Astaxanthin is separately permitted as a feed additive for farmed salmon/trout/shellfish, and certain astaxanthin sources have separate novel-food/supplement authorisations, but as a direct food colour (E161j) it is not on the Union list."
+    },
+    "e161a": {
+      "name": "Flavoxanthin",
+      "status": "banned",
+      "category": "colour",
+      "notes": "Not present in Annex II Part B \u2014 dropped from the EU colours list during the 1994 harmonisation (Directive 94/36/EC) and not carried into the current Union list."
+    },
+    "e161c": {
+      "name": "Cryptoxanthin",
+      "status": "banned",
+      "category": "colour",
+      "notes": "Not present in Annex II Part B \u2014 dropped from the EU colours list during the 1994 harmonisation and not carried into the current Union list."
+    },
+    "e161d": {
+      "name": "Rubixanthin",
+      "status": "banned",
+      "category": "colour",
+      "notes": "Not present in Annex II Part B \u2014 dropped from the EU colours list during the 1994 harmonisation and not carried into the current Union list."
+    },
+    "e161e": {
+      "name": "Violaxanthin",
+      "status": "banned",
+      "category": "colour",
+      "notes": "Not present in Annex II Part B \u2014 dropped from the EU colours list during the 1994 harmonisation and not carried into the current Union list."
+    },
+    "e161f": {
+      "name": "Rhodoxanthin",
+      "status": "banned",
+      "category": "colour",
+      "notes": "Not present in Annex II Part B \u2014 dropped from the EU colours list during the 1994 harmonisation and not carried into the current Union list."
+    },
+    "e161g": {
+      "name": "Canthaxanthin",
+      "status": "restricted",
+      "category": "colour",
+      "notes": "Authorised in the EU (Annex II Part B) but only for one narrow traditional use (specific sausage products, e.g. 'Saucisse de Strasbourg') with a strict maximum level, following EFSA safety concerns (2010/2013) about crystalline deposits forming in the human retina at higher intakes. Not permitted for general food use."
+    },
+    "e161h": {
+      "name": "Zeaxanthin",
+      "status": "banned",
+      "category": "colour",
+      "notes": "Not present in Annex II Part B \u2014 not authorised as an EU food colour additive."
+    },
+    "e163a": {
+      "name": "Cyanidin",
+      "status": "restricted",
+      "category": "colour",
+      "notes": "Not separately listed; this specific anthocyanin pigment is covered by the single authorised entry 'E163 Anthocyanins' in Annex II Part B, which is permitted only in specific food categories (quantum satis in some, maximum levels in others) rather than for general use."
+    },
+    "e163b": {
+      "name": "Delphinidin",
+      "status": "restricted",
+      "category": "colour",
+      "notes": "Not separately listed; covered by the single authorised entry 'E163 Anthocyanins' in Annex II Part B, permitted only in specific food categories rather than for general use."
+    },
+    "e163c": {
+      "name": "Malvidin",
+      "status": "restricted",
+      "category": "colour",
+      "notes": "Not separately listed; covered by the single authorised entry 'E163 Anthocyanins' in Annex II Part B, permitted only in specific food categories rather than for general use."
+    },
+    "e163d": {
+      "name": "Pelargonidin",
+      "status": "restricted",
+      "category": "colour",
+      "notes": "Not separately listed; covered by the single authorised entry 'E163 Anthocyanins' in Annex II Part B, permitted only in specific food categories rather than for general use."
+    },
+    "e163e": {
+      "name": "Peonidin",
+      "status": "restricted",
+      "category": "colour",
+      "notes": "Not separately listed; covered by the single authorised entry 'E163 Anthocyanins' in Annex II Part B, permitted only in specific food categories rather than for general use."
+    },
+    "e163f": {
+      "name": "Petunidin",
+      "status": "restricted",
+      "category": "colour",
+      "notes": "Not separately listed; covered by the single authorised entry 'E163 Anthocyanins' in Annex II Part B, permitted only in specific food categories rather than for general use."
+    },
+    "e164": {
+      "name": "Saffron",
+      "status": "banned",
+      "category": "colour",
+      "notes": "Not present in Annex II Part B as an authorised colour additive. (Saffron used as the traditional spice/foodstuff itself does not require additive authorisation, but as an isolated colouring-extract additive it is not on the EU Union list.)"
+    },
+    "e165": {
+      "name": "Gardenia Blue",
+      "status": "banned",
+      "category": "colour",
+      "notes": "Not present in Annex II Part B \u2014 not an EU-authorised food colour."
+    },
+    "e166": {
+      "name": "Sandalwood",
+      "status": "banned",
+      "category": "colour",
+      "notes": "Not present in Annex II Part B \u2014 historical colour dropped during the 1994 EU colour harmonisation and not carried into the current Union list."
+    },
+    "e180": {
+      "name": "Litholrubine BK",
+      "status": "restricted",
+      "category": "colour",
+      "notes": "Authorised in the EU (Annex II Part B) but exclusively for surface colouring of hard and semi-hard cheese rind, not intended for consumption \u2014 one of the narrowest-use colours on the list, not permitted in any other food."
+    },
+    "e181": {
+      "name": "Tannin",
+      "status": "banned",
+      "category": "colour",
+      "notes": "Not present in Annex II Part B (colours) of Regulation (EC) No 1333/2008 as a food colour additive. Tannins/tannic acid do have separate, narrow EU authorisations as processing aids (e.g. fining/clarifying agents in wine and beer under Regulation (EC) No 606/2009), but that is a different legal basis from being an authorised food colour additive under 1333/2008."
+    },
+    "e182": {
+      "name": "Orcein",
+      "status": "banned",
+      "category": "colour",
+      "notes": "Not present in Annex II Part B of Regulation (EC) No 1333/2008 \u2014 not an EU-authorised food colour. Secondary sources indicate it has not been permitted for food colouring use since the 1970s, but an exact EU legal-instrument date could not be confirmed."
+    },
+    "e201": {
+      "name": "Sodium sorbate",
+      "status": "banned",
+      "category": "preservative",
+      "notes": "Not on the EU Union list of authorised additives; the sorbate group's twin salt calcium sorbate (E203) was formally deleted from Annex II/III by Commission Regulation (EU) 2018/98 due to insufficient genotoxicity data, and sodium sorbate has not been separately authorised."
+    },
+    "e203": {
+      "name": "Calcium sorbate",
+      "status": "banned",
+      "category": "preservative",
+      "notes": "Deleted from the EU Union list of authorised food additives (Annexes II and III to Regulation (EC) No 1333/2008) by Commission Regulation (EU) 2018/98 of 22 January 2018, because in the absence of adequate genotoxicity data its continued inclusion could not be justified.",
+      "bannedSince": "2018-01-22"
+    },
+    "e209": {
+      "name": "Heptylparaben",
+      "status": "banned",
+      "category": "preservative",
+      "notes": "Never part of the EU Annex II list; only methyl and ethyl parabens and their sodium salts (E214-E219) are EU-authorised preservatives. Heptylparaben is banned as a food additive in the EU (also banned in Switzerland and Canada; permitted only in the USA)."
+    },
+    "e233": {
+      "name": "Thiabendazole",
+      "status": "banned",
+      "category": "preservative",
+      "notes": "Not authorised as a food additive under Regulation (EC) No 1333/2008; thiabendazole is used only as a post-harvest fungicide/pesticide, regulated separately under EU pesticide maximum-residue-level rules (Regulation (EC) No 396/2005), not as an Annex II additive."
+    },
+    "e236": {
+      "name": "Formic acid",
+      "status": "banned",
+      "category": "preservative",
+      "notes": "Reported removed from the EU list of authorised food additives (formerly used in fish, fruit and vegetable products); not present in the current Annex II."
+    },
+    "e237": {
+      "name": "Sodium formiate",
+      "status": "restricted",
+      "category": "preservative",
+      "notes": "Authorised in the EU only in a very limited number of specifically approved food categories under Annex II conditions of use; not a general-purpose preservative and rarely appears on labels."
+    },
+    "e238": {
+      "name": "Calcium formiate",
+      "status": "banned",
+      "category": "preservative",
+      "notes": "Not authorised as a food additive for human food in the EU; calcium formate is used in the EU only as an animal feed preservative, which is a separate regulatory regime from Annex II food additives."
+    },
+    "e240": {
+      "name": "Formaldehyde",
+      "status": "banned",
+      "category": "preservative",
+      "notes": "Removed from the EU list of authorised food additives; not present in current Annex II to Regulation (EC) No 1333/2008."
+    },
+    "e242": {
+      "name": "Dimethyl dicarbonate",
+      "status": "restricted",
+      "category": "preservative",
+      "notes": "Authorised in the EU only as a preservative in certain beverages (still/non-alcoholic drinks, wine, cider, beer-mix drinks, etc.) at a maximum level of 250 mg/L; it fully decomposes during processing so is not detectable in the final product."
+    },
+    "e243": {
+      "name": "Ethyl lauroyl arginate",
+      "status": "restricted",
+      "category": "preservative",
+      "notes": "Authorised in the EU only for heat-treated meat products, at a maximum level of 160 mg/kg (as ethyl lauroyl arginate), following Commission Regulation (EU) No 506/2014 and subsequent EFSA re-evaluations."
+    },
+    "e246": {
+      "name": "Glycolipids",
+      "status": "restricted",
+      "category": "preservative",
+      "notes": "Newly authorised EU-wide by Commission Regulation (EU) 2022/1037 of 29 June 2022, inserted into Annex II Part B; permitted only as a preservative in beverage categories 14.1.4, 14.1.5.5 and 14.2.1."
+    },
+    "e265": {
+      "name": "Dehydroacetic acid",
+      "status": "banned",
+      "category": "preservative",
+      "notes": "Not confirmed present in the current EU Annex II list (also absent from the UK's retained-EU-law approved additives list). Dehydroacetic acid/sodium dehydroacetate appear to be authorised only as cosmetic preservatives under a separate EU annex, not as food additives."
+    },
+    "e266": {
+      "name": "Sodium dehydroacetate",
+      "status": "banned",
+      "category": "preservative",
+      "notes": "Not approved as a food additive in the EU; absent from Annex II and from the UK's retained-EU-law approved additives list. Authorised only as a cosmetic preservative under separate EU cosmetics legislation."
+    },
+    "e267": {
+      "name": "Buffered vinegar",
+      "status": "restricted",
+      "category": "preservative",
+      "notes": "Newly authorised EU-wide by Commission Regulation (EU) 2023/2086 (applicable from 19 October 2023); permitted only as a preservative/acidity regulator in specific food categories including mozzarella and whey cheese, canned/bottled fruit and vegetables, fresh (pre-cooked) pasta, certain breads and meat preparations."
+    },
+    "e303": {
+      "name": "Potassium ascorbate",
+      "status": "banned",
+      "category": "antioxidant",
+      "notes": "Not confirmed present in current Annex II; absent from the UK's retained-EU-law approved additives list. Only ascorbic acid (E300), sodium ascorbate (E301), calcium ascorbate (E302) and ascorbyl esters (E304) are EU-authorised in this group; potassium ascorbate is authorised in Australia/New Zealand but not in the EU/UK."
+    },
+    "e307a": {
+      "name": "D-Alpha-tocopherol",
+      "status": "approved",
+      "category": "antioxidant",
+      "notes": "Corresponds to EU-authorised alpha-tocopherol (E307), permitted generally (quantum satis) as an antioxidant."
+    },
+    "e307b": {
+      "name": "concentrated tocopherol",
+      "status": "approved",
+      "category": "antioxidant",
+      "notes": "Corresponds to the EU-authorised tocopherol-rich extract / mixed tocopherols concentrate (E306), permitted generally as an antioxidant."
+    },
+    "e307c": {
+      "name": "DL-Alpha-tocopherol",
+      "status": "approved",
+      "category": "antioxidant",
+      "notes": "Synthetic alpha-tocopherol, corresponding to EU-authorised E307, permitted generally as an antioxidant."
+    },
+    "e313": {
+      "name": "Ethyl gallate",
+      "status": "banned",
+      "category": "antioxidant",
+      "notes": "Not confirmed present in current Annex II or in the UK's retained-EU-law approved additives list; only propyl gallate (E310) is the EU-authorised gallate ester antioxidant."
+    },
+    "e317": {
+      "name": "Erythorbin acid",
+      "status": "banned",
+      "category": "antioxidant",
+      "notes": "Not confirmed present in current Annex II or the UK's retained-EU-law approved additives list; only erythorbic acid (E315) and sodium erythorbate (E316) are EU-authorised in this group."
+    },
+    "e318": {
+      "name": "Calcium erythorbin",
+      "status": "banned",
+      "category": "antioxidant",
+      "notes": "Not confirmed present in current Annex II or the UK's retained-EU-law approved additives list; only erythorbic acid (E315) and sodium erythorbate (E316) are EU-authorised in this group."
+    },
+    "e322a": {
+      "name": "Oat lecithin",
+      "status": "restricted",
+      "category": "antioxidant",
+      "notes": "EU-authorised since Commission Regulation (EU) 2022/1023 of 28 June 2022, restricted to use as an emulsifier in cocoa and chocolate products (as covered by Directive 2000/36/EC) at a maximum level of 20,000 mg/kg."
+    },
+    "e323": {
+      "name": "Anoxomer",
+      "status": "banned",
+      "category": "antioxidant",
+      "notes": "Not confirmed present in current Annex II or the UK's retained-EU-law approved additives list. This niche non-digestible polymeric antioxidant does not appear to have genuine EU authorisation, despite low-quality web sources claiming otherwise; it was excluded from most jurisdictions' additive lists globally around 2010."
+    },
+    "e324": {
+      "name": "Ethoxyquin",
+      "status": "banned",
+      "category": "antioxidant",
+      "notes": "Never authorised as a food additive for human consumption in the EU. Also explicitly denied authorisation as an animal-feed antioxidant by Commission Implementing Regulation (EU) 2017/962 (7 June 2017) after EFSA raised safety and data-gap concerns, including a possible mutagenic impurity (p-phenetidine)."
+    },
+    "e325": {
+      "name": "sodium lactate",
+      "status": "approved",
+      "category": "acidity-regulator",
+      "notes": "General-purpose EU-authorised additive, permitted quantum satis in most food categories."
+    },
+    "e326": {
+      "name": "potassium lactate",
+      "status": "approved",
+      "category": "acidity-regulator",
+      "notes": "General-purpose EU-authorised additive, permitted quantum satis in most food categories."
+    },
+    "e327": {
+      "name": "calcium lactate",
+      "status": "approved",
+      "category": "acidity-regulator",
+      "notes": "General-purpose EU-authorised additive, permitted quantum satis in most food categories."
+    },
+    "e328": {
+      "name": "ammonium lactate",
+      "status": "banned",
+      "category": "acidity-regulator",
+      "notes": "Not confirmed present in current Annex II or the UK's retained-EU-law approved additives list; only sodium, potassium and calcium lactate (E325-E327) are EU-authorised in this group."
+    },
+    "e329": {
+      "name": "Magnesium lactate",
+      "status": "banned",
+      "category": "acidity-regulator",
+      "notes": "Not confirmed present in current Annex II or the UK's retained-EU-law approved additives list; only sodium, potassium and calcium lactate (E325-E327) are EU-authorised in this group."
+    },
+    "e342": {
+      "name": "Ammonium phosphate",
+      "status": "banned",
+      "category": "stabiliser",
+      "notes": "Not confirmed as an authorised general Annex II food additive (absent from the UK's retained-EU-law approved additives list). Ammonium phosphates are used in EU winemaking as a yeast nutrient under separate oenological-practice rules, which is a different regime from Annex II food additive authorisation."
+    },
+    "e343": {
+      "name": "Magnesium phosphates",
+      "status": "approved",
+      "category": "stabiliser",
+      "notes": "EU-authorised (quantum satis in permitted categories) covering monomagnesium and dimagnesium phosphate."
+    },
+    "e344": {
+      "name": "Lecithin citrate",
+      "status": "banned",
+      "category": "sequestrant",
+      "notes": "Not confirmed present in current Annex II or the UK's retained-EU-law approved additives list."
+    },
+    "e345": {
+      "name": "Magnesium citrate",
+      "status": "banned",
+      "category": "sequestrant",
+      "notes": "Not confirmed as an authorised Annex II food additive (absent from the UK's retained-EU-law approved additives list). Magnesium citrate is used in the EU as a mineral source in food supplements under separate legislation (Directive 2002/46/EC), not as a general Annex II additive."
+    },
+    "e349": {
+      "name": "ammonium malate",
+      "status": "banned",
+      "category": "acidity-regulator",
+      "notes": "Not confirmed present in current Annex II or the UK's retained-EU-law approved additives list."
+    },
+    "e353": {
+      "name": "Metatartaric acid",
+      "status": "restricted",
+      "category": "acidity-regulator",
+      "notes": "EU-authorised only for use in wine, per Annex II conditions specific to wine products."
+    },
+    "e354": {
+      "name": "Calcium tartrate",
+      "status": "restricted",
+      "category": "acidity-regulator",
+      "notes": "EU-authorised, restricted to use in wine."
+    },
+    "e355": {
+      "name": "Adipic acid",
+      "status": "approved",
+      "category": "acidity-regulator",
+      "notes": "General-purpose EU-authorised acidity regulator."
+    },
+    "e356": {
+      "name": "Sodium adipate",
+      "status": "approved",
+      "category": "acidity-regulator",
+      "notes": "General-purpose EU-authorised acidity regulator."
+    },
+    "e357": {
+      "name": "Potassium adipate",
+      "status": "approved",
+      "category": "acidity-regulator",
+      "notes": "General-purpose EU-authorised acidity regulator."
+    },
+    "e359": {
+      "name": "ammonium adipate",
+      "status": "banned",
+      "category": "acidity-regulator",
+      "notes": "Not confirmed present in current Annex II or the UK's retained-EU-law approved additives list; only adipic acid and its sodium/potassium salts (E355-E357) are EU-authorised in this group."
+    },
+    "e365": {
+      "name": "Sodium fumarate",
+      "status": "banned",
+      "category": "acidity-regulator",
+      "notes": "Not confirmed present in current Annex II or the UK's retained-EU-law approved additives list (fumaric acid itself, E297, is authorised, but the sodium/potassium/calcium/ammonium fumarate salts E365-E368 are not confirmed)."
+    },
+    "e366": {
+      "name": "Potassium fumarate",
+      "status": "banned",
+      "category": "acidity-regulator",
+      "notes": "Not confirmed present in current Annex II or the UK's retained-EU-law approved additives list."
+    },
+    "e367": {
+      "name": "Calcium fumarate",
+      "status": "banned",
+      "category": "acidity-regulator",
+      "notes": "Not confirmed present in current Annex II or the UK's retained-EU-law approved additives list."
+    },
+    "e368": {
+      "name": "ammonium fumarate",
+      "status": "banned",
+      "category": "acidity-regulator",
+      "notes": "Not confirmed present in current Annex II or the UK's retained-EU-law approved additives list."
+    },
+    "e370": {
+      "name": "1,4-Heptonolactone",
+      "status": "banned",
+      "category": "acidity-regulator",
+      "notes": "Not confirmed present in current Annex II or the UK's retained-EU-law approved additives list."
+    },
+    "e375": {
+      "name": "Nicotinic acid",
+      "status": "banned",
+      "category": "acidity-regulator",
+      "notes": "Not confirmed as an authorised Annex II food additive (absent from the UK's retained-EU-law approved additives list). Nicotinic acid/niacin is used in the EU as a vitamin ingredient in food supplements and fortified foods under separate legislation, not as a general Annex II food additive."
+    },
+    "e380": {
+      "name": "Triammonium citrate",
+      "status": "approved",
+      "category": "sequestrant",
+      "notes": "EU-authorised (quantum satis in permitted categories) per Annex II."
+    },
+    "e381": {
+      "name": "ferric ammonium citrate",
+      "status": "banned",
+      "category": "sequestrant",
+      "notes": "Not confirmed present in current Annex II or the UK's retained-EU-law approved additives list."
+    },
+    "e383": {
+      "name": "calcium glycerophosphate",
+      "status": "banned",
+      "category": "acidity-regulator",
+      "notes": "Not confirmed present in current Annex II or the UK's retained-EU-law approved additives list."
+    },
+    "e385": {
+      "name": "Calcium disodium ethylenediaminetetraacetate",
+      "status": "restricted",
+      "category": "sequestrant",
+      "notes": "EU-authorised only in a narrow set of specific food categories (e.g. canned pulses/legumes, canned crustaceans, dressings and sauces, certain canned/bottled foods) at low maximum levels; not approved for general use."
+    },
+    "e388": {
+      "name": "Thiodipropionic acid",
+      "status": "banned",
+      "category": "antioxidant",
+      "notes": "Not authorised as an EU food additive; absent from current Annex II and from the UK's retained-EU-law approved additives list."
+    },
+    "e391": {
+      "name": "Phytic acid",
+      "status": "banned",
+      "category": "sequestrant",
+      "notes": "Not authorised as an EU food additive; absent from current Annex II and from the UK's retained-EU-law approved additives list."
+    },
+    "e392": {
+      "name": "Extracts of rosemary",
+      "status": "restricted",
+      "category": "antioxidant",
+      "notes": "EU-authorised antioxidant restricted to specific food categories, with maximum levels expressed as carnosic acid + carnosol (commonly in the range of roughly 12-400 mg/kg depending on food category) per Annex II as amended by Commission Regulation (EU) No 1129/2011 and subsequent acts."
+    },
+    "e403": {
+      "name": "Ammonium alginate",
+      "status": "approved",
+      "category": "stabiliser",
+      "notes": "Authorised general-purpose alginate stabiliser/thickener/emulsifier."
+    },
+    "e405": {
+      "name": "Propane-1,2-diol alginate",
+      "status": "approved",
+      "category": "stabiliser",
+      "notes": "Authorised alginate ester stabiliser/emulsifier/thickener."
+    },
+    "e407a": {
+      "name": "Processed eucheuma seaweed",
+      "status": "approved",
+      "category": "stabiliser",
+      "notes": "Authorised carrageenan-related seaweed stabiliser/thickener."
+    },
+    "e408": {
+      "name": "Baker's yeast glycan",
+      "status": "banned",
+      "category": "stabiliser",
+      "notes": "Not part of the EU Union list (Annex II to Reg. 1333/2008). This is a US/FDA-authorised additive (21 CFR 172.898) that was never adopted into EU food additive law; not found in the UK retained-EU additives register either."
+    },
+    "e409": {
+      "name": "Arabinogalactan",
+      "status": "banned",
+      "category": "stabiliser",
+      "notes": "Not authorised as a food additive in the EU (US-authorised additive only, never added to EU Annex II)."
+    },
+    "e413": {
+      "name": "Tragacanth",
+      "status": "approved",
+      "category": "stabiliser",
+      "notes": "Authorised general-purpose gum stabiliser/thickener/emulsifier."
+    },
+    "e419": {
+      "name": "Gum ghatti",
+      "status": "banned",
+      "category": "stabiliser",
+      "notes": "Not authorised as a food additive in the EU (Codex/JECFA additive not adopted into EU Annex II)."
+    },
+    "e424": {
+      "name": "Curdlan",
+      "status": "approved",
+      "category": "stabiliser",
+      "notes": "Authorised in the EU since 2007 as a thickener/stabiliser; EFSA re-evaluated it in 2024 with no safety concerns identified at proposed uses."
+    },
+    "e426": {
+      "name": "Soybean hemicellulose",
+      "status": "approved",
+      "category": "stabiliser",
+      "notes": "Authorised EU food additive."
+    },
+    "e427": {
+      "name": "Cassia gum",
+      "status": "approved",
+      "category": "stabiliser",
+      "notes": "Authorised in the EU since 2010 as a stabiliser/thickener."
+    },
+    "e430": {
+      "name": "Polyoxyethylene (8) stearate",
+      "status": "banned",
+      "category": "emulsifier",
+      "notes": "Not authorised as a food additive in the EU (US/JECFA additive not adopted into EU Annex II)."
+    },
+    "e434": {
+      "name": "Polyoxyethylene sorbitan monopalmitate (Polysorbate 40)",
+      "status": "approved",
+      "category": "emulsifier",
+      "notes": "Authorised EU emulsifier, part of the polysorbates group E432-E436."
+    },
+    "e435": {
+      "name": "Polyoxyethylene sorbitan monostearate (Polysorbate 60)",
+      "status": "approved",
+      "category": "emulsifier",
+      "notes": "Authorised EU emulsifier/stabiliser, part of the polysorbates group E432-E436."
+    },
+    "e436": {
+      "name": "Polyoxyethylene sorbitan tristearate (Polysorbate 65)",
+      "status": "approved",
+      "category": "emulsifier",
+      "notes": "Authorised EU emulsifier/stabiliser, part of the polysorbates group E432-E436."
+    },
+    "e440a": {
+      "name": "Pectin (incl. sodium/potassium/ammonium pectate)",
+      "status": "approved",
+      "category": "stabiliser",
+      "notes": "Covers pectin E440(i), sodium pectate E440(ii), potassium pectate E440(iii) and ammonium pectate E440(iv) per Commission Regulation (EU) No 231/2012 specifications \u2014 all authorised as one 'pectins' entry (E440) in EU Annex II."
+    },
+    "e440b": {
+      "name": "Amidated pectin (pectin amide)",
+      "status": "approved",
+      "category": "stabiliser",
+      "notes": "Authorised as E440(ii)/E440b amidated pectin under the EU pectins entry."
+    },
+    "e441": {
+      "name": "Superglycerinated hydrogenated rapeseed oil",
+      "status": "banned",
+      "category": "emulsifier",
+      "notes": "Not authorised as a food additive in the EU (not adopted into EU Annex II)."
+    },
+    "e442": {
+      "name": "Ammonium phosphatides",
+      "status": "approved",
+      "category": "emulsifier",
+      "notes": "Authorised EU emulsifier, commonly used in chocolate/cocoa products."
+    },
+    "e443": {
+      "name": "Brominated vegetable oil",
+      "status": "banned",
+      "category": "emulsifier",
+      "notes": "Never authorised as a food additive in the EU; not part of the Union list under Regulation (EC) No 1333/2008."
+    },
+    "e444": {
+      "name": "Sucrose acetate isobutyrate",
+      "status": "restricted",
+      "category": "emulsifier",
+      "notes": "Authorised only for specific food categories (notably flavoured/non-alcoholic and alcoholic beverages) per Annex II conditions of use, not for general use."
+    },
+    "e445": {
+      "name": "Glycerol esters of wood rosin",
+      "status": "restricted",
+      "category": "emulsifier",
+      "notes": "Authorised, but restricted to specific categories (chiefly flavoured drinks) under Annex II conditions of use."
+    },
+    "e446": {
+      "name": "Succistearin",
+      "status": "banned",
+      "category": "emulsifier",
+      "notes": "Not authorised as a food additive in the EU (US additive, not adopted into EU Annex II)."
+    },
+    "e457": {
+      "name": "Alpha-cyclodextrin",
+      "status": "banned",
+      "category": "stabiliser",
+      "notes": "Not authorised as an EU food additive (only beta-cyclodextrin, E459, is authorised in the EU)."
+    },
+    "e458": {
+      "name": "Gamma-cyclodextrin",
+      "status": "banned",
+      "category": "stabiliser",
+      "notes": "Not authorised as an EU food additive (only beta-cyclodextrin, E459, is authorised in the EU)."
+    },
+    "e459": {
+      "name": "Beta-cyclodextrin",
+      "status": "approved",
+      "category": "stabiliser",
+      "notes": "Authorised EU stabiliser/carrier/thickener."
+    },
+    "e467": {
+      "name": "Ethulose (ethyl hydroxyethyl cellulose)",
+      "status": "banned",
+      "category": "stabiliser",
+      "notes": "Not authorised as a food additive in the EU (not adopted into EU Annex II)."
+    },
+    "e468": {
+      "name": "Cross-linked sodium carboxymethylcellulose (croscarmellose)",
+      "status": "approved",
+      "category": "stabiliser",
+      "notes": "Authorised EU cellulose-derivative stabiliser/thickener."
+    },
+    "e469": {
+      "name": "Enzymatically hydrolysed carboxymethylcellulose",
+      "status": "approved",
+      "category": "stabiliser",
+      "notes": "Authorised EU cellulose-derivative stabiliser/thickener."
+    },
+    "e470": {
+      "name": "Sodium/potassium/calcium and magnesium salts of fatty acids",
+      "status": "approved",
+      "category": "emulsifier",
+      "notes": "Generic grouping; the EU Union list authorises these specifically as E470a (sodium/potassium/calcium salts) and E470b (magnesium salts) \u2014 both approved."
+    },
+    "e470a": {
+      "name": "Sodium/potassium/calcium salts of fatty acids",
+      "status": "approved",
+      "category": "emulsifier",
+      "notes": "Authorised EU emulsifier/stabiliser (covers sub-variants sodium, potassium, and calcium salts)."
+    },
+    "e470b": {
+      "name": "Magnesium salts of fatty acids",
+      "status": "approved",
+      "category": "emulsifier",
+      "notes": "Authorised EU emulsifier/stabiliser."
+    },
+    "e472d": {
+      "name": "Tartaric acid esters of mono- and diglycerides of fatty acids",
+      "status": "approved",
+      "category": "emulsifier",
+      "notes": "Authorised EU emulsifier."
+    },
+    "e472f": {
+      "name": "Mixed acetic and tartaric acid esters of mono- and diglycerides of fatty acids",
+      "status": "approved",
+      "category": "emulsifier",
+      "notes": "Authorised EU emulsifier."
+    },
+    "e472g": {
+      "name": "Succinylated monoglycerides",
+      "status": "banned",
+      "category": "emulsifier",
+      "notes": "Has an assigned E-number but is not currently approved/authorised for use as a food additive in the EU."
+    },
+    "e473": {
+      "name": "Sucrose esters of fatty acids",
+      "status": "approved",
+      "category": "emulsifier",
+      "notes": "Authorised EU emulsifier/stabiliser."
+    },
+    "e474": {
+      "name": "Sucroglycerides",
+      "status": "approved",
+      "category": "emulsifier",
+      "notes": "Authorised EU emulsifier."
+    },
+    "e475": {
+      "name": "Polyglycerol esters of fatty acids",
+      "status": "approved",
+      "category": "emulsifier",
+      "notes": "Authorised EU emulsifier/stabiliser."
+    },
+    "e477": {
+      "name": "Propane-1,2-diol esters of fatty acids",
+      "status": "approved",
+      "category": "emulsifier",
+      "notes": "Authorised EU emulsifier."
+    },
+    "e478": {
+      "name": "Lactylated fatty acid esters of glycerol and propane-1,2-diol",
+      "status": "banned",
+      "category": "emulsifier",
+      "notes": "Not authorised as a food additive in the EU (US/Codex additive, not adopted into EU Annex II)."
+    },
+    "e479b": {
+      "name": "Thermally oxidised soya bean oil interacted with mono- and diglycerides of fatty acids",
+      "status": "restricted",
+      "category": "emulsifier",
+      "notes": "Authorised but restricted to specific use (professional production of frying oils/fats) under Annex II conditions."
+    },
+    "e482": {
+      "name": "Calcium stearoyl-2-lactylate",
+      "status": "approved",
+      "category": "emulsifier",
+      "notes": "Authorised EU emulsifier/stabiliser."
+    },
+    "e483": {
+      "name": "Stearyl tartrate",
+      "status": "banned",
+      "category": "emulsifier",
+      "notes": "Removed from the EU Union list of authorised food additives by Commission Implementing Regulation (EU) 2023/2379 (29 Sept 2023), effective 23 April 2024, because EFSA could not confirm its safety (insufficient toxicological/genotoxicity data). Foods placed on the market before that date could continue to be sold until their minimum durability/use-by date. Note: the UK's retained-EU register still lists it as authorised (GB has not mirrored this EU removal), so this is an EU/GB divergence \u2014 this classification reflects EU law only.",
+      "bannedSince": "2024-04-23"
+    },
+    "e484": {
+      "name": "Stearyl citrate",
+      "status": "banned",
+      "category": "emulsifier",
+      "notes": "Not authorised as a food additive in the EU (not adopted into EU Annex II; not found in the UK retained-EU register either)."
+    },
+    "e485": {
+      "name": "Sodium stearoyl fumarate",
+      "status": "banned",
+      "category": "emulsifier",
+      "notes": "Not authorised as a food additive in the EU (US additive, not adopted into EU Annex II)."
+    },
+    "e486": {
+      "name": "Calcium stearoyl fumarate",
+      "status": "banned",
+      "category": "emulsifier",
+      "notes": "Not authorised as a food additive in the EU (US additive, not adopted into EU Annex II)."
+    },
+    "e487": {
+      "name": "Sodium dodecyl sulfate (sodium lauryl sulfate)",
+      "status": "banned",
+      "category": "emulsifier",
+      "notes": "Not authorised as a food additive in the EU (not adopted into EU Annex II); used in cosmetics but not permitted as a food additive."
+    },
+    "e488": {
+      "name": "Ethoxylated mono- and di-glycerides",
+      "status": "banned",
+      "category": "emulsifier",
+      "notes": "Not authorised as a food additive in the EU (US additive, not adopted into EU Annex II)."
+    },
+    "e489": {
+      "name": "Methyl glucoside-coconut oil ester",
+      "status": "banned",
+      "category": "emulsifier",
+      "notes": "Not authorised as a food additive in the EU (US additive, not adopted into EU Annex II)."
+    },
+    "e490": {
+      "name": "Propylene glycol",
+      "status": "banned",
+      "category": "emulsifier",
+      "notes": "'E490' specifically is not a valid EU additive number/entry. Propylene glycol itself IS authorised in the EU, but under the different number E1520 (and only for specific uses, e.g. as a carrier/solvent for flavourings and specific food categories). Do not confuse: this entry (E490) as such is not on the EU Union list."
+    },
+    "e491": {
+      "name": "Sorbitan monostearate",
+      "status": "approved",
+      "category": "emulsifier",
+      "notes": "Authorised EU emulsifier."
+    },
+    "e492": {
+      "name": "Sorbitan tristearate",
+      "status": "approved",
+      "category": "emulsifier",
+      "notes": "Authorised EU emulsifier/stabiliser."
+    },
+    "e493": {
+      "name": "Sorbitan monolaurate",
+      "status": "approved",
+      "category": "emulsifier",
+      "notes": "Authorised EU emulsifier/stabiliser."
+    },
+    "e494": {
+      "name": "Sorbitan monooleate",
+      "status": "approved",
+      "category": "emulsifier",
+      "notes": "Authorised EU emulsifier/stabiliser."
+    },
+    "e495": {
+      "name": "Sorbitan monopalmitate",
+      "status": "approved",
+      "category": "emulsifier",
+      "notes": "Authorised EU emulsifier."
+    },
+    "e496": {
+      "name": "Sorbitan trioleate",
+      "status": "banned",
+      "category": "emulsifier",
+      "notes": "Not authorised as a food additive in the EU (only E491-E495 sorbitan esters are on the Union list); the only EU regulatory hit found for sorbitan trioleate is a food-contact-material (packaging) authorisation, not a food-additive authorisation."
+    },
+    "e502": {
+      "name": "Carbonates",
+      "status": "approved",
+      "category": "acidity-regulator",
+      "notes": "Generic OFF taxonomy label for carbonate salts; cross-checked EU-focused additive databases (compareadditives.com) describe E502 as authorised in the EU with compositional/purity specs, used as acidity regulator/raising agent quantum satis. Could not verify exact identity split vs E503 (ammonium carbonates) on EUR-Lex directly due to document size; treat with some caution."
+    },
+    "e505": {
+      "name": "Ferrous carbonate",
+      "status": "approved",
+      "category": "acidity-regulator",
+      "notes": "Described by additive databases as an authorised EU food additive with identity/purity criteria set in law; functions as acidity regulator/anti-caking agent and iron source. Not independently confirmed against EUR-Lex Annex II full text (fetch of the consolidated regulation was too large to search reliably), so confidence is medium."
+    },
+    "e511": {
+      "name": "Magnesium chloride",
+      "status": "approved",
+      "category": "stabiliser",
+      "notes": "Confirmed approved in the EU; used as firming agent/coagulant (e.g. tofu) and stabiliser, generally quantum satis."
+    },
+    "e512": {
+      "name": "Stannous chloride",
+      "status": "restricted",
+      "category": "antioxidant",
+      "notes": "Approved in the EU but restricted to specific uses as an antioxidant, notably canned/bottled white asparagus and certain canned/bottled fruit and vegetables, subject to maximum tin levels."
+    },
+    "e513": {
+      "name": "Sulphuric acid",
+      "status": "approved",
+      "category": "acidity-regulator",
+      "notes": "Approved EU food additive, acidity regulator, generally quantum satis. Subject to 2018 EFSA re-evaluation alongside its sodium/potassium/calcium/ammonium salts (E513, E514, E515, E516, E517) with no new safety concerns changing authorisation."
+    },
+    "e514ii": {
+      "name": "Sodium hydrogen sulphate",
+      "status": "approved",
+      "category": "acidity-regulator",
+      "notes": "Part of the E514 sodium sulphates group, approved EU food additive, acidity regulator, quantum satis in most categories. Re-evaluated by EFSA in 2018 with no safety concerns."
+    },
+    "e514i": {
+      "name": "Sodium sulphate",
+      "status": "approved",
+      "category": "acidity-regulator",
+      "notes": "Approved EU food additive within the E514 sodium sulphates group, quantum satis acidity regulator."
+    },
+    "e514": {
+      "name": "Sodium sulphates",
+      "status": "approved",
+      "category": "acidity-regulator",
+      "notes": "Generic taxonomy node covering E514(i) sodium sulphate and E514(ii) sodium hydrogen sulphate, both approved."
+    },
+    "e515i": {
+      "name": "Potassium sulphate",
+      "status": "approved",
+      "category": "acidity-regulator",
+      "notes": "Approved EU food additive within the E515 potassium sulphates group, quantum satis."
+    },
+    "e515": {
+      "name": "Potassium sulphates",
+      "status": "approved",
+      "category": "acidity-regulator",
+      "notes": "Generic taxonomy node covering E515(i) potassium sulphate and E515(ii) potassium hydrogen sulphate, both approved."
+    },
+    "e515ii": {
+      "name": "Potassium hydrogen sulphate",
+      "status": "approved",
+      "category": "acidity-regulator",
+      "notes": "Approved EU food additive within the E515 potassium sulphates group, quantum satis."
+    },
+    "e517": {
+      "name": "Ammonium sulphate",
+      "status": "approved",
+      "category": "acidity-regulator",
+      "notes": "Approved EU food additive, quantum satis (notably used in bread-making). Covered by the 2018 EFSA re-evaluation of sulphuric acid and its salts (E513-517)."
+    },
+    "e518": {
+      "name": "Magnesium sulphate",
+      "status": "approved",
+      "category": "firming-agent",
+      "notes": "Approved EU food additive, firming agent/nutrient source, generally quantum satis."
+    },
+    "e519": {
+      "name": "Copper sulphate",
+      "status": "banned",
+      "category": "stabiliser",
+      "notes": "Not part of the EU Union list of authorised food additives (Annex II to Regulation (EC) No 1333/2008); it is not a general-use approved food additive in the EU. Search results note it is prohibited/not authorised for food use in the EU, UK, Norway and EAEU. Could not confirm a specific EU decision date, so bannedSince omitted."
+    },
+    "e520": {
+      "name": "Aluminium sulphate",
+      "status": "restricted",
+      "category": "firming-agent",
+      "notes": "Approved but subject to EU aluminium exposure-limit restrictions (Regulation (EU) No 380/2012 amending Annex II, effective from 1 Feb 2014), limiting use to specific food categories (e.g. crystallised/candied fruit, cocktail cherries) with maximum aluminium levels."
+    },
+    "e521": {
+      "name": "Aluminium sodium sulphate",
+      "status": "restricted",
+      "category": "firming-agent",
+      "notes": "Approved but restricted under the same 2014 EU aluminium exposure-limit regime as E520/E522/E523 and E541, limited to specific food categories with maximum aluminium levels."
+    },
+    "e522": {
+      "name": "Aluminium potassium sulphate",
+      "status": "restricted",
+      "category": "acidity-regulator",
+      "notes": "Approved but restricted under the 2014 EU aluminium exposure-limit regime, limited to specific food categories with maximum aluminium levels."
+    },
+    "e523": {
+      "name": "Aluminium ammonium sulphate",
+      "status": "restricted",
+      "category": "stabiliser",
+      "notes": "Approved but restricted under the 2014 EU aluminium exposure-limit regime, limited to specific food categories with maximum aluminium levels."
+    },
+    "e527": {
+      "name": "Ammonium hydroxide",
+      "status": "approved",
+      "category": "acidity-regulator",
+      "notes": "Approved EU food additive, acidity regulator, quantum satis in most food categories."
+    },
+    "e528": {
+      "name": "Magnesium hydroxide",
+      "status": "approved",
+      "category": "acidity-regulator",
+      "notes": "Approved EU food additive, acidity regulator, quantum satis."
+    },
+    "e529": {
+      "name": "Calcium oxide",
+      "status": "approved",
+      "category": "acidity-regulator",
+      "notes": "Approved EU food additive, acidity regulator, quantum satis."
+    },
+    "e530": {
+      "name": "Magnesium oxide",
+      "status": "approved",
+      "category": "anti-caking-agent",
+      "notes": "Approved EU food additive, anti-caking agent, quantum satis."
+    },
+    "e535": {
+      "name": "Sodium ferrocyanide",
+      "status": "restricted",
+      "category": "anti-caking-agent",
+      "notes": "Authorised solely as an anti-caking agent in salt and salt substitutes, at a maximum level of 20 mg/kg (expressed as ferrocyanide ion), per the EFSA 2018 re-evaluation and Annex II conditions of use."
+    },
+    "e536": {
+      "name": "Potassium ferrocyanide",
+      "status": "restricted",
+      "category": "anti-caking-agent",
+      "notes": "Authorised solely as an anti-caking agent in salt and salt substitutes, at a maximum level of 20 mg/kg (expressed as ferrocyanide ion)."
+    },
+    "e538": {
+      "name": "Calcium ferrocyanide",
+      "status": "restricted",
+      "category": "anti-caking-agent",
+      "notes": "Authorised solely as an anti-caking agent in salt and salt substitutes, at a maximum level of 20 mg/kg (expressed as ferrocyanide ion)."
+    },
+    "e540": {
+      "name": "Dicalcium diphosphate",
+      "status": "approved",
+      "category": "raising-agent",
+      "notes": "Approved EU food additive, raising agent/emulsifying salt, quantum satis in most categories."
+    },
+    "e541ii": {
+      "name": "Alkaline sodium aluminium phosphate",
+      "status": "restricted",
+      "category": "emulsifier",
+      "notes": "Approved but restricted under the EU aluminium exposure-limit regime (2014), limited to specific bakery/processed cheese categories with maximum aluminium levels, per EFSA re-evaluation of E541 alongside aluminium sulphates E520-523."
+    },
+    "e541i": {
+      "name": "Acid sodium aluminium phosphate",
+      "status": "restricted",
+      "category": "emulsifier",
+      "notes": "Approved but restricted under the EU aluminium exposure-limit regime (2014), limited to specific food categories with maximum aluminium levels."
+    },
+    "e541": {
+      "name": "Sodium aluminium phosphate",
+      "status": "restricted",
+      "category": "emulsifier",
+      "notes": "Generic node covering E541(i) and E541(ii); approved but restricted under the 2014 EU aluminium exposure-limit regime."
+    },
+    "e542": {
+      "name": "Bone phosphate",
+      "status": "restricted",
+      "category": "anti-caking-agent",
+      "notes": "Authorised in the EU but only for a limited category of uses (primarily food supplements), not for general food use. EFSA considers it of no safety concern at current authorised use levels."
+    },
+    "e543": {
+      "name": "Calcium sodium polyphosphate",
+      "status": "restricted",
+      "category": "emulsifier",
+      "notes": "Source taxonomy label was a generic placeholder ('E543 food additive') with no name; cross-referenced as calcium sodium polyphosphate, described by secondary sources as approved for use as emulsifier/stabiliser restricted to processed cheese and frozen bakery products. Could not verify directly against EUR-Lex Annex II; confidence limited."
+    },
+    "e544": {
+      "name": "Calcium polyphosphate",
+      "status": "restricted",
+      "category": "emulsifier",
+      "notes": "Approved EU food additive, emulsifier/stabiliser, restricted to certain categories (e.g. processed cheese) rather than quantum satis general use."
+    },
+    "e550": {
+      "name": "Sodium silicate",
+      "status": "approved",
+      "category": "anti-caking-agent",
+      "notes": "Approved EU food additive within the silicates group (E550-E560), general anti-caking agent, quantum satis in most categories."
+    },
+    "e553": {
+      "name": "Magnesium silicates",
+      "status": "restricted",
+      "category": "anti-caking-agent",
+      "notes": "Covers E553a(i) magnesium silicate, E553a(ii) magnesium trisilicate and E553b talc; approved EU food additives per the EFSA 2018 re-evaluation, restricted to specific food categories with defined maximum levels rather than fully quantum satis."
+    },
+    "e554": {
+      "name": "Sodium aluminium silicate",
+      "status": "restricted",
+      "category": "anti-caking-agent",
+      "notes": "Approved but restricted under the EU aluminium exposure-limit regime, re-evaluated by EFSA in 2020 alongside E555; limited to specific food categories with maximum aluminium levels."
+    },
+    "e555": {
+      "name": "Potassium aluminium silicate",
+      "status": "restricted",
+      "category": "anti-caking-agent",
+      "notes": "Approved but restricted under Regulation (EC) No 1333/2008 to specific food categories with maximum permitted levels, subject to EU aluminium exposure limits; re-evaluated by EFSA in 2020 alongside E554."
+    },
+    "e556": {
+      "name": "Calcium aluminium silicate",
+      "status": "restricted",
+      "category": "anti-caking-agent",
+      "notes": "Approved for specific applications (salt and substitutes, powdered sugar/dextrose, powdered whey, sliced cheese, spices, tray/pan release), subject to EU aluminium exposure-limit considerations. Confirmed present in EUR-Lex Annex II text directly."
+    },
+    "e558": {
+      "name": "Bentonite",
+      "status": "approved",
+      "category": "anti-caking-agent",
+      "notes": "Confirmed present as an authorised EU food additive (anti-caking/clarifying agent) directly in the EUR-Lex consolidated Annex II text."
+    },
+    "e559": {
+      "name": "Aluminium silicate (kaolin)",
+      "status": "restricted",
+      "category": "anti-caking-agent",
+      "notes": "Approved but restricted under the EU aluminium exposure-limit regime, limited to specific food categories (e.g. food supplements) with maximum levels."
+    },
+    "e560": {
+      "name": "Potassium silicate",
+      "status": "approved",
+      "category": "anti-caking-agent",
+      "notes": "Listed within the EU silicates group (E550-E560) as an anti-caking agent; specific conditions of use not independently verified against EUR-Lex, so treat as medium confidence."
+    },
+    "e572": {
+      "name": "Magnesium stearate",
+      "status": "approved",
+      "category": "anti-caking-agent",
+      "notes": "Approved EU food additive, anti-caking agent/emulsifier, quantum satis in most food categories (also very widely used as an excipient in supplements)."
+    },
+    "e573": {
+      "name": "Aluminium stearate",
+      "status": "restricted",
+      "category": "anti-caking-agent",
+      "notes": "Authorised EU food additive with defined identity/purity specifications, but as an aluminium-containing additive it falls under EU aluminium exposure-limit considerations; use appears limited to specific categories rather than general/quantum satis."
+    },
+    "e574": {
+      "name": "Gluconic acid",
+      "status": "approved",
+      "category": "acidity-regulator",
+      "notes": "Approved EU food additive, acidity regulator/sequestrant, quantum satis in most food categories."
+    },
+    "e576": {
+      "name": "Sodium gluconate",
+      "status": "approved",
+      "category": "sequestrant",
+      "notes": "Approved EU food additive, sequestrant/stabiliser/thickener, quantum satis in most food categories."
+    },
+    "e577": {
+      "name": "Potassium gluconate",
+      "status": "approved",
+      "category": "sequestrant",
+      "notes": "Approved EU food additive, sequestrant, quantum satis in most food categories."
+    },
+    "e578": {
+      "name": "Calcium gluconate",
+      "status": "approved",
+      "category": "sequestrant",
+      "notes": "Approved EU food additive, sequestrant/firming agent, quantum satis in most food categories."
+    },
+    "e579": {
+      "name": "Iron gluconate (ferrous gluconate)",
+      "status": "restricted",
+      "category": "colour",
+      "notes": "Approved but restricted: authorised specifically as a colour fixative for the blackening/darkening of black (ripe) olives and related olive products, subject to a maximum iron level (150 mg Fe/kg), not a general-use additive."
+    },
+    "e585": {
+      "name": "Ferrous lactate",
+      "status": "restricted",
+      "category": "colour",
+      "notes": "Approved but restricted: authorised specifically for the blackening of green (ripe) olives, subject to a maximum iron level of 150 mg Fe/kg food, not a general-use additive."
+    },
+    "e586": {
+      "name": "4-Hexylresorcinol",
+      "status": "restricted",
+      "category": "antioxidant",
+      "notes": "Approved but restricted: authorised solely as an antioxidant to prevent melanosis (black spot) in fresh, frozen and deep-frozen crustaceans, subject to a maximum residue level of 2 mg/kg in crustacean meat. Re-evaluated by EFSA in 2014 with no new safety concerns."
+    },
+    "e622": {
+      "name": "Monopotassium glutamate",
+      "status": "approved",
+      "category": "flavour-enhancer",
+      "notes": "Part of the glutamate group (E620-625), authorized quantum satis (max 10 g/kg expressed as glutamic acid, individually or in combination) across ~67 food categories (e.g. seasonings, condiments, salt substitutes, snacks). Not permitted in foods for infants/young children."
+    },
+    "e623": {
+      "name": "Calcium diglutamate",
+      "status": "approved",
+      "category": "flavour-enhancer",
+      "notes": "Part of the glutamate group (E620-625); same conditions as E622 (QS, max 10 g/kg as glutamic acid, not for infant food)."
+    },
+    "e624": {
+      "name": "Monoammonium glutamate",
+      "status": "approved",
+      "category": "flavour-enhancer",
+      "notes": "Part of the glutamate group (E620-625); same conditions as E622 (QS, max 10 g/kg as glutamic acid, not for infant food)."
+    },
+    "e625": {
+      "name": "Magnesium diglutamate",
+      "status": "approved",
+      "category": "flavour-enhancer",
+      "notes": "Part of the glutamate group (E620-625); same conditions as E622 (QS, max 10 g/kg as glutamic acid, not for infant food)."
+    },
+    "e626": {
+      "name": "Guanylic acid",
+      "status": "approved",
+      "category": "flavour-enhancer",
+      "notes": "Part of the ribonucleotide flavour-enhancer group (E626-635), authorized in seasonings, snacks, sauces etc. at quantum satis / group limits; not permitted in foods for infants/young children."
+    },
+    "e628": {
+      "name": "Dipotassium guanylate",
+      "status": "approved",
+      "category": "flavour-enhancer",
+      "notes": "Part of the E626-635 ribonucleotide group; same general conditions as E626/E627 (not for infant food)."
+    },
+    "e629": {
+      "name": "Calcium guanylate",
+      "status": "approved",
+      "category": "flavour-enhancer",
+      "notes": "Part of the E626-635 ribonucleotide group; same general conditions as E626 (not for infant food)."
+    },
+    "e630": {
+      "name": "Inosinic acid",
+      "status": "approved",
+      "category": "flavour-enhancer",
+      "notes": "Part of the E626-635 ribonucleotide group; same general conditions as E626 (not for infant food)."
+    },
+    "e632": {
+      "name": "Dipotassium inosinate",
+      "status": "approved",
+      "category": "flavour-enhancer",
+      "notes": "Part of the E626-635 ribonucleotide group; same general conditions as E626 (not for infant food)."
+    },
+    "e633": {
+      "name": "Calcium inosinate",
+      "status": "approved",
+      "category": "flavour-enhancer",
+      "notes": "Part of the E626-635 ribonucleotide group; same general conditions as E626 (not for infant food)."
+    },
+    "e634": {
+      "name": "Calcium 5'-ribonucleotide",
+      "status": "approved",
+      "category": "flavour-enhancer",
+      "notes": "Part of the E626-635 ribonucleotide group; same general conditions as E626 (not for infant food)."
+    },
+    "e636": {
+      "name": "Maltol",
+      "status": "approved",
+      "category": "flavour-enhancer",
+      "notes": "Authorized flavour enhancer under Annex II, subject to category-specific maximum levels; not permitted in unprocessed foods generally."
+    },
+    "e637": {
+      "name": "Ethyl maltol",
+      "status": "approved",
+      "category": "flavour-enhancer",
+      "notes": "Authorized flavour enhancer under Annex II, subject to category-specific maximum levels (used widely in confectionery, beverages, bakery). One secondary aggregator claimed non-EU-approval, but this conflicts with multiple other sources; recommend spot-checking the EC additives database if this needs the highest confidence."
+    },
+    "e639": {
+      "name": "DL-Alanine",
+      "status": "approved",
+      "category": "flavour-enhancer",
+      "notes": "Added to Annex II as a flavour enhancer / carrier for table-top sweeteners by Commission Regulation (EU) 2015/649 (24 April 2015), alongside glycine (E640) and L-leucine (E641). Source list's synonym 'E369' appears to be an Open Food Facts data artifact/typo, not an EU designation."
+    },
+    "e640": {
+      "name": "Glycine and its sodium salt",
+      "status": "approved",
+      "category": "flavour-enhancer",
+      "notes": "Authorized flavour enhancer added/confirmed via Regulation (EU) 2015/649 grouping with E639/E641; no special mandatory warning label. Covers both E640(i) Glycine and E640(ii) Sodium glycinate."
+    },
+    "e641": {
+      "name": "L-Leucine",
+      "status": "approved",
+      "category": "flavour-enhancer",
+      "notes": "Added to Annex II by Commission Regulation (EU) 2015/649 of 24 April 2015; authorized as a flavour enhancer and as a tabletting aid/carrier in table-top sweeteners."
+    },
+    "e650": {
+      "name": "Zinc acetate",
+      "status": "restricted",
+      "category": "flavour-enhancer",
+      "notes": "Authorized only in chewing gum, at a maximum level (commonly cited as up to 1000 mg/kg); not permitted in general foods. In use in the EU since 2002."
+    },
+    "e710": {
+      "name": "Spiramycin",
+      "status": "banned",
+      "category": "preservative",
+      "notes": "Macrolide antibiotic; not part of the EU Union list of authorized food additives. Antimicrobial growth promoters including spiramycin were banned as feed additives in the EU from 2006 due to antimicrobial-resistance concerns, and it has never been an authorized food additive.",
+      "bannedSince": "2006-01-01"
+    },
+    "e713": {
+      "name": "Tylosin",
+      "status": "banned",
+      "category": "preservative",
+      "notes": "Macrolide antibiotic; not part of the EU Union list of authorized food additives. Antimicrobial growth promoters including tylosin were banned as feed additives in the EU from 2006 due to antimicrobial-resistance concerns, and it has never been an authorized food additive.",
+      "bannedSince": "2006-01-01"
+    },
+    "e900a": {
+      "name": "Dimethyl polysiloxane",
+      "status": "restricted",
+      "category": "foaming-agent",
+      "notes": "This is the substance authorized in Annex II simply as 'E900 Dimethyl polysiloxane' (antifoaming agent), permitted only in specific food categories (e.g. fats/oils for frying, jams, beverages) at defined maximum levels, not general use."
+    },
+    "e900b": {
+      "name": "Methylphenylpolysiloxane",
+      "status": "banned",
+      "category": "foaming-agent",
+      "notes": "Only dimethyl polysiloxane is listed in Annex II under E900; methylphenylpolysiloxane (a related but distinct silicone) does not appear as an authorized Annex II entry."
+    },
+    "e902": {
+      "name": "Candelilla wax",
+      "status": "restricted",
+      "category": "glazing-agent",
+      "notes": "Authorized as a glazing agent only in specific food categories (e.g. confectionery, chewing gum, surface treatment of certain fruits) at quantum satis within those categories, not general use."
+    },
+    "e905": {
+      "name": "Synthetic wax (superseded generic name)",
+      "status": "banned",
+      "category": "glazing-agent",
+      "notes": "The generic 'synthetic wax' designation is not itself an Annex II entry; the current Annex II entry under E905 covers specifically 'microcrystalline wax' (see E905c(i)). The broader synthetic-wax/petroleum-wax family was narrowed by Commission Regulation (EU) No 1147/2012."
+    },
+    "e905a": {
+      "name": "Mineral oil (food grade)",
+      "status": "banned",
+      "category": "glazing-agent",
+      "notes": "Not found as an authorized Annex II entry; the EU narrowed permitted E905 uses to specific microcrystalline wax only (Reg (EU) 1147/2012). Generic food-grade mineral oil as a stand-alone additive is not on the Union list."
+    },
+    "e905b": {
+      "name": "Petroleum jelly",
+      "status": "banned",
+      "category": "glazing-agent",
+      "notes": "Not found as an authorized Annex II entry."
+    },
+    "e905c": {
+      "name": "Petroleum wax (generic)",
+      "status": "banned",
+      "category": "glazing-agent",
+      "notes": "The generic 'petroleum wax' parent entry is not itself authorized; only the specific microcrystalline wax sub-form (commonly labelled E905c(i)) is on the Union list. See separate entries for E905ci and E905cii below."
+    },
+    "e905ci": {
+      "name": "Microcrystalline wax",
+      "status": "restricted",
+      "category": "glazing-agent",
+      "notes": "This is the actual EU Annex II entry (listed simply as 'E905 Microcrystalline wax'). Authorized only as a surface-treatment/glazing agent on specific items: non-chocolate confectionery, chewing gum, decorations/coatings/fillings (except fruit-based fillings), and surface treatment of melon, papaya, mango and avocado. Must meet purity criteria (e.g. max 50 microg/kg benzo[a]pyrene) under Regulation (EU) No 231/2012."
+    },
+    "e905cii": {
+      "name": "Paraffin wax",
+      "status": "banned",
+      "category": "glazing-agent",
+      "notes": "Not found as an authorized Annex II entry; only microcrystalline wax (E905c(i)) remains authorized after Regulation (EU) No 1147/2012 narrowed the E905 group."
+    },
+    "e905d": {
+      "name": "Mineral oil, high viscosity",
+      "status": "banned",
+      "category": "glazing-agent",
+      "notes": "Not found as an authorized Annex II entry."
+    },
+    "e905e": {
+      "name": "Mineral oil, medium viscosity",
+      "status": "banned",
+      "category": "glazing-agent",
+      "notes": "Not found as an authorized Annex II entry."
+    },
+    "e905f": {
+      "name": "Mineral oil, medium and low viscosity class II",
+      "status": "banned",
+      "category": "glazing-agent",
+      "notes": "Not found as an authorized Annex II entry."
+    },
+    "e905g": {
+      "name": "Mineral oil, medium and low viscosity class III",
+      "status": "banned",
+      "category": "glazing-agent",
+      "notes": "Not found as an authorized Annex II entry."
+    },
+    "e906": {
+      "name": "Benzoin resin (gum benzoin)",
+      "status": "banned",
+      "category": "glazing-agent",
+      "notes": "Not found as an authorized Annex II entry in the current EU food additives regulation."
+    },
+    "e907": {
+      "name": "Hydrogenated poly-1-decene",
+      "status": "restricted",
+      "category": "glazing-agent",
+      "notes": "Authorized glazing agent, used mainly in chewing gum, subject to a specified ADI (20 mg/kg bw/day) and category-specific conditions."
+    },
+    "e908": {
+      "name": "Rice bran wax",
+      "status": "banned",
+      "category": "glazing-agent",
+      "notes": "Not found as an authorized Annex II entry in the current EU food additives regulation."
+    },
+    "e909": {
+      "name": "Spermaceti",
+      "status": "banned",
+      "category": "glazing-agent",
+      "notes": "Not found as an authorized Annex II entry; sperm-whale-derived wax, long out of use and not on the current EU Union list."
+    },
+    "e910": {
+      "name": "Wax ester",
+      "status": "banned",
+      "category": "glazing-agent",
+      "notes": "Not found as an authorized Annex II entry."
+    },
+    "e911": {
+      "name": "Fatty acid methyl esters",
+      "status": "banned",
+      "category": "glazing-agent",
+      "notes": "Not found as an authorized Annex II entry."
+    },
+    "e912": {
+      "name": "Montanic acid esters",
+      "status": "banned",
+      "category": "glazing-agent",
+      "notes": "Removed from the Union list of authorized food additives by Commission Regulation (EU) No 957/2014 of 10 September 2014, effective 1 October 2014, due to insufficient toxicological data to complete EFSA's re-evaluation.",
+      "bannedSince": "2014-10-01"
+    },
+    "e913": {
+      "name": "Lanolin",
+      "status": "banned",
+      "category": "glazing-agent",
+      "notes": "Not found as an authorized Annex II entry for food use."
+    },
+    "e914": {
+      "name": "Oxidised polyethylene wax",
+      "status": "restricted",
+      "category": "glazing-agent",
+      "notes": "Authorized glazing agent under Annex II, limited to specific applications (chiefly chewing gum) at defined maximum levels."
+    },
+    "e915": {
+      "name": "Esters of colophane (colophony)",
+      "status": "banned",
+      "category": "glazing-agent",
+      "notes": "Not found as an authorized Annex II entry in the current EU food additives regulation."
+    },
+    "e916": {
+      "name": "Calcium iodate",
+      "status": "banned",
+      "category": "preservative",
+      "notes": "Flour/dough bleaching-oxidizing agent; not authorized in the EU. Chemical flour bleaching agents generally have been prohibited across the EU."
+    },
+    "e917": {
+      "name": "Potassium iodate",
+      "status": "banned",
+      "category": "preservative",
+      "notes": "Flour/dough bleaching-oxidizing agent; not authorized in the EU."
+    },
+    "e918": {
+      "name": "Nitrogen oxides",
+      "status": "banned",
+      "category": "preservative",
+      "notes": "Flour bleaching agent; not authorized in the EU."
+    },
+    "e919": {
+      "name": "Nitrosyl chloride",
+      "status": "banned",
+      "category": "preservative",
+      "notes": "Flour bleaching agent; not authorized in the EU."
+    },
+    "e920": {
+      "name": "L-cysteine",
+      "status": "restricted",
+      "category": "flour-treatment",
+      "notes": "Authorized under Annex II as a flour treatment agent/dough conditioner, limited to specific bread/bakery categories and maximum levels; no ADI established."
+    },
+    "e921": {
+      "name": "L-cysteine hydrochloride monohydrate",
+      "status": "restricted",
+      "category": "flour-treatment",
+      "notes": "Grouped with E920 in the EU additive specifications (Reg (EU) 231/2012) as a form of L-cysteine; same restricted flour-treatment conditions apply. Not separately itemised as a distinct Annex II entry from E920 in the consolidated text reviewed, so confidence is medium-high rather than definitive."
+    },
+    "e922": {
+      "name": "Potassium persulfate",
+      "status": "banned",
+      "category": "flour-treatment",
+      "notes": "Formerly used as a flour improving agent; no longer authorized for food use in the EU and not found in the current Annex II list."
+    },
+    "e923": {
+      "name": "Ammonium persulfate",
+      "status": "banned",
+      "category": "flour-treatment",
+      "notes": "Same persulfate family as E922; not authorized in the EU, not found in current Annex II list."
+    },
+    "e924a": {
+      "name": "Potassium bromate",
+      "status": "banned",
+      "category": "flour-treatment",
+      "notes": "Genotoxic-carcinogen concern (IARC 'possibly carcinogenic'). Banned as a flour treatment agent across the EU; the UK banned it domestically from 1 April 1990, and it has never been included in the harmonised EU Union list of authorized food additives. Exact single EU-wide banning-regulation date not confirmed from primary EUR-Lex text; treat 1990 as approximate.",
+      "bannedSince": "1990-04-01"
+    },
+    "e924b": {
+      "name": "Calcium bromate",
+      "status": "banned",
+      "category": "flour-treatment",
+      "notes": "Same bromate family as E924a; not authorized in the EU, treated the same way as potassium bromate (genotoxic carcinogen, flour-treatment ban)."
+    },
+    "e925": {
+      "name": "Chlorine",
+      "status": "banned",
+      "category": "flour-treatment",
+      "notes": "Flour bleaching agent; not authorized in the EU."
+    },
+    "e926": {
+      "name": "Chlorine dioxide",
+      "status": "banned",
+      "category": "flour-treatment",
+      "notes": "Flour bleaching agent; not authorized as a food additive in the EU (distinct from its use as a water-treatment/disinfection agent)."
+    },
+    "e927": {
+      "name": "Azodicarbonamide",
+      "status": "banned",
+      "category": "flour-treatment",
+      "notes": "Dough conditioner/flour bleaching agent used in the US/Canada but banned as a food additive in the EU (breakdown product semicarbazide is a potential carcinogen concern); not on the Union list."
+    },
+    "e927b": {
+      "name": "Carbamide (urea)",
+      "status": "restricted",
+      "category": "flour-treatment",
+      "notes": "Authorized under Annex II, but only as a stabilizer in the chewing-mass of sugar-free chewing gum, up to 30 g/kg. Not permitted as a flour treatment agent."
+    },
+    "e929": {
+      "name": "Acetone peroxide",
+      "status": "banned",
+      "category": "flour-treatment",
+      "notes": "Flour bleaching agent; banned in the EU (as in Canada, UK, China)."
+    },
+    "e938": {
+      "name": "Argon",
+      "status": "approved",
+      "category": "propellant-gas",
+      "notes": "Authorized packaging gas/propellant."
+    },
+    "e939": {
+      "name": "Helium",
+      "status": "approved",
+      "category": "propellant-gas",
+      "notes": "Authorized packaging gas/propellant."
+    },
+    "e940": {
+      "name": "Dichlorodifluoromethane",
+      "status": "banned",
+      "category": "propellant-gas",
+      "notes": "Obsolete CFC propellant; not found in the current Annex II list, and CFCs are separately restricted in the EU on environmental (ozone-layer) grounds."
+    },
+    "e941": {
+      "name": "Nitrogen",
+      "status": "approved",
+      "category": "propellant-gas",
+      "notes": "Authorized packaging gas/propellant, permitted quantum satis."
+    },
+    "e942": {
+      "name": "Nitrous oxide",
+      "status": "approved",
+      "category": "propellant-gas",
+      "notes": "Authorized propellant (e.g. whipped cream aerosols/canisters). Legal food-additive status is unaffected by separate, unrelated EU/member-state restrictions on nitrous oxide sold for recreational inhalant misuse."
+    },
+    "e943a": {
+      "name": "Butane",
+      "status": "approved",
+      "category": "propellant-gas",
+      "notes": "Authorized propellant gas."
+    },
+    "e943b": {
+      "name": "Isobutane",
+      "status": "approved",
+      "category": "propellant-gas",
+      "notes": "Authorized propellant gas."
+    },
+    "e944": {
+      "name": "Propane",
+      "status": "approved",
+      "category": "propellant-gas",
+      "notes": "Authorized propellant gas."
+    },
+    "e945": {
+      "name": "Chloropentafluoroethane",
+      "status": "banned",
+      "category": "propellant-gas",
+      "notes": "Not found as an authorized Annex II entry; this is a CFC-related propellant not on the current EU Union list."
+    },
+    "e946": {
+      "name": "Octafluorocyclobutane",
+      "status": "banned",
+      "category": "propellant-gas",
+      "notes": "Not found as an authorized Annex II entry."
+    },
+    "e948": {
+      "name": "Oxygen",
+      "status": "approved",
+      "category": "propellant-gas",
+      "notes": "Authorized quantum satis across all food categories, including for infants and young children, per EFSA's 2025 re-evaluation."
+    },
+    "e949": {
+      "name": "Hydrogen",
+      "status": "approved",
+      "category": "propellant-gas",
+      "notes": "Authorized quantum satis across all food categories, including for infants and young children, per EFSA's 2025 re-evaluation."
+    },
+    "e956": {
+      "name": "Alitame",
+      "status": "banned",
+      "category": "sweetener",
+      "notes": "Alitame was never actually authorized in the EU: the sole application (by Danisco) was withdrawn, and it does not appear in the current Annex II sweeteners list, despite some secondary sources incorrectly claiming EU approval alongside Australia/NZ/China/Mexico."
+    },
+    "e958": {
+      "name": "Glycyrrhizin (glycyrrhizinic acid / liquorice extract)",
+      "status": "warning",
+      "category": "sweetener",
+      "notes": "Not itself listed as an Annex II food-additive entry (it is regulated as a flavouring/ingredient rather than under the additive numbering), but the EU's Food Information to Consumers framework mandates a specific warning label -- 'Contains liquorice - people suffering from hypertension should avoid excessive consumption' -- once concentrations exceed set thresholds (4 g/kg in confectionery; 50 mg/L in beverages, 300 mg/L for alcoholic beverages >1.2% ABV). Flagging the additive-vs-flavouring nuance for reviewer awareness."
+    },
+    "e960a": {
+      "name": "Steviol glycosides from Stevia",
+      "status": "restricted",
+      "category": "sweetener",
+      "notes": "Authorized sweetener under Annex II, with category-specific maximum levels (mg/kg expressed as steviol equivalents) rather than general/QS use."
+    },
+    "e960b": {
+      "name": "Rebaudioside from multiple gene donors expressed in Yarrowia lipolytica",
+      "status": "approved",
+      "category": "sweetener",
+      "notes": "Steviol-glycoside sweetener produced by fermentation, authorized as part of the expanded E960(a-d) group; introduced by amendments following Regulation (EU) 2021/1156 (13 July 2021) and subsequent 2022-2023 amendments to Reg 231/2012/1333/2008, permitted in the same food categories as other steviol glycosides."
+    },
+    "e960c": {
+      "name": "Enzymatically produced steviol glycosides",
+      "status": "approved",
+      "category": "sweetener",
+      "notes": "Authorized via Commission Regulation (EU) 2021/1156 (13 July 2021, in force 3 August 2021, transition ending 2 February 2023), later expanded (Oct 2022) to include additional enzymatically-produced rebaudiosides (M, D, AM) as E960c(i)-(iv). Permitted in the same categories as other steviol glycosides."
+    },
+    "e960d": {
+      "name": "Glucosylated steviol glycosides",
+      "status": "approved",
+      "category": "sweetener",
+      "notes": "Introduced as E960d by amendments to Regulation (EC) No 1333/2008 and (EU) No 231/2012 in March 2023, and confirmed present in the current consolidated Annex II text (2026) under the steviol-glycosides group E960a-d."
+    },
+    "e964": {
+      "name": "Polyglycitol syrup",
+      "status": "approved",
+      "category": "sweetener",
+      "notes": "Authorized sweetener/bulking agent confirmed present in the current consolidated Annex II text."
+    },
+    "e1103": {
+      "name": "Invertase",
+      "status": "approved",
+      "category": "processing-aid",
+      "notes": "Unlike the other E110x enzymes, 'E 1103 Invertase' literally appears in the current EUR-Lex consolidated text of Regulation (EC) No 1333/2008 Annex II Part B, carried over as a legacy authorization from Directive 95/2/EC. The regulation itself states this legacy E-number entry will be repealed once the Union list of food enzymes (under Reg 1332/2008) takes effect - which has not yet happened - so invertase currently retains transitional E-number status. Expect this to move fully to food-enzyme regulation once that list is finalized."
+    },
+    "e1105": {
+      "name": "Lysozyme",
+      "status": "restricted",
+      "category": "preservative",
+      "notes": "Genuine, current EU food additive (confirmed in EUR-Lex consolidated Annex II Part B). Authorised specifically as a preservative in ripened cheese to prevent 'late blowing' defect (Clostridium tyrobutyricum contamination); not a general-purpose additive. Derived from hen egg white - relevant for egg-allergic consumers and subject to allergen labelling."
+    },
+    "e1200": {
+      "name": "Polydextrose",
+      "status": "approved",
+      "category": "thickener",
+      "notes": "Authorised EU food additive (bulking agent/thickener/stabiliser) at quantum satis in multiple food categories under Annex II Part E to Regulation (EC) No 1333/2008, plus Annex III uses; excludes food supplements for infants and young children."
+    },
+    "e1201": {
+      "name": "Polyvinylpyrrolidone",
+      "status": "restricted",
+      "category": "stabiliser",
+      "notes": "Authorised EU food additive but restricted in scope: permitted as a coating/binder in solid food supplements (tablets/coated tablets) and, since Commission Regulation (EU) 2022/1038, in foods for special medical purposes in tablet/coated tablet form. Not permitted for general food use."
+    },
+    "e1202": {
+      "name": "Polyvinylpolypyrrolidone",
+      "status": "restricted",
+      "category": "stabiliser",
+      "notes": "Authorised EU food additive, restricted to use as a clarifying/stabilising agent in specific categories (notably wine and other beverage clarification) and solid food supplements per Annex II to Regulation (EC) No 1333/2008. Not a general-use additive."
+    },
+    "e1203": {
+      "name": "Polyvinyl alcohol",
+      "status": "restricted",
+      "category": "thickener",
+      "notes": "Authorised EU food additive but restricted to use as a coating/glazing agent for solid food supplements (capsules/tablets); not permitted in general foods."
+    },
+    "e1204": {
+      "name": "Pullulan",
+      "status": "restricted",
+      "category": "thickener",
+      "notes": "Authorised EU food additive under Annex II Part E to Regulation (EC) No 1333/2008 at quantum satis, but limited to specific categories: 'other confectionery including breath-freshening microsweets' and solid food supplements (excluding those for infants/young children), as a glazing/coating agent."
+    },
+    "e1205": {
+      "name": "Basic methacrylate copolymer",
+      "status": "restricted",
+      "category": "glazing-agent",
+      "notes": "Authorised EU food additive (glazing agent) but restricted solely to solid food supplements and solid foods for special medical purposes (FSMPs), per Commission Regulation (EU) No 816/2013 amending Annex II. Not for general food use."
+    },
+    "e1206": {
+      "name": "Neutral methacrylate copolymer",
+      "status": "restricted",
+      "category": "glazing-agent",
+      "notes": "Authorised EU food additive (glazing agent), restricted to solid food supplements and solid FSMPs per Commission Regulation (EU) No 816/2013."
+    },
+    "e1207": {
+      "name": "Anionic methacrylate copolymer",
+      "status": "restricted",
+      "category": "glazing-agent",
+      "notes": "Authorised EU food additive (glazing agent), restricted to solid food supplements and solid FSMPs per Commission Regulation (EU) No 816/2013."
+    },
+    "e1208": {
+      "name": "Polyvinylpyrrolidone-vinyl acetate copolymer",
+      "status": "restricted",
+      "category": "glazing-agent",
+      "notes": "Authorised EU food additive restricted to use in solid food supplements only."
+    },
+    "e1209": {
+      "name": "Polyvinyl alcohol-polyethylene glycol-graft-co-polymer",
+      "status": "restricted",
+      "category": "glazing-agent",
+      "notes": "Authorised EU food additive with a single permitted use: as a glazing/coating agent for food supplements supplied in solid form, per Annex II to Regulation (EC) No 1333/2008."
+    },
+    "e1210": {
+      "name": "Carbomer",
+      "status": "restricted",
+      "category": "stabiliser",
+      "notes": "Added to the EU list of authorised food additives via an amendment published in the Official Journal around March 2023, restricted to food supplements in solid form. One of the most recently added E-numbers in this family."
+    },
+    "e1400": {
+      "name": "Dextrin, roasted starch",
+      "status": "approved",
+      "category": "thickener",
+      "notes": "Explicitly excluded from the EU legal definition of 'food additive' by Article 3(2)(a)(vi) of Regulation (EC) No 1333/2008 ('dextrins, roasted starch...'), meaning it does not require Annex II authorization and can be used freely as a food ingredient. It therefore does not carry a genuine EU E-number under the additives regulation, but is fully permitted for use - not banned."
+    },
+    "e1401": {
+      "name": "Acid-treated modified starch",
+      "status": "approved",
+      "category": "thickener",
+      "notes": "Excluded from the EU 'food additive' definition by Article 3(2)(a)(vi) of Regulation (EC) No 1333/2008 ('starch modified by acid... treatment'). Freely usable as food, not subject to Annex II positive-list authorization; no genuine EU E-number."
+    },
+    "e1402": {
+      "name": "Alkaline modified starch",
+      "status": "approved",
+      "category": "thickener",
+      "notes": "Excluded from the EU 'food additive' definition by Article 3(2)(a)(vi) ('starch modified by... alkali treatment'). Freely usable, no genuine EU E-number required."
+    },
+    "e1403": {
+      "name": "Bleached starch",
+      "status": "approved",
+      "category": "thickener",
+      "notes": "Explicitly excluded from the EU 'food additive' definition by Article 3(2)(a)(vi) of Regulation (EC) No 1333/2008 ('bleached starch'). Confirmed present verbatim in the consolidated regulation text. Freely usable, no Annex II authorization needed."
+    },
+    "e1404": {
+      "name": "Oxidised starch",
+      "status": "approved",
+      "category": "thickener",
+      "notes": "Genuine authorised EU modified starch food additive, confirmed listed in Annex II Part B to Regulation (EC) No 1333/2008. Like all modified starches in this family, not permitted in foods for infants and young children (per Article 3(2)/recitals restricting modified starches in these categories)."
+    },
+    "e1405": {
+      "name": "Enzyme treated starch",
+      "status": "approved",
+      "category": "thickener",
+      "notes": "Excluded from the EU 'food additive' definition by Article 3(2)(a)(vi) of Regulation (EC) No 1333/2008 ('starch treated by amylolytic enzymes'). Freely usable, no Annex II authorization/E-number required."
+    },
+    "e1410": {
+      "name": "Monostarch phosphate",
+      "status": "approved",
+      "category": "thickener",
+      "notes": "Genuine authorised EU modified starch food additive, confirmed in Annex II Part B. Not permitted in foods for infants and young children."
+    },
+    "e1411": {
+      "name": "Distarch glycerol",
+      "status": "banned",
+      "category": "thickener",
+      "notes": "Not found anywhere in the current EUR-Lex consolidated text of Regulation (EC) No 1333/2008 (checked directly, phrase absent). Unlike E1400/1401/1402/1403/1405, this substance is not covered by the Article 3(2)(a)(vi) 'not an additive' exclusion either - as a true cross-linked modified starch it would require Annex II listing to be lawful, and it is not listed. This is a Codex/INS number that was never adopted into the EU Union list. Note: some low-quality secondary sites incorrectly claim it is 'EU authorised' - not corroborated by the primary legal text."
+    },
+    "e1412": {
+      "name": "Distarch phosphate",
+      "status": "approved",
+      "category": "thickener",
+      "notes": "Genuine authorised EU modified starch food additive, confirmed in Annex II Part B. Not permitted in foods for infants and young children."
+    },
+    "e1413": {
+      "name": "Phosphated distarch phosphate",
+      "status": "approved",
+      "category": "thickener",
+      "notes": "Genuine authorised EU modified starch food additive, confirmed in Annex II Part B. Not permitted in foods for infants and young children."
+    },
+    "e1414": {
+      "name": "Acetylated distarch phosphate",
+      "status": "approved",
+      "category": "thickener",
+      "notes": "Genuine authorised EU modified starch food additive, confirmed in Annex II Part B. Not permitted in foods for infants and young children."
+    },
+    "e1420": {
+      "name": "Acetylated starch",
+      "status": "approved",
+      "category": "thickener",
+      "notes": "Genuine authorised EU modified starch food additive, confirmed by direct text search of the consolidated Regulation (EC) No 1333/2008 ('Acetylated starch' entry located, corresponding to E 1420). Not permitted in foods for infants and young children."
+    },
+    "e1421": {
+      "name": "Acetylated starch",
+      "status": "banned",
+      "category": "thickener",
+      "notes": "Duplicate-name entry in the Open Food Facts taxonomy distinct from E1420 (same common name, different INS/Codex number). Not found anywhere in the EUR-Lex consolidated text of Regulation (EC) No 1333/2008 and not part of the EU's 12-member authorised modified-starch family (E1404, E1410, E1412-1414, E1420, E1422, E1440, E1442, E1450-1452). Not covered by the Article 3(2)(a)(vi) exclusion either. Treated as not authorised in the EU."
+    },
+    "e1422": {
+      "name": "Acetylated distarch adipate",
+      "status": "approved",
+      "category": "thickener",
+      "notes": "Genuine authorised EU modified starch food additive, confirmed in Annex II Part B. Not permitted in foods for infants and young children."
+    },
+    "e1423": {
+      "name": "Acetylated distarch glycerol",
+      "status": "banned",
+      "category": "thickener",
+      "notes": "Not found anywhere in the EUR-Lex consolidated text of Regulation (EC) No 1333/2008 (checked directly, phrase absent) and not among the EU's authorised modified-starch family, nor covered by the Article 3(2)(a)(vi) exclusion. Codex/INS number not adopted by the EU."
+    },
+    "e1430": {
+      "name": "Distarch glycerine",
+      "status": "banned",
+      "category": "thickener",
+      "notes": "Not found anywhere in the EUR-Lex consolidated text of Regulation (EC) No 1333/2008 (checked directly, phrase absent). Not part of the EU's authorised modified-starch family and not covered by the Article 3(2)(a)(vi) exclusion. Same underlying substance concept as E1411 (Distarch glycerol) - neither is an EU-recognized E-number."
+    },
+    "e1440": {
+      "name": "Hydroxypropyl starch",
+      "status": "approved",
+      "category": "thickener",
+      "notes": "Genuine authorised EU modified starch food additive, confirmed in Annex II Part B. Not permitted in foods for infants and young children."
+    },
+    "e1441": {
+      "name": "Hydroxy propyl distarch glycerine",
+      "status": "banned",
+      "category": "thickener",
+      "notes": "Not found anywhere in the EUR-Lex consolidated text of Regulation (EC) No 1333/2008 and not among the EU's authorised modified-starch family; not covered by the Article 3(2)(a)(vi) exclusion. Not an EU-recognized E-number."
+    },
+    "e1442": {
+      "name": "Hydroxypropyl distarch phosphate",
+      "status": "approved",
+      "category": "thickener",
+      "notes": "Genuine authorised EU modified starch food additive, confirmed in Annex II Part B. Not permitted in foods for infants and young children."
+    },
+    "e1443": {
+      "name": "Hydroxy propyl distarch glycerol",
+      "status": "banned",
+      "category": "thickener",
+      "notes": "Not found anywhere in the EUR-Lex consolidated text of Regulation (EC) No 1333/2008 and not among the EU's authorised modified-starch family; not covered by the Article 3(2)(a)(vi) exclusion. Not an EU-recognized E-number (duplicate/variant naming of glycerol-linked starches similar to E1411/E1430)."
+    },
+    "e1451": {
+      "name": "Acetylated oxidised starch",
+      "status": "approved",
+      "category": "thickener",
+      "notes": "Genuine authorised EU modified starch food additive, confirmed in Annex II Part B. Not permitted in foods for infants and young children."
+    },
+    "e1452": {
+      "name": "Starch aluminium octenyl succinate",
+      "status": "approved",
+      "category": "thickener",
+      "notes": "Genuine authorised EU modified starch food additive, confirmed in Annex II Part B. Not permitted in foods for infants and young children."
+    },
+    "e1505": {
+      "name": "Triethyl citrate",
+      "status": "approved",
+      "category": "stabiliser",
+      "notes": "Genuine authorised EU food additive confirmed present in Annex II Part B of the consolidated Regulation (EC) No 1333/2008 ('Triethyl citrate'). Used as a carrier/emulsifier/sequestrant/stabiliser, notably as a foam stabiliser in some beverages."
+    },
+    "e1517": {
+      "name": "Glyceryl diacetate",
+      "status": "restricted",
+      "category": "carrier",
+      "notes": "Authorised EU food additive ('Glyceryl diacetate (diacetin)'), confirmed in Annex II Part B and the UK approved additives list. Restricted to use as a carrier/solvent for flavourings, generally up to 3 g/kg of food."
+    },
+    "e1518": {
+      "name": "Glyceryl triacetate",
+      "status": "restricted",
+      "category": "emulsifier",
+      "notes": "Authorised EU food additive ('Glycerol triacetate; triacetin'), confirmed in Annex II Part B and the UK approved additives list. Permitted as a carrier for flavourings/colourants and in chewing gum; used within specific category limits rather than for general food use."
+    },
+    "e1519": {
+      "name": "Benzyl alcohol",
+      "status": "restricted",
+      "category": "carrier",
+      "notes": "Authorised EU food additive, confirmed in Annex II Part B and the UK approved additives list, and re-evaluated by EFSA. Used as a carrier/solvent in flavouring preparations under specific conditions of use rather than general food use."
+    },
+    "e1520": {
+      "name": "Propylene Glycol",
+      "status": "restricted",
+      "category": "emulsifier",
+      "notes": "Authorised EU food additive ('Propane-1,2-diol; propylene glycol'), confirmed in Annex II Part B and the UK approved additives list. Permitted in specific food categories (e.g. flavourings, some processed foods, certain confectionery) with maximum levels; not a general-purpose additive."
+    },
+    "e1521": {
+      "name": "Polyethylene glycol",
+      "status": "restricted",
+      "category": "emulsifier",
+      "notes": "Authorised EU food additive, confirmed in Annex II Part B and the UK approved additives list. Permitted mainly as a glazing/coating agent for food supplements in solid form, per specific Annex II conditions rather than general food use."
     }
   },
   "nonEnumber": {
@@ -661,63 +3110,91 @@
       "status": "banned",
       "category": "emulsifier",
       "notes": "No E-number in EU. Not authorized in EU food. Was used in US citrus sodas. FDA banned it in 2024.",
-      "searchTerms": ["brominated vegetable oil", "bvo", "brominated oil"]
+      "searchTerms": [
+        "brominated vegetable oil",
+        "bvo",
+        "brominated oil"
+      ]
     },
     "potassium-bromate": {
       "name": "Potassium Bromate",
       "status": "banned",
       "category": "flour-treatment",
       "notes": "Not authorized in EU. Used in some US commercial bread to strengthen dough. Classified as possibly carcinogenic.",
-      "searchTerms": ["potassium bromate", "bromate", "e924"]
+      "searchTerms": [
+        "potassium bromate",
+        "bromate",
+        "e924"
+      ]
     },
     "potassium-iodate": {
       "name": "Potassium Iodate",
       "status": "banned",
       "category": "flour-treatment",
       "notes": "Not authorized in EU food use.",
-      "searchTerms": ["potassium iodate"]
+      "searchTerms": [
+        "potassium iodate"
+      ]
     },
     "benzoyl-peroxide": {
       "name": "Benzoyl Peroxide",
       "status": "banned",
       "category": "flour-treatment",
       "notes": "Not authorized for flour treatment in EU food.",
-      "searchTerms": ["benzoyl peroxide", "e928"]
+      "searchTerms": [
+        "benzoyl peroxide",
+        "e928"
+      ]
     },
     "calcium-peroxide": {
       "name": "Calcium Peroxide",
       "status": "banned",
       "category": "flour-treatment",
       "notes": "Not authorized for flour treatment in EU food.",
-      "searchTerms": ["calcium peroxide", "e930"]
+      "searchTerms": [
+        "calcium peroxide",
+        "e930"
+      ]
     },
     "chlorine-dioxide": {
       "name": "Chlorine Dioxide",
       "status": "banned",
       "category": "flour-treatment",
       "notes": "Not authorized for flour treatment in EU food.",
-      "searchTerms": ["chlorine dioxide"]
+      "searchTerms": [
+        "chlorine dioxide"
+      ]
     },
     "olestra": {
       "name": "Olestra (Olean)",
       "status": "banned",
       "category": "fat-substitute",
       "notes": "Not authorized in EU food. Used in some US fat-free snack products.",
-      "searchTerms": ["olestra", "olean"]
+      "searchTerms": [
+        "olestra",
+        "olean"
+      ]
     },
     "recombinant-bgh": {
       "name": "Recombinant Bovine Growth Hormone (rBGH / rBST)",
       "status": "banned",
       "category": "veterinary-hormone",
       "notes": "Not authorized in EU. Used in US dairy to increase milk production. EU bans milk from rBGH-treated cows.",
-      "searchTerms": ["rbgh", "rbst", "bovine growth hormone", "bovine somatotropin"]
+      "searchTerms": [
+        "rbgh",
+        "rbst",
+        "bovine growth hormone",
+        "bovine somatotropin"
+      ]
     },
     "ractopamine": {
       "name": "Ractopamine",
       "status": "banned",
       "category": "veterinary-drug",
       "notes": "Not authorized in EU. Used in US pork/beef production to promote lean meat growth.",
-      "searchTerms": ["ractopamine"]
+      "searchTerms": [
+        "ractopamine"
+      ]
     }
   }
 }
