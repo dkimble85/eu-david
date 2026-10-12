@@ -172,20 +172,21 @@ export default function SearchScreen() {
         return;
       }
 
-      const { data: rows, error } = await supabase
-        .from('product_reports')
-        .select('barcode')
-        .eq('issue_type', 'missing_ingredients')
-        .in('barcode', pendingBarcodes);
+      const { data: rows, error } = await supabase.rpc('product_report_counts', {
+        p_barcodes: pendingBarcodes,
+      });
 
       if (error || !rows) {
         setMissingIngredientsCounts(counts);
         return;
       }
 
-      for (const row of rows as Array<{ barcode: string | null }>) {
+      for (const row of rows as Array<{
+        barcode: string | null;
+        missing_ingredients_count: number | string;
+      }>) {
         if (!row.barcode) continue;
-        counts[row.barcode] = (counts[row.barcode] ?? 0) + 1;
+        counts[row.barcode] = Number(row.missing_ingredients_count) || 0;
       }
       for (const barcode of pendingBarcodes) {
         reportCountCache.set(barcode, {
