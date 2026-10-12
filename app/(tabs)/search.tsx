@@ -172,13 +172,17 @@ export default function SearchScreen() {
         return;
       }
 
-      const { data: rows, error } = await supabase.rpc('product_report_counts', {
-        p_barcodes: pendingBarcodes,
-      });
-
-      if (error || !rows) {
-        setMissingIngredientsCounts(counts);
-        return;
+      // The RPC rejects more than 100 barcodes per call, so chunk.
+      const rows: unknown[] = [];
+      for (let i = 0; i < pendingBarcodes.length; i += 100) {
+        const { data: chunkRows, error } = await supabase.rpc('product_report_counts', {
+          p_barcodes: pendingBarcodes.slice(i, i + 100),
+        });
+        if (error || !chunkRows) {
+          setMissingIngredientsCounts(counts);
+          return;
+        }
+        rows.push(...(chunkRows as unknown[]));
       }
 
       for (const row of rows as Array<{
