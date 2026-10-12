@@ -13,11 +13,18 @@ function firstParam(value: string | string[] | undefined): string | undefined {
   return Array.isArray(value) ? value[0] : value;
 }
 
+// The bypass only works when the build flag is set AND the page is served from a loopback host
+// (Playwright serves on 127.0.0.1). A production build deployed to a real domain ignores it
+// even if EXPO_PUBLIC_E2E were set by mistake. `expo export` runs with NODE_ENV=production, so
+// a NODE_ENV check would break the Playwright setup; the host check is the runtime guard.
+const LOOPBACK_HOSTS = new Set(['localhost', '127.0.0.1', '[::1]']);
+
 function getE2EUser(): User | null {
   if (
     process.env.EXPO_PUBLIC_E2E !== '1' ||
     Platform.OS !== 'web' ||
-    typeof window === 'undefined'
+    typeof window === 'undefined' ||
+    !LOOPBACK_HOSTS.has(window.location.hostname)
   ) {
     return null;
   }
