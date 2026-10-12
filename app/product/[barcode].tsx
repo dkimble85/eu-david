@@ -131,16 +131,19 @@ export default function ProductScreen() {
         return;
       }
 
-      const { count, error } = await supabase
-        .from('product_reports')
-        .select('id', { count: 'exact', head: true })
-        .eq('barcode', reportBarcode)
-        .eq('issue_type', 'missing_ingredients');
+      const { data: rows, error } = await supabase.rpc('product_report_counts', {
+        p_barcodes: [reportBarcode],
+      });
 
-      if (error || typeof count !== 'number') {
+      if (error || !rows) {
         setMissingIngredientsReportCount(0);
         return;
       }
+
+      const match = (
+        rows as Array<{ barcode: string | null; missing_ingredients_count: number | string }>
+      ).find((row) => row.barcode === reportBarcode);
+      const count = Number(match?.missing_ingredients_count ?? 0) || 0;
 
       setMissingIngredientsReportCount(count);
     }

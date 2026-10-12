@@ -172,20 +172,25 @@ export default function SearchScreen() {
         return;
       }
 
-      const { data: rows, error } = await supabase
-        .from('product_reports')
-        .select('barcode')
-        .eq('issue_type', 'missing_ingredients')
-        .in('barcode', pendingBarcodes);
-
-      if (error || !rows) {
-        setMissingIngredientsCounts(counts);
-        return;
+      // The RPC rejects more than 100 barcodes per call, so chunk.
+      const rows: unknown[] = [];
+      for (let i = 0; i < pendingBarcodes.length; i += 100) {
+        const { data: chunkRows, error } = await supabase.rpc('product_report_counts', {
+          p_barcodes: pendingBarcodes.slice(i, i + 100),
+        });
+        if (error || !chunkRows) {
+          setMissingIngredientsCounts(counts);
+          return;
+        }
+        rows.push(...(chunkRows as unknown[]));
       }
 
-      for (const row of rows as Array<{ barcode: string | null }>) {
+      for (const row of rows as Array<{
+        barcode: string | null;
+        missing_ingredients_count: number | string;
+      }>) {
         if (!row.barcode) continue;
-        counts[row.barcode] = (counts[row.barcode] ?? 0) + 1;
+        counts[row.barcode] = Number(row.missing_ingredients_count) || 0;
       }
       for (const barcode of pendingBarcodes) {
         reportCountCache.set(barcode, {

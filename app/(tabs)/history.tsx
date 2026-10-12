@@ -90,7 +90,8 @@ export default function HistoryScreen() {
     setFetchError(false);
     supabase
       .from('scan_history')
-      .select('*')
+      .select('id, user_id, barcode, product_name, scan_date, result')
+      .eq('user_id', user.id)
       .order('scan_date', { ascending: false })
       .limit(50)
       .then(({ data, error }) => {

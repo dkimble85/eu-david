@@ -47,3 +47,11 @@ _Screenshots coming soon_
 ## License
 
 MIT License — See [LICENSE](LICENSE) for details.
+
+## Database migrations (manual)
+
+Files in `supabase/migrations/` are **not** applied by CI. Run new ones by hand in the Supabase
+SQL editor, in filename order. Each file starts with a comment listing the queries to run
+afterwards to verify it. `20261012_*` migrations: own-row RLS on `scan_history`, and
+`product_reports` reads replaced by the `product_report_counts` RPC (apply before shipping the
+client that calls it).
