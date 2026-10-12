@@ -42,7 +42,7 @@ security definer
 set search_path = public
 as $$
 begin
-  if coalesce(array_length(p_barcodes, 1), 0) > 100 then
+  if coalesce(cardinality(p_barcodes), 0) > 100 then
     raise exception 'too many barcodes (max 100)';
   end if;
 
